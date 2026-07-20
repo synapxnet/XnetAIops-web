@@ -49,3 +49,6 @@ vite.config.ts.*
 *.sln
 *.sw?
 .history
+
+# Keep the project screenshot used by the GitHub README.
+!docs/images/xnetaiops-overview.jpg
