@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {
   Card,
@@ -16,12 +16,16 @@ import {
 import { getClusters } from '../api/cluster';
 import { getNodes, cordonNode, uncordonNode } from '../api/node';
 import type { K8sCluster, K8sNode } from '../api/types';
+import { demoK8sNodes, isDemoK8sCluster } from '../demo-data';
 
 const router = useRouter();
 const loading = ref(false);
 const clusters = ref<K8sCluster[]>([]);
 const selectedClusterId = ref<number | null>(null);
 const nodes = ref<K8sNode[]>([]);
+const isDemoSelection = computed(() =>
+  isDemoK8sCluster(clusters.value, selectedClusterId.value),
+);
 
 const columns = [
   { title: '节点名称', dataIndex: 'name', key: 'name' },
@@ -52,9 +56,17 @@ async function fetchClusters() {
 async function fetchNodes() {
   if (!selectedClusterId.value) return;
   loading.value = true;
+  if (isDemoSelection.value) {
+    nodes.value = demoK8sNodes;
+    loading.value = false;
+    return;
+  }
   try {
     const res = await getNodes(selectedClusterId.value);
-    nodes.value = Array.isArray(res) ? res : [];
+    const nodeList = Array.isArray(res) ? res : [];
+    nodes.value = nodeList.length === 0 && isDemoSelection.value
+      ? demoK8sNodes
+      : nodeList;
   } catch (e: any) {
     message.error('获取节点列表失败: ' + e.message);
   } finally {
@@ -68,10 +80,18 @@ function handleClusterChange(value: number) {
 }
 
 function goDetail(record: K8sNode) {
+  if (isDemoSelection.value) {
+    message.info('演示集群资源为只读展示');
+    return;
+  }
   router.push(`/K8S/node/detail/${selectedClusterId.value}/${record.name}`);
 }
 
 function handleCordon(record: K8sNode) {
+  if (isDemoSelection.value) {
+    message.info('演示集群资源为只读展示');
+    return;
+  }
   const isCordon = !record.unschedulable;
   Modal.confirm({
     title: isCordon ? '标记不可调度' : '取消不可调度',

@@ -1,13 +1,16 @@
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Select, SelectOption, Space } from 'ant-design-vue';
 import { getClusters } from '../api/cluster';
 import { getNamespaces } from '../api/namespace';
 import type { K8sCluster } from '../api/types';
+import { demoK8sNamespaces, isDemoK8sCluster } from '../demo-data';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   showNamespace?: boolean;
-}>();
+}>(), {
+  showNamespace: true,
+});
 
 const clusterId = defineModel<number | null>('clusterId', { default: null });
 const namespace = defineModel<string>('namespace', { default: '' });
@@ -23,29 +26,38 @@ async function fetchClusters() {
   try {
     const res = await getClusters();
     clusters.value = Array.isArray(res) ? res : [];
-    if (!clusterId.value) {
+    let targetClusterId = clusterId.value;
+    if (!targetClusterId) {
       const active = clusters.value.filter((c) => c.status === 'active');
       if (active.length > 0) {
-        clusterId.value = active[0]!.id;
+        targetClusterId = active[0]!.id;
+        clusterId.value = targetClusterId;
       }
     }
-    if (clusterId.value && props.showNamespace !== false) {
-      await fetchNamespaces();
+    if (targetClusterId && props.showNamespace !== false) {
+      await fetchNamespaces(targetClusterId);
     } else {
       emit('change');
     }
   } catch {
-    // silent
+    // The cluster list has no safe local fallback.
   }
 }
 
-async function fetchNamespaces() {
-  if (!clusterId.value) return;
+async function fetchNamespaces(targetClusterId = clusterId.value) {
+  if (!targetClusterId) return;
+  if (isDemoSelection(targetClusterId)) {
+    applyDemoNamespaces();
+    return;
+  }
   try {
-    const res = await getNamespaces(clusterId.value);
-    namespaces.value = (Array.isArray(res) ? res : []).map(
+    const res = await getNamespaces(targetClusterId);
+    const namespaceList = (Array.isArray(res) ? res : []).map(
       (n: any) => n.name,
     );
+    namespaces.value = namespaceList.length === 0 && isDemoSelection(targetClusterId)
+      ? demoK8sNamespaces.map((item) => item.name)
+      : namespaceList;
     if (
       !namespace.value ||
       !namespaces.value.includes(namespace.value)
@@ -56,14 +68,22 @@ async function fetchNamespaces() {
     }
     emit('change');
   } catch {
-    // silent
+    // Real cluster namespace errors remain non-blocking in the shared selector.
   }
+}
+
+function applyDemoNamespaces() {
+  namespaces.value = demoK8sNamespaces.map((item) => item.name);
+  namespace.value = namespaces.value.includes('default')
+    ? 'default'
+    : namespaces.value[0] || '';
+  emit('change');
 }
 
 function onClusterChange(v: number) {
   clusterId.value = v;
   if (props.showNamespace !== false) {
-    fetchNamespaces();
+    fetchNamespaces(v);
   } else {
     emit('change');
   }
@@ -74,9 +94,13 @@ function onNamespaceChange(v: string) {
   emit('change');
 }
 
+function isDemoSelection(targetClusterId = clusterId.value) {
+  return isDemoK8sCluster(clusters.value, targetClusterId);
+}
+
 onMounted(fetchClusters);
 
-defineExpose({ fetchClusters, fetchNamespaces });
+defineExpose({ fetchClusters, fetchNamespaces, isDemoSelection });
 </script>
 
 <template>

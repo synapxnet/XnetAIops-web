@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { h, ref } from 'vue';
+import { h, nextTick, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import {
   Card,
@@ -19,6 +19,7 @@ import {
   getDaemonSets, deleteDaemonSet, restartDaemonSet,
 } from '../api/workload';
 import K8sSelector from '../components/K8sSelector.vue';
+import { getDemoWorkloads } from '../demo-data';
 
 const router = useRouter();
 const route = useRoute();
@@ -26,6 +27,7 @@ const loading = ref(false);
 const selectedClusterId = ref<number | null>(route.query.clusterId ? Number(route.query.clusterId) : null);
 const selectedNamespace = ref<string>((route.query.namespace as string) || '');
 const activeTab = ref('deployment');
+const selectorRef = ref<{ isDemoSelection: () => boolean } | null>(null);
 
 const deployments = ref<any[]>([]);
 const statefulSets = ref<any[]>([]);
@@ -42,7 +44,15 @@ const workloadColumns = [
 ];
 
 async function fetchWorkloads() {
+  await nextTick();
   if (!selectedClusterId.value || !selectedNamespace.value) return;
+  if (selectorRef.value?.isDemoSelection()) {
+    const demo = getDemoWorkloads(selectedNamespace.value);
+    deployments.value = demo.deployments;
+    statefulSets.value = demo.statefulSets;
+    daemonSets.value = demo.daemonSets;
+    return;
+  }
   loading.value = true;
   try {
     const cid = selectedClusterId.value;
@@ -55,6 +65,17 @@ async function fetchWorkloads() {
     deployments.value = Array.isArray(depRes) ? depRes : [];
     statefulSets.value = Array.isArray(stsRes) ? stsRes : [];
     daemonSets.value = Array.isArray(dsRes) ? dsRes : [];
+    if (
+      deployments.value.length === 0 &&
+      statefulSets.value.length === 0 &&
+      daemonSets.value.length === 0 &&
+      selectorRef.value?.isDemoSelection()
+    ) {
+      const demo = getDemoWorkloads(ns);
+      deployments.value = demo.deployments;
+      statefulSets.value = demo.statefulSets;
+      daemonSets.value = demo.daemonSets;
+    }
   } catch (e: any) {
     message.error('获取工作负载失败: ' + e.message);
   } finally {
@@ -63,14 +84,17 @@ async function fetchWorkloads() {
 }
 
 function goCreate() {
+  if (isDemoSelection()) return;
   router.push(`/K8S/workload/create?clusterId=${selectedClusterId.value}&namespace=${selectedNamespace.value}&kind=${activeTab.value}`);
 }
 
 function goDetail(record: any) {
+  if (isDemoSelection()) return;
   router.push(`/K8S/workload/detail/${selectedClusterId.value}/${record.namespace}/${record.kind}/${record.name}`);
 }
 
 function handleScale(record: any) {
+  if (isDemoSelection()) return;
   let newReplicas = record.replicas;
   Modal.confirm({
     title: `伸缩 ${record.name}`,
@@ -101,6 +125,7 @@ function handleScale(record: any) {
 }
 
 function handleRestart(record: any) {
+  if (isDemoSelection()) return;
   Modal.confirm({
     title: '确认重启',
     content: `确定要滚动重启「${record.name}」吗？`,
@@ -124,6 +149,7 @@ function handleRestart(record: any) {
 }
 
 function handleDelete(record: any) {
+  if (isDemoSelection()) return;
   Modal.confirm({
     title: '确认删除',
     content: `确定要删除${record.kind}「${record.name}」吗？`,
@@ -147,6 +173,14 @@ function handleDelete(record: any) {
   });
 }
 
+function isDemoSelection() {
+  if (selectorRef.value?.isDemoSelection()) {
+    message.info('演示集群资源为只读展示');
+    return true;
+  }
+  return false;
+}
+
 </script>
 
 <template>
@@ -154,7 +188,7 @@ function handleDelete(record: any) {
     <Card title="工作负载">
       <template #extra>
         <Space>
-          <K8sSelector v-model:clusterId="selectedClusterId" v-model:namespace="selectedNamespace" @change="fetchWorkloads" />
+          <K8sSelector ref="selectorRef" v-model:clusterId="selectedClusterId" v-model:namespace="selectedNamespace" @change="fetchWorkloads" />
           <Button @click="fetchWorkloads">刷新</Button>
           <Button type="primary" @click="goCreate">创建工作负载</Button>
         </Space>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {
   Card,
@@ -14,13 +14,17 @@ import {
 } from 'ant-design-vue';
 import { getClusters } from '../api/cluster';
 import { getNamespaces, deleteNamespace } from '../api/namespace';
-import type { K8sCluster } from '../api/types';
+import type { K8sCluster, K8sNamespace } from '../api/types';
+import { demoK8sNamespaces, isDemoK8sCluster } from '../demo-data';
 
 const router = useRouter();
 const loading = ref(false);
 const clusters = ref<K8sCluster[]>([]);
 const selectedClusterId = ref<number | null>(null);
-const namespaces = ref<any[]>([]);
+const namespaces = ref<K8sNamespace[]>([]);
+const isDemoSelection = computed(() =>
+  isDemoK8sCluster(clusters.value, selectedClusterId.value),
+);
 
 const columns = [
   { title: '名称', dataIndex: 'name', key: 'name' },
@@ -49,9 +53,17 @@ async function fetchClusters() {
 async function fetchNamespaces() {
   if (!selectedClusterId.value) return;
   loading.value = true;
+  if (isDemoSelection.value) {
+    namespaces.value = demoK8sNamespaces;
+    loading.value = false;
+    return;
+  }
   try {
     const res = await getNamespaces(selectedClusterId.value);
-    namespaces.value = Array.isArray(res) ? res : [];
+    const namespaceList = Array.isArray(res) ? res : [];
+    namespaces.value = namespaceList.length === 0 && isDemoSelection.value
+      ? demoK8sNamespaces
+      : namespaceList;
   } catch (e: any) {
     message.error('获取命名空间列表失败: ' + e.message);
   } finally {
@@ -65,14 +77,26 @@ function handleClusterChange(value: number) {
 }
 
 function goCreate() {
+  if (isDemoSelection.value) {
+    message.info('演示集群资源为只读展示');
+    return;
+  }
   router.push(`/K8S/namespace/create?clusterId=${selectedClusterId.value}`);
 }
 
 function goDetail(record: any) {
+  if (isDemoSelection.value) {
+    message.info('演示集群资源为只读展示');
+    return;
+  }
   router.push(`/K8S/namespace/detail/${selectedClusterId.value}/${record.name}`);
 }
 
 function handleDelete(record: any) {
+  if (isDemoSelection.value) {
+    message.info('演示集群资源为只读展示');
+    return;
+  }
   if (['default', 'kube-system', 'kube-public', 'kube-node-lease'].includes(record.name)) {
     message.warning('系统命名空间不可删除');
     return;
