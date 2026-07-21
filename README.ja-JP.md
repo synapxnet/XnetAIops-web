@@ -25,8 +25,10 @@
 | ![Kubernetes](./docs/images/xnetaiops-kubernetes.png) | ![サービス編成](./docs/images/xnetaiops-service.png) |
 | 監視とアラート | イメージレジストリ |
 | ![監視](./docs/images/xnetaiops-monitor.png) | ![レジストリ](./docs/images/xnetaiops-registry.png) |
-| マルチテナントユーザー | 3D 概要 |
-| ![ユーザー](./docs/images/xnetaiops-users.png) | ![3D 概要](./docs/images/xnetaiops-overview.jpg) |
+| マルチテナントユーザー | Kubernetes ノード |
+| ![ユーザー](./docs/images/xnetaiops-users.png) | ![Kubernetes ノード](./docs/images/xnetaiops-k8s-nodes.png) |
+| Kubernetes 名前空間 | Kubernetes ワークロード |
+| ![Kubernetes 名前空間](./docs/images/xnetaiops-k8s-namespaces.png) | ![Kubernetes ワークロード](./docs/images/xnetaiops-k8s-workloads.png) |
 
 ## 概要
 
@@ -44,16 +46,16 @@ XnetAIops Web は **SynapXnet チーム**が公開する運用管理コンソー
 
 ## モジュール
 
-| モジュール | 主な機能 |
-| --- | --- |
-| 3D 概要 | クラスター、ラック、ホスト、トポロジーの可視化 |
-| CLM | クラスター、MySQL、Redis、Hadoop、Jenkins |
-| HOM | ホスト台帳、ラック、SSH、容量管理 |
-| SVM | サービス定義、コマンド、ロール、ライフサイクル |
-| MON | メトリクス、アラートルール、履歴、状態概要 |
-| K8S | リソース、Helm、監視、アプリカタログ、CI/CD |
-| REG | レジストリ、プロジェクト、タグ、同期 |
-| USR | ユーザー、ロール、アクセス制御 |
+| モジュール | 主な機能                                       |
+| ---------- | ---------------------------------------------- |
+| 3D 概要    | クラスター、ラック、ホスト、トポロジーの可視化 |
+| CLM        | クラスター、MySQL、Redis、Hadoop、Jenkins      |
+| HOM        | ホスト台帳、ラック、SSH、容量管理              |
+| SVM        | サービス定義、コマンド、ロール、ライフサイクル |
+| MON        | メトリクス、アラートルール、履歴、状態概要     |
+| K8S        | リソース、Helm、監視、アプリカタログ、CI/CD    |
+| REG        | レジストリ、プロジェクト、タグ、同期           |
+| USR        | ユーザー、ロール、アクセス制御                 |
 
 ## 開発
 

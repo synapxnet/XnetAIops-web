@@ -25,8 +25,10 @@
 | ![Kubernetes](./docs/images/xnetaiops-kubernetes.png) | ![Service orchestration](./docs/images/xnetaiops-service.png) |
 | Monitoring and alerts | Image registry |
 | ![Monitoring](./docs/images/xnetaiops-monitor.png) | ![Registry](./docs/images/xnetaiops-registry.png) |
-| Multi-tenant users | 3D overview |
-| ![Users](./docs/images/xnetaiops-users.png) | ![3D overview](./docs/images/xnetaiops-overview.jpg) |
+| Multi-tenant users | Kubernetes nodes |
+| ![Users](./docs/images/xnetaiops-users.png) | ![Kubernetes nodes](./docs/images/xnetaiops-k8s-nodes.png) |
+| Kubernetes namespaces | Kubernetes workloads |
+| ![Kubernetes namespaces](./docs/images/xnetaiops-k8s-namespaces.png) | ![Kubernetes workloads](./docs/images/xnetaiops-k8s-workloads.png) |
 
 ## Overview
 
@@ -44,16 +46,16 @@ Together with the [XnetAIops backend](https://github.com/synapxnet/XnetAIops), i
 
 ## Modules
 
-| Module | Capability |
-| --- | --- |
-| 3D Overview | Cluster, rack, host, and topology visualization |
-| CLM | Cluster lifecycle plus MySQL, Redis, Hadoop, and Jenkins |
-| HOM | Host inventory, racks, SSH connectivity, and capacity |
-| SVM | Service definitions, commands, roles, and lifecycle |
-| MON | Metrics, alert rules, alert history, and status overview |
-| K8S | Resources, Helm, monitoring, app catalog, and CI/CD |
-| REG | Registries, projects, repositories, tags, and replication |
-| USR | Users, roles, and platform access control |
+| Module      | Capability                                                |
+| ----------- | --------------------------------------------------------- |
+| 3D Overview | Cluster, rack, host, and topology visualization           |
+| CLM         | Cluster lifecycle plus MySQL, Redis, Hadoop, and Jenkins  |
+| HOM         | Host inventory, racks, SSH connectivity, and capacity     |
+| SVM         | Service definitions, commands, roles, and lifecycle       |
+| MON         | Metrics, alert rules, alert history, and status overview  |
+| K8S         | Resources, Helm, monitoring, app catalog, and CI/CD       |
+| REG         | Registries, projects, repositories, tags, and replication |
+| USR         | Users, roles, and platform access control                 |
 
 ## Development
 
