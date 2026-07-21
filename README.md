@@ -1,5 +1,7 @@
 <div align="center">
 
+**简体中文** | [English](./README.en-US.md) | [日本語](./README.ja-JP.md)
+
 # XnetAIops Web
 
 **XnetAIops 智能运维平台的 Web 控制台**
