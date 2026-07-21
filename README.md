@@ -17,6 +17,14 @@
 | 演示登录 | 关于项目 |
 | --- | --- |
 | ![XnetAIops 演示登录](./docs/images/xnetaiops-login.png) | ![XnetAIops 关于项目](./docs/images/xnetaiops-about.png) |
+| 集群管理 | 主机接入 |
+| ![XnetAIops 集群管理](./docs/images/xnetaiops-clusters.png) | ![XnetAIops 主机接入](./docs/images/xnetaiops-host-add.png) |
+| Kubernetes 集群 | 服务编排 |
+| ![XnetAIops Kubernetes 集群](./docs/images/xnetaiops-kubernetes.png) | ![XnetAIops 服务编排](./docs/images/xnetaiops-service.png) |
+| 监控告警 | 镜像仓库 |
+| ![XnetAIops 监控告警](./docs/images/xnetaiops-monitor.png) | ![XnetAIops 镜像仓库](./docs/images/xnetaiops-registry.png) |
+| 多租户用户 | 3D 总览 |
+| ![XnetAIops 多租户用户](./docs/images/xnetaiops-users.png) | ![XnetAIops 集群 3D 总览](./docs/images/xnetaiops-overview.jpg) |
 
 ## 项目简介
 
