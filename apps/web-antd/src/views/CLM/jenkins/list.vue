@@ -514,7 +514,7 @@ onUnmounted(() => {
 
     <!-- 初始密码弹窗 -->
     <Modal v-model:open="passwordModalVisible" title="Jenkins 初始密码" :footer="null">
-      <div style="background: #f5f5f5; padding: 16px; border-radius: 6px; font-family: monospace; font-size: 16px; text-align: center">
+      <div class="bg-muted rounded-md p-4 text-center font-mono text-base">
         {{ initialPasswordText }}
       </div>
     </Modal>

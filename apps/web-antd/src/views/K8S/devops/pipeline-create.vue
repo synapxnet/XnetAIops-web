@@ -234,7 +234,7 @@ onMounted(async () => {
                 :value="cred.id"
               >
                 {{ cred.name }}
-                <span v-if="cred.type" style="color: #999">
+                <span v-if="cred.type" style="color: hsl(var(--muted-foreground))">
                   ({{ cred.type }})
                 </span>
               </SelectOption>

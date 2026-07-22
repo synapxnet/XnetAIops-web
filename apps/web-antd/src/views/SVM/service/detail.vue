@@ -253,8 +253,8 @@ onUnmounted(() => {
         </TabPane>
 
         <TabPane key="config" tab="配置">
-          <pre v-if="service?.configJson" style="background: #f5f5f5; padding: 16px; border-radius: 4px; max-height: 500px; overflow: auto">{{ service.configJson }}</pre>
-          <div v-else style="color: #999; text-align: center; padding: 40px">暂无配置</div>
+          <pre v-if="service?.configJson" class="bg-muted max-h-[500px] overflow-auto rounded p-4">{{ service.configJson }}</pre>
+          <div v-else class="text-muted-foreground p-10 text-center">暂无配置</div>
         </TabPane>
 
         <TabPane key="commands" tab="命令历史">

@@ -130,12 +130,12 @@ onMounted(() => {
         <!-- Template Info -->
         <div v-if="template" style="margin-bottom:24px">
           <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:16px">
-            <div style="width:64px;height:64px;border-radius:12px;background:#f0f5ff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <div style="width:64px;height:64px;border-radius:12px;background:hsl(var(--primary) / 10%);display:flex;align-items:center;justify-content:center;flex-shrink:0">
               <img v-if="template.icon" :src="template.icon" style="width:48px;height:48px;object-fit:contain" />
               <span v-else style="font-size:28px;color:#1890ff;font-weight:bold">{{ (template.displayName || '?')[0] }}</span>
             </div>
             <div>
-              <p style="margin:0;color:#595959;font-size:14px">{{ template.description }}</p>
+              <p class="text-muted-foreground m-0 text-sm">{{ template.description }}</p>
               <div style="margin-top:8px">
                 <Descriptions size="small" :column="3" bordered>
                   <DescriptionsItem label="Chart">{{ template.helmRepoName }}/{{ template.chartName }}</DescriptionsItem>
@@ -171,8 +171,8 @@ onMounted(() => {
           </FormItem>
 
           <FormItem label="Values 配置 (YAML)">
-            <div style="border:1px solid #d9d9d9;border-radius:6px;overflow:hidden">
-              <YamlEditor v-model="formData.values" height="350px" theme="light" placeholder="# 自定义 values.yaml 配置" />
+            <div style="border:1px solid hsl(var(--border));border-radius:6px;overflow:hidden">
+              <YamlEditor v-model="formData.values" height="350px" placeholder="# 自定义 values.yaml 配置" />
             </div>
             <div style="font-size:12px;color:#8c8c8c;margin-top:4px">
               以上为模板预设的默认配置，您可以根据需要修改

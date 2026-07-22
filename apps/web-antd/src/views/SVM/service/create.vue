@@ -258,7 +258,7 @@ onMounted(() => {
             </template>
           </template>
         </Table>
-        <div v-if="hosts.length === 0" style="color: #999; margin-top: 8px">
+        <div v-if="hosts.length === 0" style="color: hsl(var(--muted-foreground)); margin-top: 8px">
           该集群下暂无主机，请先在主机管理中添加主机。
         </div>
       </div>

@@ -140,7 +140,7 @@ onMounted(fetchData);
                   <div style="font-size: 22px; font-weight: bold; margin: 4px 0;" :style="{ color: tile.color }">
                     {{ tile.count }}
                   </div>
-                  <div style="font-size: 12px; color: #595959;">{{ tile.label }}</div>
+                  <div class="text-muted-foreground text-xs">{{ tile.label }}</div>
                   <div v-if="tile.running !== undefined" style="font-size: 11px; color: #52c41a;">
                     运行中: {{ tile.running }}
                   </div>

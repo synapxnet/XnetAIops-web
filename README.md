@@ -4,35 +4,45 @@
 
 **XnetAIops 智能运维平台的 Web 控制台**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-1677ff.svg)](https://www.xnetaiops.synapxnet.cn)
-[![Vue](https://img.shields.io/badge/Vue-3-42b883.svg)](https://vuejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](./LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-1677ff.svg)](https://www.xnetaiops.synapxnet.cn) [![Vue](https://img.shields.io/badge/Vue-3-42b883.svg)](https://vuejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/) [![License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](./LICENSE)
 
-[在线体验](https://www.xnetaiops.synapxnet.cn) · [OpenXnet 开源社区](https://openxnet.synapxnet.com) · [查看许可](./LICENSE)
+[在线体验](https://www.xnetaiops.synapxnet.cn) · [后端仓库 XnetAIops](https://github.com/synapxnet/XnetAIops) · [OpenXnet 开源社区](https://openxnet.synapxnet.com) · [查看许可](./LICENSE)
 
 </div>
 
 ![XnetAIops 集群 3D 概览](./docs/images/xnetaiops-overview.jpg)
 
+## 页面预览
+
+| 演示登录 | 关于项目 |
+| --- | --- |
+| ![XnetAIops 演示登录](./docs/images/xnetaiops-login.png) | ![XnetAIops 关于项目](./docs/images/xnetaiops-about.png) |
+
 ## 项目简介
 
 XnetAIops Web 是由 **SynapXnet 团队**开源的智能运维控制台，也是 XnetAIops 微服务体系的统一交互入口。控制台将主机、集群、服务、监控、Kubernetes 与镜像仓库集中到同一套界面中，便于运维人员在一个工作区完成日常巡检与变更操作。
 
-项目基于 Vue 3、TypeScript、Vite、Ant Design Vue 与 Vben Admin 构建，采用模块化路由、集中状态管理和可复用组件体系，适合继续扩展企业级运维场景。
+本仓库是平台前端，与 [XnetAIops](https://github.com/synapxnet/XnetAIops) 后端仓库共同组成企业级、多租户、前后端分离系统。项目基于 Vue 3、TypeScript、Vite、Ant Design Vue，并采用 [Vue Vben Admin 框架](https://github.com/vbenjs/vue-vben-admin) 构建，适合继续扩展企业级运维场景。
+
+## 项目优势
+
+- **企业多租户**：面向不同组织和团队提供清晰的角色、权限与资源视图。
+- **前后端分离**：独立发布 Web 控制台，便于对接不同网关、服务和部署环境。
+- **统一工作台**：在同一界面管理主机、集群、服务、监控、Kubernetes 与镜像仓库。
+- **持续更新**：SynapXnet 团队会持续完善体验、自动化能力、安全性与项目文档。
 
 ## 功能模块
 
-| 模块 | 主要功能 |
-| --- | --- |
-| 3D 总览 | 以三维场景展示集群与节点拓扑，提供运维态势入口 |
-| CLM 集群管理 | 集群纳管、基础组件部署、部署任务与生命周期操作 |
-| HOM 主机管理 | 主机、机架、SSH 连接与资源信息维护 |
-| SVM 服务管理 | 服务概览、命令执行、框架配置及服务生命周期管理 |
-| MON 监控告警 | 监控指标、告警历史、告警规则与异常追踪 |
-| K8S 管理 | 集群资源、工作负载、网络、存储、RBAC、Helm 与交付流水线 |
-| REG 仓库管理 | 镜像仓库、项目、标签、同步和部署日志 |
-| USR 系统管理 | 用户、角色、权限码与平台访问控制 |
+| 模块         | 主要功能                                                |
+| ------------ | ------------------------------------------------------- |
+| 3D 总览      | 以三维场景展示集群与节点拓扑，提供运维态势入口          |
+| CLM 集群管理 | 集群纳管、基础组件部署、部署任务与生命周期操作          |
+| HOM 主机管理 | 主机、机架、SSH 连接与资源信息维护                      |
+| SVM 服务管理 | 服务概览、命令执行、框架配置及服务生命周期管理          |
+| MON 监控告警 | 监控指标、告警历史、告警规则与异常追踪                  |
+| K8S 管理     | 集群资源、工作负载、网络、存储、RBAC、Helm 与交付流水线 |
+| REG 仓库管理 | 镜像仓库、项目、标签、同步和部署日志                    |
+| USR 系统管理 | 用户、角色、权限码与平台访问控制                        |
 
 ## 前端架构
 
@@ -95,4 +105,4 @@ pnpm build:antd
 
 ## 开源许可
 
-本项目基于 [MIT License](./LICENSE) 开源。前端基础工程沿用 Vben 的 MIT 授权，相关版权声明已保留在许可文件中。
+本项目基于 [MIT License](./LICENSE) 开源。前端采用 [Vue Vben Admin 框架](https://github.com/vbenjs/vue-vben-admin)，并依法保留上游项目的 MIT 版权与许可声明。

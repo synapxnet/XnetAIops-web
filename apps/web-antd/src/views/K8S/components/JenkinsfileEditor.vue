@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { usePreferences } from '@vben/preferences';
 import { EditorView, keymap, lineNumbers, highlightActiveLine, highlightActiveLineGutter } from '@codemirror/view';
-import { EditorState } from '@codemirror/state';
+import { Compartment, EditorState } from '@codemirror/state';
 import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { defaultKeymap, indentWithTab, history, historyKeymap } from '@codemirror/commands';
@@ -10,17 +11,22 @@ import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search';
 
 const props = withDefaults(defineProps<{
-  theme?: 'light' | 'dark';
+  theme?: 'auto' | 'light' | 'dark';
   height?: string;
   readOnly?: boolean;
 }>(), {
-  theme: 'dark',
+  theme: 'auto',
   height: '400px',
   readOnly: false,
 });
 
 const modelValue = defineModel<string>({ default: '' });
 const editorRef = ref<HTMLDivElement | null>(null);
+const { isDark } = usePreferences();
+const effectiveTheme = computed(() =>
+  props.theme === 'auto' ? (isDark.value ? 'dark' : 'light') : props.theme,
+);
+const themeCompartment = new Compartment();
 let view: EditorView | null = null;
 let isUpdating = false;
 
@@ -37,6 +43,7 @@ function createExtensions() {
     history(),
     javascript(),
     syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+    themeCompartment.of(effectiveTheme.value === 'dark' ? oneDark : []),
     keymap.of([
       ...defaultKeymap, ...historyKeymap,
       ...closeBracketsKeymap, ...searchKeymap, indentWithTab,
@@ -47,21 +54,28 @@ function createExtensions() {
       }
     }),
     EditorView.theme({
-      '&': { height: props.height, borderRadius: '6px', border: '1px solid #d9d9d9', fontSize: '13px' },
+      '&': { height: props.height, borderRadius: '6px', border: '1px solid hsl(var(--border))', fontSize: '13px' },
       '.cm-scroller': { overflow: 'auto', fontFamily: "'Consolas', 'Monaco', 'Courier New', monospace" },
-      '.cm-gutters': { borderRight: '1px solid #e8e8e8' },
+      '.cm-gutters': { borderRight: '1px solid hsl(var(--border))' },
     }),
   ];
-  if (props.theme === 'dark') extensions.push(oneDark);
   if (props.readOnly) extensions.push(EditorState.readOnly.of(true));
   return extensions;
 }
 
-onMounted(() => {
+function mountEditor() {
   if (!editorRef.value) return;
   view = new EditorView({
     state: EditorState.create({ doc: modelValue.value, extensions: createExtensions() }),
     parent: editorRef.value,
+  });
+}
+
+onMounted(mountEditor);
+
+watch(effectiveTheme, (theme) => {
+  view?.dispatch({
+    effects: themeCompartment.reconfigure(theme === 'dark' ? oneDark : []),
   });
 });
 

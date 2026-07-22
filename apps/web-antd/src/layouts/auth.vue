@@ -3,7 +3,7 @@ import { AuthPageLayout, logo } from '@vben/layouts';
 
 import { $t } from '#/locales';
 
-const appName = 'XnetMLops';
+const appName = 'XnetAIops';
 // const appName = computed(() => preferences.app.name);
 // const logo = computed(() => preferences.logo.source);
 </script>

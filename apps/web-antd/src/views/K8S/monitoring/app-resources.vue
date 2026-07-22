@@ -71,7 +71,7 @@ function getBarColor(pct: number): string {
         <Tabs v-model:activeKey="activeTab">
           <TabPane key="namespace" tab="命名空间排名">
             <div style="display: flex; align-items: center; margin-bottom: 16px; gap: 12px;">
-              <span style="color: #595959;">排序指标:</span>
+              <span class="text-muted-foreground">排序指标:</span>
               <Select v-model:value="nsMetric" size="small" style="width: 100px" @change="fetchData">
                 <SelectOption value="cpu">CPU</SelectOption>
                 <SelectOption value="memory">内存</SelectOption>
@@ -97,7 +97,7 @@ function getBarColor(pct: number): string {
 
           <TabPane key="node" tab="节点排名">
             <div style="display: flex; align-items: center; margin-bottom: 16px; gap: 12px;">
-              <span style="color: #595959;">排序指标:</span>
+              <span class="text-muted-foreground">排序指标:</span>
               <Select v-model:value="nodeMetric" size="small" style="width: 100px" @change="fetchData">
                 <SelectOption value="cpu">CPU</SelectOption>
                 <SelectOption value="memory">内存</SelectOption>
@@ -139,7 +139,7 @@ function getBarColor(pct: number): string {
   transition: background-color 0.2s;
 }
 .ranking-item:hover {
-  background-color: #fafafa;
+  background-color: hsl(var(--muted));
 }
 .ranking-tag {
   min-width: 28px;
@@ -152,7 +152,7 @@ function getBarColor(pct: number): string {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
-  color: #262626;
+  color: hsl(var(--foreground));
 }
 .ranking-bar {
   flex: 1;
@@ -162,7 +162,7 @@ function getBarColor(pct: number): string {
   min-width: 90px;
   text-align: right;
   font-family: 'Consolas', monospace;
-  color: #595959;
+  color: hsl(var(--muted-foreground));
   font-size: 13px;
 }
 </style>

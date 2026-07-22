@@ -187,8 +187,8 @@ onMounted(() => {
               :style="{
                 padding: '10px 20px',
                 cursor: 'pointer',
-                background: selectedCategory === cat ? '#e6f7ff' : 'transparent',
-                color: selectedCategory === cat ? '#1890ff' : '#333',
+                background: selectedCategory === cat ? 'hsl(var(--primary) / 12%)' : 'transparent',
+                color: selectedCategory === cat ? 'hsl(var(--primary))' : 'hsl(var(--foreground))',
                 fontWeight: selectedCategory === cat ? '600' : '400',
                 borderRight: selectedCategory === cat ? '3px solid #1890ff' : '3px solid transparent',
                 fontSize: '14px',
@@ -207,7 +207,7 @@ onMounted(() => {
               <Col v-for="tpl in templates" :key="tpl.id" :xs="24" :sm="12" :md="8" :lg="8">
                 <Card hoverable @click="goTemplateInstall(tpl)" style="cursor:pointer;height:100%">
                   <div style="display:flex;align-items:center;margin-bottom:12px">
-                    <div style="width:48px;height:48px;border-radius:8px;background:#f0f5ff;display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">
+                    <div style="width:48px;height:48px;border-radius:8px;background:hsl(var(--primary) / 10%);display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">
                       <img v-if="tpl.icon" :src="tpl.icon" style="width:36px;height:36px;object-fit:contain" />
                       <span v-else style="font-size:20px;color:#1890ff;font-weight:bold">{{ (tpl.displayName || tpl.name || '?')[0] }}</span>
                     </div>
@@ -223,7 +223,7 @@ onMounted(() => {
                       ">{{ categoryLabels[tpl.category] || tpl.category }}</Tag>
                     </div>
                   </div>
-                  <div style="font-size:12px;color:#595959;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px">
+                  <div class="text-muted-foreground min-h-[34px] overflow-hidden text-xs" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">
                     {{ tpl.description || '暂无描述' }}
                   </div>
                   <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
@@ -260,7 +260,7 @@ onMounted(() => {
         <Col v-for="app in apps" :key="app.name" :xs="24" :sm="12" :md="8" :lg="6">
           <Card hoverable @click="goDetail(app)" style="cursor:pointer;height:100%">
             <div style="display:flex;align-items:center;margin-bottom:12px">
-              <div style="width:48px;height:48px;border-radius:8px;background:#f0f5ff;display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">
+              <div style="width:48px;height:48px;border-radius:8px;background:hsl(var(--primary) / 10%);display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">
                 <img v-if="app.icon" :src="app.icon" style="width:36px;height:36px;object-fit:contain" />
                 <span v-else style="font-size:20px;color:#1890ff;font-weight:bold">{{ (app.name || '?')[0].toUpperCase() }}</span>
               </div>
@@ -269,7 +269,7 @@ onMounted(() => {
                 <div style="font-size:12px;color:#8c8c8c">v{{ app.version }}</div>
               </div>
             </div>
-            <div style="font-size:12px;color:#595959;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px">
+            <div class="text-muted-foreground min-h-[34px] overflow-hidden text-xs" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">
               {{ app.description || '暂无描述' }}
             </div>
             <div style="margin-top:8px">

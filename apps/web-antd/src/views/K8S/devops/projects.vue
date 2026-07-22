@@ -225,7 +225,7 @@ onMounted(fetchProjects);
             </div>
 
             <!-- Footer -->
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid hsl(var(--border)); padding-top: 8px;">
               <span style="font-size: 12px; color: #8c8c8c;">{{ formatTime(project.createdAt) }}</span>
               <Space>
                 <Button type="link" size="small" @click.stop="goDetail(project)">管理</Button>
@@ -357,7 +357,7 @@ onMounted(fetchProjects);
 
 .project-desc {
   font-size: 12px;
-  color: #8c8c8c;
+  color: hsl(var(--muted-foreground));
   margin-top: 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -379,13 +379,13 @@ onMounted(fetchProjects);
 .card-metric-value {
   font-size: 14px;
   font-weight: 500;
-  color: #262626;
+  color: hsl(var(--foreground));
 }
 
 .empty-state {
   text-align: center;
   padding: 80px 0;
-  background: #fff;
+  background: hsl(var(--card));
   border-radius: 8px;
 }
 
@@ -396,7 +396,7 @@ onMounted(fetchProjects);
 .form-label {
   display: block;
   font-size: 14px;
-  color: #262626;
+  color: hsl(var(--foreground));
   margin-bottom: 6px;
   font-weight: 500;
 }

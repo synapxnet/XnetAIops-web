@@ -101,7 +101,7 @@ onMounted(fetchData);
 
         <TabPane key="yaml" tab="YAML">
           <Card>
-            <YamlEditor :model-value="svcInfo?.yaml || ''" :read-only="true" height="600px" theme="light" />
+            <YamlEditor :model-value="svcInfo?.yaml || ''" :read-only="true" height="600px" />
           </Card>
         </TabPane>
       </Tabs>
