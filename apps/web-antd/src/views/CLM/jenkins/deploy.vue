@@ -42,7 +42,7 @@ const masterForm = ref<Partial<JenkinsMaster>>({
 const deployConfig = ref<JenkinsMasterDeployConfig>({
   jenkinsVersion: '', jenkinsPort: 8080, jenkinsHome: '/var/jenkins_home',
   javaVersion: '17', javaOpts: '-Xmx2g -Xms1g',
-  adminUsername: 'admin', adminPassword: 'admin123',
+  adminUsername: 'admin', adminPassword: '',
   adminEmail: 'admin@localhost', installSuggestedPlugins: true,
   timezone: 'Asia/Shanghai', gitCredentials: [], harborCredentials: [], sshCredentials: [],
 });
@@ -739,7 +739,7 @@ onUnmounted(() => { stopLogRefresh(); });
 .test-result { max-width: 600px; margin: 0 auto; }
 .server-info { text-align: left; }
 .deploying-section { text-align: center; padding: 40px; }
-.deploying-text { margin-top: 24px; font-size: 16px; color: #666; }
+.deploying-text { margin-top: 24px; font-size: 16px; color: hsl(var(--muted-foreground)); }
 .success-section { padding: 20px; }
 .log-section { margin-top: 24px; }
 .log-container {
@@ -755,7 +755,7 @@ onUnmounted(() => { stopLogRefresh(); });
   border-radius: 4px; max-height: 500px; overflow-y: auto;
   font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; white-space: pre-wrap;
 }
-.hint-text { color: #666; font-size: 13px; margin: 8px 0; }
-.credential-item { padding: 16px; background: #fafafa; border-radius: 8px; margin-bottom: 12px; }
+.hint-text { color: hsl(var(--muted-foreground)); font-size: 13px; margin: 8px 0; }
+.credential-item { padding: 16px; background: hsl(var(--muted)); border-radius: 8px; margin-bottom: 12px; }
 .credential-item:last-child { margin-bottom: 0; }
 </style>

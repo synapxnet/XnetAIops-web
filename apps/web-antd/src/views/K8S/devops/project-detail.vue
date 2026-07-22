@@ -612,7 +612,7 @@ onMounted(async () => {
             </template>
 
             <!-- Delete project -->
-            <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid #f0f0f0;">
+            <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid hsl(var(--border));">
               <h3 style="color: #ff4d4f; margin-bottom: 8px;">危险操作</h3>
               <p style="color: #8c8c8c; margin-bottom: 16px;">
                 删除工程后，关联的所有流水线和凭证数据将被永久清除，此操作不可恢复。

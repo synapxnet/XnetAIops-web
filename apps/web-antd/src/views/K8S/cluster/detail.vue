@@ -240,7 +240,7 @@ onMounted(fetchData);
             <div style="text-align: center;">
               <div style="font-size: 24px; margin-bottom: 4px;">{{ tile.icon }}</div>
               <div v-if="tile.count !== null" style="font-size: 22px; font-weight: bold;" :style="{ color: tile.color }">{{ tile.count }}</div>
-              <div style="font-size: 13px; color: #595959;">{{ tile.label }}</div>
+              <div class="text-muted-foreground text-[13px]">{{ tile.label }}</div>
             </div>
           </Card>
         </Col>
@@ -265,7 +265,7 @@ onMounted(fetchData);
                     </div>
                   </template>
                 </Progress>
-                <div style="margin-top: 8px; color: #595959;">节点在线</div>
+                <div class="text-muted-foreground mt-2">节点在线</div>
               </div>
               <div>
                 <div style="margin-bottom: 8px;">
@@ -486,14 +486,14 @@ onMounted(fetchData);
 .component-card {
   padding: 10px 12px;
   border-radius: 6px;
-  border: 1px solid #f0f0f0;
+  border: 1px solid hsl(var(--border));
 }
 .component-healthy {
-  background: #f6ffed;
-  border-color: #b7eb8f;
+  background: hsl(var(--success) / 10%);
+  border-color: hsl(var(--success) / 40%);
 }
 .component-unhealthy {
-  background: #fff2f0;
-  border-color: #ffccc7;
+  background: hsl(var(--destructive) / 10%);
+  border-color: hsl(var(--destructive) / 40%);
 }
 </style>

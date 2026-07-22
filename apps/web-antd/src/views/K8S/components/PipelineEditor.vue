@@ -392,8 +392,8 @@ const stepTypeOptions = [
             <!-- Arrow -->
             <div v-if="index > 0" class="canvas-arrow">
               <svg width="32" height="20" viewBox="0 0 32 20">
-                <line x1="0" y1="10" x2="24" y2="10" stroke="#bfbfbf" stroke-width="2" />
-                <polygon points="24,5 32,10 24,15" fill="#bfbfbf" />
+                <line x1="0" y1="10" x2="24" y2="10" stroke="hsl(var(--border))" stroke-width="2" />
+                <polygon points="24,5 32,10 24,15" fill="hsl(var(--border))" />
               </svg>
             </div>
             <!-- Stage Node -->
@@ -411,8 +411,8 @@ const stepTypeOptions = [
           <!-- Add Stage Button -->
           <div v-if="config.stages.length > 0" class="canvas-arrow">
             <svg width="32" height="20" viewBox="0 0 32 20">
-              <line x1="0" y1="10" x2="24" y2="10" stroke="#d9d9d9" stroke-width="2" stroke-dasharray="4,3" />
-              <polygon points="24,5 32,10 24,15" fill="#d9d9d9" />
+              <line x1="0" y1="10" x2="24" y2="10" stroke="hsl(var(--border))" stroke-width="2" stroke-dasharray="4,3" />
+              <polygon points="24,5 32,10 24,15" fill="hsl(var(--border))" />
             </svg>
           </div>
           <div class="canvas-add-node" @click="addStage">
@@ -458,8 +458,8 @@ const stepTypeOptions = [
           </Button>
         </template>
         <div v-else class="config-empty">
-          <p style="color: #8c8c8c">点击左侧阶段节点进行配置</p>
-          <p v-if="config.stages.length === 0" style="color: #bfbfbf; font-size: 12px">
+          <p class="text-muted-foreground">点击左侧阶段节点进行配置</p>
+          <p v-if="config.stages.length === 0" class="text-muted-foreground text-xs">
             点击"添加阶段"或选择快速模板开始
           </p>
         </div>
@@ -468,46 +468,46 @@ const stepTypeOptions = [
 
     <!-- Code Editor -->
     <div v-show="editorMode === 'code'">
-      <JenkinsfileEditor v-model="jenkinsfile" height="450px" theme="dark" />
+      <JenkinsfileEditor v-model="jenkinsfile" height="450px" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.pipeline-editor { border: 1px solid #e8e8e8; border-radius: 8px; overflow: hidden; }
+.pipeline-editor { border: 1px solid hsl(var(--border)); border-radius: 8px; overflow: hidden; }
 
 /* ==================== Toolbar ==================== */
 .editor-toolbar {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 8px 16px; background: #fafafa; border-bottom: 1px solid #e8e8e8;
+  padding: 8px 16px; background: hsl(var(--muted)); border-bottom: 1px solid hsl(var(--border));
 }
 .editor-tabs { display: flex; gap: 0; }
 .editor-tab {
   padding: 6px 16px; font-size: 13px; cursor: pointer;
-  border: 1px solid #d9d9d9; color: #595959; background: #fff;
+  border: 1px solid hsl(var(--border)); color: hsl(var(--muted-foreground)); background: hsl(var(--card));
   transition: all 0.2s; user-select: none;
 }
 .editor-tab:first-child { border-radius: 4px 0 0 4px; }
 .editor-tab:last-child { border-radius: 0 4px 4px 0; border-left: none; }
-.editor-tab.active { background: #1890ff; color: #fff; border-color: #1890ff; }
-.editor-tab:hover:not(.active) { color: #1890ff; border-color: #1890ff; }
+.editor-tab.active { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); border-color: hsl(var(--primary)); }
+.editor-tab:hover:not(.active) { color: hsl(var(--primary)); border-color: hsl(var(--primary)); }
 
 /* ==================== Visual Editor ==================== */
 .visual-editor { display: flex; min-height: 420px; }
 
 /* Left: Canvas */
 .stage-canvas {
-  flex: 1; border-right: 1px solid #e8e8e8;
+  flex: 1; border-right: 1px solid hsl(var(--border));
   display: flex; flex-direction: column;
 }
 .canvas-header {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 16px; border-bottom: 1px solid #f0f0f0;
+  padding: 12px 16px; border-bottom: 1px solid hsl(var(--border));
 }
 .canvas-flow {
   flex: 1; display: flex; align-items: center;
   padding: 24px 16px; overflow-x: auto;
-  background: linear-gradient(135deg, #fafbfc 0%, #f0f2f5 100%);
+  background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
 }
 .canvas-stage-wrapper { display: flex; align-items: center; flex-shrink: 0; }
 .canvas-arrow { margin: 0 6px; display: flex; align-items: center; }
@@ -515,7 +515,7 @@ const stepTypeOptions = [
 /* Stage Node */
 .canvas-node {
   min-width: 120px; max-width: 180px; padding: 16px 20px;
-  border-radius: 10px; border: 2px solid #d9d9d9; background: #fff;
+  border-radius: 10px; border: 2px solid hsl(var(--border)); background: hsl(var(--card));
   text-align: center; cursor: pointer; transition: all 0.3s;
   position: relative; user-select: none;
 }
@@ -524,12 +524,12 @@ const stepTypeOptions = [
   transform: translateY(-2px);
 }
 .canvas-node-selected {
-  border-color: #1890ff !important; background: #e6f7ff;
+  border-color: hsl(var(--primary)) !important; background: hsl(var(--primary) / 10%);
   box-shadow: 0 0 0 3px rgba(24,144,255,0.2), 0 4px 12px rgba(24,144,255,0.15);
   transform: translateY(-2px);
 }
-.canvas-node-name { font-weight: 600; font-size: 14px; color: #262626; margin-bottom: 4px; }
-.canvas-node-steps { font-size: 12px; color: #8c8c8c; }
+.canvas-node-name { font-weight: 600; font-size: 14px; color: hsl(var(--foreground)); margin-bottom: 4px; }
+.canvas-node-steps { font-size: 12px; color: hsl(var(--muted-foreground)); }
 .canvas-node-delete {
   position: absolute; top: -8px; right: -8px;
   width: 20px; height: 20px; border-radius: 50%;
@@ -542,27 +542,27 @@ const stepTypeOptions = [
 /* Add Stage */
 .canvas-add-node {
   min-width: 100px; padding: 16px 20px;
-  border-radius: 10px; border: 2px dashed #d9d9d9;
-  text-align: center; cursor: pointer; color: #8c8c8c;
+  border-radius: 10px; border: 2px dashed hsl(var(--border));
+  text-align: center; cursor: pointer; color: hsl(var(--muted-foreground));
   transition: all 0.3s; display: flex; flex-direction: column;
   align-items: center; gap: 4px; font-size: 13px;
 }
-.canvas-add-node:hover { border-color: #1890ff; color: #1890ff; background: #f0f7ff; }
+.canvas-add-node:hover { border-color: hsl(var(--primary)); color: hsl(var(--primary)); background: hsl(var(--primary) / 8%); }
 
 /* Right: Config Panel */
 .stage-config {
   width: 340px; min-width: 340px; padding: 16px;
-  overflow-y: auto; background: #fff;
+  overflow-y: auto; background: hsl(var(--card));
 }
 .config-header { display: flex; justify-content: space-between; align-items: center; }
 .config-field { margin-bottom: 8px; }
-.config-field label { display: block; font-size: 12px; color: #8c8c8c; margin-bottom: 4px; }
+.config-field label { display: block; font-size: 12px; color: hsl(var(--muted-foreground)); margin-bottom: 4px; }
 .config-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
 
 /* Step Item */
 .step-item {
   padding: 8px; margin-bottom: 6px;
-  background: #fafafa; border-radius: 6px; border: 1px solid #f0f0f0;
+  background: hsl(var(--muted)); border-radius: 6px; border: 1px solid hsl(var(--border));
 }
 .step-row { display: flex; align-items: center; gap: 6px; }
 </style>

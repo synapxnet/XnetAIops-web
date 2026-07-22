@@ -33,7 +33,7 @@ onMounted(fetchData);
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div>
             <h2 style="margin:0"><Tag color="cyan">ConfigMap</Tag>{{ name }}</h2>
-            <span style="color:#8c8c8c">{{ namespace }}</span>
+            <span class="text-muted-foreground">{{ namespace }}</span>
           </div>
           <Space><Button @click="fetchData">刷新</Button><Button @click="goBack">返回</Button></Space>
         </div>
@@ -44,11 +44,11 @@ onMounted(fetchData);
           <Card>
             <div v-if="info?.data">
               <div v-for="(value, key) in info.data" :key="key" style="margin-bottom:16px">
-                <div style="font-weight:500;margin-bottom:4px;color:#262626">{{ key }}</div>
-                <pre style="background:#f5f5f5;padding:12px;border-radius:4px;font-size:12px;font-family:monospace;max-height:300px;overflow:auto;white-space:pre-wrap">{{ value }}</pre>
+                <div class="text-foreground mb-1 font-medium">{{ key }}</div>
+                <pre class="bg-muted max-h-[300px] overflow-auto whitespace-pre-wrap rounded p-3 font-mono text-xs">{{ value }}</pre>
               </div>
             </div>
-            <div v-else style="color:#8c8c8c">无数据</div>
+            <div v-else class="text-muted-foreground">无数据</div>
           </Card>
         </TabPane>
 
@@ -67,7 +67,7 @@ onMounted(fetchData);
 
         <TabPane key="yaml" tab="YAML">
           <Card>
-            <YamlEditor :model-value="info?.yaml || ''" :read-only="true" height="600px" theme="light" />
+            <YamlEditor :model-value="info?.yaml || ''" :read-only="true" height="600px" />
           </Card>
         </TabPane>
       </Tabs>

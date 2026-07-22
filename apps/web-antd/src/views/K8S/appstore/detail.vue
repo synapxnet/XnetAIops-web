@@ -50,7 +50,7 @@ onMounted(fetchData);
       <Card class="mb-4">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div style="display:flex;align-items:center">
-            <div style="width:64px;height:64px;border-radius:12px;background:#f0f5ff;display:flex;align-items:center;justify-content:center;margin-right:16px;flex-shrink:0">
+            <div style="width:64px;height:64px;border-radius:12px;background:hsl(var(--primary) / 10%);display:flex;align-items:center;justify-content:center;margin-right:16px;flex-shrink:0">
               <img v-if="app?.icon" :src="app.icon" style="width:48px;height:48px;object-fit:contain" />
               <span v-else style="font-size:28px;color:#1890ff;font-weight:bold">{{ (chartName || '?')[0].toUpperCase() }}</span>
             </div>

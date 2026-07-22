@@ -76,12 +76,12 @@ defineExpose({ getStageStatus, getStageStatusDotColor, formatDuration });
       <!-- Arrow connector -->
       <div v-if="index > 0" class="stage-arrow">
         <svg v-if="size === 'default'" width="32" height="20" viewBox="0 0 32 20">
-          <line x1="0" y1="10" x2="24" y2="10" stroke="#bfbfbf" stroke-width="2" />
-          <polygon points="24,5 32,10 24,15" fill="#bfbfbf" />
+          <line x1="0" y1="10" x2="24" y2="10" stroke="hsl(var(--border))" stroke-width="2" />
+          <polygon points="24,5 32,10 24,15" fill="hsl(var(--border))" />
         </svg>
         <svg v-else width="16" height="12" viewBox="0 0 16 12">
-          <line x1="0" y1="6" x2="10" y2="6" stroke="#bfbfbf" stroke-width="1.5" />
-          <polygon points="10,3 16,6 10,9" fill="#bfbfbf" />
+          <line x1="0" y1="6" x2="10" y2="6" stroke="hsl(var(--border))" stroke-width="1.5" />
+          <polygon points="10,3 16,6 10,9" fill="hsl(var(--border))" />
         </svg>
       </div>
       <!-- Stage block -->
@@ -116,7 +116,7 @@ defineExpose({ getStageStatus, getStageStatusDotColor, formatDuration });
   display: flex;
   align-items: center;
   overflow-x: auto;
-  background: linear-gradient(135deg, #fafbfc 0%, #f0f2f5 100%);
+  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
   border-radius: 8px;
   min-height: 120px;
   padding: 24px 16px;
@@ -129,7 +129,7 @@ defineExpose({ getStageStatus, getStageStatusDotColor, formatDuration });
 }
 .stages-empty {
   text-align: center;
-  color: #8c8c8c;
+  color: hsl(var(--muted-foreground));
   padding: 40px 0;
   font-size: 14px;
 }
@@ -142,9 +142,9 @@ defineExpose({ getStageStatus, getStageStatusDotColor, formatDuration });
 /* ==================== Stage Block ==================== */
 .stage-block {
   min-width: 130px; max-width: 200px; padding: 14px 18px;
-  border-radius: 10px; border: 2px solid #d9d9d9;
+  border-radius: 10px; border: 2px solid hsl(var(--border));
   text-align: center; transition: all 0.3s ease;
-  background: #fff; position: relative; user-select: none;
+  background: hsl(var(--card)); position: relative; user-select: none;
 }
 .stage-clickable { cursor: pointer; }
 .stage-block.stage-clickable:hover {
@@ -166,12 +166,12 @@ defineExpose({ getStageStatus, getStageStatusDotColor, formatDuration });
 /* ==================== Stage Content ==================== */
 .stage-name {
   font-weight: 600; font-size: 13px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #262626;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: hsl(var(--foreground));
 }
 .stages-mini .stage-name { font-size: 11px; font-weight: 500; }
 
 .stage-status-icon { font-size: 22px; margin: 6px 0; line-height: 1; }
-.stage-duration { font-size: 12px; color: #8c8c8c; margin-top: 2px; }
+.stage-duration { font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 2px; }
 
 .stage-mini-dot {
   width: 8px; height: 8px; border-radius: 50%;
@@ -182,18 +182,18 @@ defineExpose({ getStageStatus, getStageStatusDotColor, formatDuration });
 .icon-success { color: #52c41a; }
 .icon-failed { color: #f5222d; }
 .icon-running { color: #1890ff; animation: spin-icon 1.2s linear infinite; }
-.icon-not_built { color: #d9d9d9; }
+.icon-not_built { color: hsl(var(--muted-foreground)); }
 .icon-aborted { color: #fa8c16; }
 .icon-queued { color: #1890ff; }
 .icon-paused { color: #fa8c16; }
 
-.stage-success { border-color: #52c41a; background: linear-gradient(180deg, #f6ffed, #fff); }
-.stage-failed { border-color: #f5222d; background: linear-gradient(180deg, #fff2f0, #fff); }
-.stage-running { border-color: #1890ff; background: linear-gradient(180deg, #e6f7ff, #fff); animation: pulse 2s ease-in-out infinite; }
-.stage-not_built { border-color: #d9d9d9; background: #fafafa; opacity: 0.6; }
-.stage-aborted { border-color: #fa8c16; background: linear-gradient(180deg, #fff7e6, #fff); }
-.stage-queued { border-color: #1890ff; background: linear-gradient(180deg, #e6f7ff, #fff); opacity: 0.8; }
-.stage-paused { border-color: #fa8c16; background: linear-gradient(180deg, #fff7e6, #fff); }
+.stage-success { border-color: #52c41a; background: linear-gradient(180deg, hsl(var(--success) / 14%), hsl(var(--card))); }
+.stage-failed { border-color: #f5222d; background: linear-gradient(180deg, hsl(var(--destructive) / 14%), hsl(var(--card))); }
+.stage-running { border-color: #1890ff; background: linear-gradient(180deg, hsl(var(--primary) / 14%), hsl(var(--card))); animation: pulse 2s ease-in-out infinite; }
+.stage-not_built { border-color: hsl(var(--border)); background: hsl(var(--muted)); opacity: 0.6; }
+.stage-aborted { border-color: #fa8c16; background: linear-gradient(180deg, hsl(var(--warning) / 14%), hsl(var(--card))); }
+.stage-queued { border-color: #1890ff; background: linear-gradient(180deg, hsl(var(--primary) / 14%), hsl(var(--card))); opacity: 0.8; }
+.stage-paused { border-color: #fa8c16; background: linear-gradient(180deg, hsl(var(--warning) / 14%), hsl(var(--card))); }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(24,144,255,0.3); }

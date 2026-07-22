@@ -174,7 +174,7 @@ onMounted(async () => {
           </FormItem>
           <FormItem label="私有镜像仓库">
             <Input v-model:value="form.registryUrl" placeholder="如 10.0.0.1:80，留空使用公共镜像源" allow-clear />
-            <div style="color:#999;font-size:12px;margin-top:4px">
+            <div style="color:hsl(var(--muted-foreground));font-size:12px;margin-top:4px">
               填写私有 Harbor 仓库地址后，所有镜像将从该仓库拉取（需提前同步镜像）
             </div>
           </FormItem>

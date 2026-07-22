@@ -542,7 +542,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   font-size: 13px;
-  color: #595959;
+  color: hsl(var(--muted-foreground));
   cursor: pointer;
   user-select: none;
 }
@@ -564,21 +564,21 @@ onUnmounted(() => {
   font-size: 13px;
   cursor: pointer;
   white-space: nowrap;
-  color: #595959;
-  background: #f5f5f5;
+  color: hsl(var(--muted-foreground));
+  background: hsl(var(--muted));
   border: 1px solid transparent;
   transition: all 0.2s;
   user-select: none;
 }
 
 .log-tab:hover {
-  background: #e8e8e8;
+  background: hsl(var(--accent));
 }
 
 .log-tab-active {
-  background: #e6f7ff;
-  color: #1890ff;
-  border-color: #91d5ff;
+  background: hsl(var(--primary) / 10%);
+  color: hsl(var(--primary));
+  border-color: hsl(var(--primary) / 40%);
   font-weight: 500;
 }
 

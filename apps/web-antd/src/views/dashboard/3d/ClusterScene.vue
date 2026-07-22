@@ -318,5 +318,5 @@ onMounted(async () => {
 .status-warning { color: #faad14; }
 .status-error { color: #ff4d4f; }
 .status-offline { color: #8c8c8c; }
-.status-unknown { color: #d9d9d9; }
+.status-unknown { color: hsl(var(--muted-foreground)); }
 </style>

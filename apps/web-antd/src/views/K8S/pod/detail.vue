@@ -285,7 +285,7 @@ onMounted(fetchData);
         <!-- YAML -->
         <TabPane key="yaml" tab="YAML">
           <Card>
-            <YamlEditor :model-value="podInfo?.yaml || ''" :read-only="true" height="600px" theme="light" />
+            <YamlEditor :model-value="podInfo?.yaml || ''" :read-only="true" height="600px" />
           </Card>
         </TabPane>
       </Tabs>
