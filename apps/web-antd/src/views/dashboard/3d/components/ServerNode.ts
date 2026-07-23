@@ -1,11 +1,11 @@
 import * as THREE from 'three';
+
 import {
-  NODE_WIDTH,
-  NODE_HEIGHT,
   NODE_DEPTH,
-  STATUS_COLORS,
-  RACK_HEIGHT,
   NODE_GAP,
+  NODE_HEIGHT,
+  NODE_WIDTH,
+  STATUS_COLORS,
 } from '../constants';
 
 export interface ServerNodeData {
@@ -16,84 +16,110 @@ export interface ServerNodeData {
   cpuUsage: number;
   usedMemGb: number;
   totalMemGb: number;
+  interactive?: boolean;
 }
 
-/**
- * 创建单台服务器节点 3D 模型
- * 小方块 + 状态指示灯颜色
- */
-export function createServerNode(data: ServerNodeData, slotIndex: number): THREE.Group {
+export function createServerNode(
+  data: ServerNodeData,
+  slotIndex: number,
+  isDark = true,
+): THREE.Group {
   const group = new THREE.Group();
   group.name = `node_${data.id}`;
-  group.userData = { type: 'serverNode', ...data };
+  group.userData = {
+    type: data.interactive === false ? 'capacityNode' : 'serverNode',
+    ...data,
+  };
 
   const statusColor = STATUS_COLORS[data.status] || STATUS_COLORS.unknown!;
-
-  // 服务器主体
-  const bodyGeometry = new THREE.BoxGeometry(NODE_WIDTH, NODE_HEIGHT, NODE_DEPTH);
   const bodyMaterial = new THREE.MeshStandardMaterial({
-    color: 0x3a3a5a,
-    roughness: 0.5,
-    metalness: 0.6,
+    color: isDark ? 0x2b5670 : 0x8ca7bb,
+    metalness: 0.4,
+    roughness: 0.42,
   });
-  const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+  const body = new THREE.Mesh(
+    new THREE.BoxGeometry(NODE_WIDTH, NODE_HEIGHT, NODE_DEPTH),
+    bodyMaterial,
+  );
   body.castShadow = true;
   group.add(body);
 
-  // 状态指示灯（前面板小方块）
-  const ledGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.05);
-  const ledMaterial = new THREE.MeshBasicMaterial({ color: statusColor });
-  const led = new THREE.Mesh(ledGeometry, ledMaterial);
-  led.position.set(-NODE_WIDTH / 2 + 0.2, 0, NODE_DEPTH / 2 + 0.01);
+  const frontMaterial = new THREE.MeshStandardMaterial({
+    color: isDark ? 0x10354d : 0x304f66,
+    emissive: isDark ? 0x092436 : 0x000000,
+    emissiveIntensity: 0.72,
+    metalness: 0.3,
+    roughness: 0.4,
+  });
+  const front = new THREE.Mesh(
+    new THREE.BoxGeometry(NODE_WIDTH - 0.08, NODE_HEIGHT - 0.07, 0.035),
+    frontMaterial,
+  );
+  front.position.z = NODE_DEPTH / 2 + 0.02;
+  group.add(front);
+
+  const ledMaterial = new THREE.MeshStandardMaterial({
+    color: statusColor,
+    emissive: statusColor,
+    emissiveIntensity: 2.6,
+  });
+  const led = new THREE.Mesh(
+    new THREE.BoxGeometry(0.09, 0.09, 0.045),
+    ledMaterial,
+  );
+  led.position.set(-NODE_WIDTH / 2 + 0.18, 0, NODE_DEPTH / 2 + 0.055);
   led.name = 'statusLed';
   group.add(led);
 
-  // 状态发光光晕
-  const glowGeometry = new THREE.SphereGeometry(0.08, 8, 8);
-  const glowMaterial = new THREE.MeshBasicMaterial({
-    color: statusColor,
-    transparent: true,
-    opacity: 0.4,
-  });
-  const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+  const usageWidth = Math.max(
+    0.08,
+    ((NODE_WIDTH - 0.48) * Math.min(Math.max(data.cpuUsage, 0), 100)) / 100,
+  );
+  const usage = new THREE.Mesh(
+    new THREE.BoxGeometry(usageWidth, 0.055, 0.03),
+    new THREE.MeshBasicMaterial({
+      color: data.cpuUsage > 80 ? 0xff7a45 : 0x2f9bff,
+      opacity: 0.92,
+      transparent: true,
+    }),
+  );
+  usage.position.set(
+    -NODE_WIDTH / 2 + 0.32 + usageWidth / 2,
+    -0.08,
+    NODE_DEPTH / 2 + 0.06,
+  );
+  group.add(usage);
+
+  const glow = new THREE.Mesh(
+    new THREE.SphereGeometry(0.12, 12, 12),
+    new THREE.MeshBasicMaterial({
+      blending: THREE.AdditiveBlending,
+      color: statusColor,
+      opacity: 0.28,
+      transparent: true,
+    }),
+  );
   glow.position.copy(led.position);
+  glow.name = 'statusGlow';
   group.add(glow);
 
-  // 面板纹理（显示主机名）
-  const panelCanvas = document.createElement('canvas');
-  panelCanvas.width = 256;
-  panelCanvas.height = 48;
-  const ctx = panelCanvas.getContext('2d')!;
-  ctx.fillStyle = '#3a3a5a';
-  ctx.fillRect(0, 0, 256, 48);
-  ctx.fillStyle = '#cccccc';
-  ctx.font = '16px monospace';
-  ctx.fillText(data.hostname.substring(0, 20), 40, 18);
-  ctx.fillStyle = '#888888';
-  ctx.font = '12px monospace';
-  ctx.fillText(data.ipAddress, 40, 36);
-
-  const panelTexture = new THREE.CanvasTexture(panelCanvas);
-  const panelGeometry = new THREE.PlaneGeometry(NODE_WIDTH, NODE_HEIGHT);
-  const panelMaterial = new THREE.MeshBasicMaterial({ map: panelTexture });
-  const panel = new THREE.Mesh(panelGeometry, panelMaterial);
-  panel.position.z = NODE_DEPTH / 2 + 0.005;
-  group.add(panel);
-
-  // 定位到机架内的对应插槽
-  const yPos = 0.3 + slotIndex * (NODE_HEIGHT + NODE_GAP);
-  group.position.y = yPos;
-
+  group.position.y = 0.5 + slotIndex * (NODE_HEIGHT + NODE_GAP);
   return group;
 }
 
-/**
- * 更新服务器节点状态颜色
- */
-export function updateServerNodeStatus(nodeGroup: THREE.Group, newStatus: string) {
+export function updateServerNodeStatus(
+  nodeGroup: THREE.Group,
+  newStatus: string,
+) {
   const statusColor = STATUS_COLORS[newStatus] || STATUS_COLORS.unknown!;
   nodeGroup.traverse((child) => {
-    if (child instanceof THREE.Mesh && child.name === 'statusLed') {
+    if (!(child instanceof THREE.Mesh)) return;
+    if (child.name === 'statusLed') {
+      const material = child.material as THREE.MeshStandardMaterial;
+      material.color.setHex(statusColor);
+      material.emissive.setHex(statusColor);
+    }
+    if (child.name === 'statusGlow') {
       (child.material as THREE.MeshBasicMaterial).color.setHex(statusColor);
     }
   });
