@@ -1,66 +1,65 @@
 import * as THREE from 'three';
-import { RACK_HEIGHT } from '../constants';
 
-/**
- * 创建机架间的网络连接线
- */
-export function createNetworkLines(rackPositions: THREE.Vector3[]): THREE.Group {
+function addCableSegment(
+  group: THREE.Group,
+  from: THREE.Vector3,
+  to: THREE.Vector3,
+  color: number,
+  pulse = true,
+) {
+  const dx = Math.abs(to.x - from.x);
+  const dz = Math.abs(to.z - from.z);
+  const length = Math.max(dx, dz);
+  const geometry = new THREE.BoxGeometry(
+    dx > dz ? length : 0.055,
+    0.045,
+    dz >= dx ? length : 0.055,
+  );
+  const material = new THREE.MeshBasicMaterial({
+    blending: THREE.AdditiveBlending,
+    color,
+    opacity: pulse ? 0.62 : 0.38,
+    transparent: true,
+  });
+  const cable = new THREE.Mesh(geometry, material);
+  cable.position.set((from.x + to.x) / 2, 0.255, (from.z + to.z) / 2);
+  cable.userData.pulse = pulse;
+  group.add(cable);
+}
+
+export function createNetworkLines(
+  rackPositions: THREE.Vector3[],
+): THREE.Group {
   const group = new THREE.Group();
   group.name = 'networkTopology';
-
   if (rackPositions.length < 2) return group;
 
-  const lineMaterial = new THREE.LineBasicMaterial({
-    color: 0x00aaff,
-    transparent: true,
-    opacity: 0.5,
+  const minX = Math.min(...rackPositions.map((position) => position.x)) - 1.3;
+  const maxX = Math.max(...rackPositions.map((position) => position.x)) + 1.3;
+  const busZ = 0;
+  addCableSegment(
+    group,
+    new THREE.Vector3(minX, 0, busZ),
+    new THREE.Vector3(maxX, 0, busZ),
+    0x2f9bff,
+  );
+
+  rackPositions.forEach((position, index) => {
+    const cableColor = index % 5 === 4 ? 0xffb02e : 0x20b8ff;
+    const elbow = new THREE.Vector3(position.x, 0, busZ);
+    addCableSegment(group, position, elbow, cableColor);
+
+    const junction = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.1, 0.1, 0.055, 16),
+      new THREE.MeshBasicMaterial({
+        color: cableColor,
+        opacity: 0.9,
+        transparent: true,
+      }),
+    );
+    junction.position.set(position.x, 0.285, busZ);
+    group.add(junction);
   });
-
-  // 连接相邻的机架（顶部连线）
-  for (let i = 0; i < rackPositions.length - 1; i++) {
-    const from = rackPositions[i]!;
-    const to = rackPositions[i + 1]!;
-    const midY = RACK_HEIGHT + 1.0;
-
-    const points = [
-      new THREE.Vector3(from.x, midY, from.z),
-      new THREE.Vector3((from.x + to.x) / 2, midY + 0.5, (from.z + to.z) / 2),
-      new THREE.Vector3(to.x, midY, to.z),
-    ];
-
-    const curve = new THREE.QuadraticBezierCurve3(points[0]!, points[1]!, points[2]!);
-    const curvePoints = curve.getPoints(20);
-    const lineGeometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
-    const line = new THREE.Line(lineGeometry, lineMaterial);
-    group.add(line);
-  }
-
-  // 如果有多排，连接首尾形成环路
-  if (rackPositions.length > 2) {
-    const first = rackPositions[0]!;
-    const last = rackPositions[rackPositions.length - 1]!;
-    const midY = RACK_HEIGHT + 1.5;
-
-    const points = [
-      new THREE.Vector3(last.x, midY, last.z),
-      new THREE.Vector3((first.x + last.x) / 2, midY + 1.0, (first.z + last.z) / 2 - 2),
-      new THREE.Vector3(first.x, midY, first.z),
-    ];
-
-    const curve = new THREE.QuadraticBezierCurve3(points[0]!, points[1]!, points[2]!);
-    const curvePoints = curve.getPoints(30);
-    const lineGeometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
-    const dashMaterial = new THREE.LineDashedMaterial({
-      color: 0xff6600,
-      dashSize: 0.3,
-      gapSize: 0.15,
-      transparent: true,
-      opacity: 0.4,
-    });
-    const line = new THREE.Line(lineGeometry, dashMaterial);
-    line.computeLineDistances();
-    group.add(line);
-  }
 
   return group;
 }

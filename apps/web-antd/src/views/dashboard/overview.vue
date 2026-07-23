@@ -3,7 +3,14 @@ import ClusterScene from './3d/ClusterScene.vue';
 </script>
 
 <template>
-  <div style="width: 100%; height: calc(100vh - 120px)">
+  <div class="cluster-overview">
     <ClusterScene />
   </div>
 </template>
+
+<style scoped>
+.cluster-overview {
+  width: 100%;
+  min-height: calc(100dvh - 112px);
+}
+</style>
