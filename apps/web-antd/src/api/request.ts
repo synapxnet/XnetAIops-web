@@ -19,8 +19,15 @@ import { useAuthStore } from '#/store';
 
 import { refreshTokenApi } from './core';
 
-const { apiURL, clmApiURL, homApiURL, svmApiURL, monApiURL, k8sApiURL, regApiURL } =
-  useAppConfig(import.meta.env, import.meta.env.PROD);
+const {
+  apiURL,
+  clmApiURL,
+  homApiURL,
+  svmApiURL,
+  monApiURL,
+  k8sApiURL,
+  regApiURL,
+} = useAppConfig(import.meta.env, import.meta.env.PROD);
 
 function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   const client = new RequestClient({
@@ -34,17 +41,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
    */
   async function doReAuthenticate() {
     console.warn('Access token or refresh token is invalid or expired. ');
-    const accessStore = useAccessStore();
     const authStore = useAuthStore();
-    accessStore.setAccessToken(null);
-    if (
-      preferences.app.loginExpiredMode === 'modal' &&
-      accessStore.isAccessChecked
-    ) {
-      accessStore.setLoginExpired(true);
-    } else {
-      await authStore.logout();
-    }
+    await authStore.forceLogout();
   }
 
   /**
@@ -55,6 +53,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     const resp = await refreshTokenApi();
     const newToken = resp.data;
     accessStore.setAccessToken(newToken);
+    useAuthStore().startSessionExpirationMonitor();
     return newToken;
   }
 
