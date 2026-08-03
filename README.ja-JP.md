@@ -36,6 +36,12 @@ XnetAIops Web は **SynapXnet チーム**が公開する運用管理コンソー
 
 [XnetAIops バックエンド](https://github.com/synapxnet/XnetAIops) と組み合わせることで、企業向けマルチテナント、フロントエンド・バックエンド分離システムを構成します。Vue 3、TypeScript、Vite、Ant Design Vue、および [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) を採用しています。
 
+## GOAI Competition 1.0.0
+
+`GOAI-Competition` ブランチは `/agent/incidents/:incidentId` 証拠ディープリンクを追加します。単一 Trace 上でアラート、ワークロード、サービス正常性を表示し、部分失敗、再読み込み、ライト/ダークテーマ、狭い画面に対応します。
+
+[ルート引数、連携、検証結果](./docs/goai-handoff/HANDOFF-GOAI-COMPETITION-1.0.0.md) · [XnetAIops バックエンド](https://github.com/synapxnet/XnetAIops/tree/GOAI-Competition)
+
 ## 特長
 
 - ロールとリソース境界を備えた企業向けマルチテナント。

@@ -36,6 +36,12 @@ XnetAIops Web 是由 **SynapXnet 团队**开源的智能运维控制台，也是
 
 本仓库是平台前端，与 [XnetAIops](https://github.com/synapxnet/XnetAIops) 后端仓库共同组成企业级、多租户、前后端分离系统。项目基于 Vue 3、TypeScript、Vite、Ant Design Vue，并采用 [Vue Vben Admin 框架](https://github.com/vbenjs/vue-vben-admin) 构建，适合继续扩展企业级运维场景。
 
+## GOAI Competition 1.0.0
+
+`GOAI-Competition` 分支新增事件证据深链 `/agent/incidents/:incidentId`，在同一 Trace 中展示告警、工作负载和服务健康事实，支持部分失败、刷新恢复、深浅主题和窄屏布局。页面消费公共 `ToolResponse 1.0.0`，不会把 `success=false` 当作正常数据渲染。
+
+[查看页面参数、联调方式和验证记录](./docs/goai-handoff/HANDOFF-GOAI-COMPETITION-1.0.0.md) · [XnetAIops 后端比赛分支](https://github.com/synapxnet/XnetAIops/tree/GOAI-Competition)
+
 ## 项目优势
 
 - **企业多租户**：面向不同组织和团队提供清晰的角色、权限与资源视图。

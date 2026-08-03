@@ -108,6 +108,30 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   return client;
 }
 
+/**
+ * 创建不拆解 ToolResponse 包络的 Agent 请求客户端。
+ *
+ * @param serviceBaseURL 领域服务原有 API 地址
+ * @returns 保留公共证据元数据和结构化错误的请求客户端
+ */
+function createAgentRequestClient(serviceBaseURL: string) {
+  const baseURL = serviceBaseURL.replace(/\/api\/[^/]+\/?$/, '');
+  const client = new RequestClient({ baseURL, responseReturn: 'data', timeout: 60_000 });
+  client.addRequestInterceptor({
+    fulfilled: async (config) => {
+      config.headers.Authorization = formatAgentToken(useAccessStore().accessToken);
+      config.headers['Accept-Language'] = preferences.app.locale;
+      return config;
+    },
+  });
+  return client;
+}
+
+/** 将当前会话令牌格式化为 Bearer Header，不把令牌写入 URL。 */
+function formatAgentToken(token: null | string) {
+  return token ? `Bearer ${token}` : null;
+}
+
 // USR接口请求客户端 (用户认证，默认)
 export const requestClient = createRequestClient(apiURL, {
   responseReturn: 'data',
@@ -142,5 +166,9 @@ export const k8sRequestClient = createRequestClient(k8sApiURL, {
 export const regRequestClient = createRequestClient(regApiURL, {
   responseReturn: 'data',
 });
+
+export const agentMonRequestClient = createAgentRequestClient(monApiURL);
+export const agentK8sRequestClient = createAgentRequestClient(k8sApiURL);
+export const agentSvmRequestClient = createAgentRequestClient(svmApiURL);
 
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });

@@ -36,6 +36,12 @@ XnetAIops Web is the open-source operations console maintained by the **SynapXne
 
 Together with the [XnetAIops backend](https://github.com/synapxnet/XnetAIops), it forms an enterprise-grade, multi-tenant, frontend/backend-separated system. The console is built with Vue 3, TypeScript, Vite, Ant Design Vue, and the [Vue Vben Admin framework](https://github.com/vbenjs/vue-vben-admin).
 
+## GOAI Competition 1.0.0
+
+The `GOAI-Competition` branch adds the `/agent/incidents/:incidentId` evidence deep link. It presents alert, workload, and service-health facts in one Trace with partial-failure handling, refresh recovery, theme parity, and responsive layouts. The page consumes the shared `ToolResponse 1.0.0` contract and never renders failed responses as normal data.
+
+[Route parameters, integration, and verification](./docs/goai-handoff/HANDOFF-GOAI-COMPETITION-1.0.0.md) · [XnetAIops backend branch](https://github.com/synapxnet/XnetAIops/tree/GOAI-Competition)
+
 ## Highlights
 
 - Enterprise multi-tenancy with role and resource boundaries.
