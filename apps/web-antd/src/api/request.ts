@@ -29,6 +29,33 @@ const {
   regApiURL,
 } = useAppConfig(import.meta.env, import.meta.env.PROD);
 
+const ORGANIZATION_SCOPE_KEY = 'synapxnet:organization-scope';
+
+interface OrganizationScope {
+  deptUid: null | string;
+  teamUid: null | string;
+  tenantUid: null | string;
+}
+
+/** 读取当前页签内的组织范围，解析失败时按未授权处理。 */
+function readOrganizationScope(): null | OrganizationScope {
+  try {
+    const raw = globalThis.sessionStorage?.getItem(ORGANIZATION_SCOPE_KEY);
+    return raw ? (JSON.parse(raw) as OrganizationScope) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** 将已选租户、部门和团队写入业务请求头，供服务端二次校验。 */
+function appendOrganizationScopeHeaders(headers: Record<string, any>) {
+  const scope = readOrganizationScope();
+  if (!scope?.tenantUid || !scope.deptUid || !scope.teamUid) return;
+  headers['X-Tenant-Uid'] = scope.tenantUid;
+  headers['X-Dept-Uid'] = scope.deptUid;
+  headers['X-Team-Uid'] = scope.teamUid;
+}
+
 function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   const client = new RequestClient({
     ...options,
@@ -72,6 +99,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       if (userStore.userInfo?.userId) {
         config.headers['X-User-Id'] = userStore.userInfo.userId;
       }
+      appendOrganizationScopeHeaders(config.headers);
       return config;
     },
   });
@@ -108,6 +136,37 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   return client;
 }
 
+/**
+ * 创建不拆解 ToolResponse 包络的 Agent 请求客户端。
+ *
+ * @param serviceBaseURL 领域服务原有 API 地址
+ * @returns 保留公共证据元数据和结构化错误的请求客户端
+ */
+function createAgentRequestClient(serviceBaseURL: string) {
+  const baseURL = serviceBaseURL.replace(/\/api\/[^/]+\/?$/, '');
+  const client = new RequestClient({
+    baseURL,
+    responseReturn: 'data',
+    timeout: 60_000,
+  });
+  client.addRequestInterceptor({
+    fulfilled: async (config) => {
+      config.headers.Authorization = formatAgentToken(
+        useAccessStore().accessToken,
+      );
+      config.headers['Accept-Language'] = preferences.app.locale;
+      appendOrganizationScopeHeaders(config.headers);
+      return config;
+    },
+  });
+  return client;
+}
+
+/** 将当前会话令牌格式化为 Bearer Header，不把令牌写入 URL。 */
+function formatAgentToken(token: null | string) {
+  return token ? `Bearer ${token}` : null;
+}
+
 // USR接口请求客户端 (用户认证，默认)
 export const requestClient = createRequestClient(apiURL, {
   responseReturn: 'data',
@@ -142,5 +201,9 @@ export const k8sRequestClient = createRequestClient(k8sApiURL, {
 export const regRequestClient = createRequestClient(regApiURL, {
   responseReturn: 'data',
 });
+
+export const agentMonRequestClient = createAgentRequestClient(monApiURL);
+export const agentK8sRequestClient = createAgentRequestClient(k8sApiURL);
+export const agentSvmRequestClient = createAgentRequestClient(svmApiURL);
 
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });
