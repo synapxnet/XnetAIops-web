@@ -6,7 +6,7 @@
 
 [![GOAI release](https://img.shields.io/badge/version-1.3.0-1677ff.svg)](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) [![Vue](https://img.shields.io/badge/Vue-3-42b883.svg)](https://vuejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/) [![License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](./LICENSE)
 
-[在线体验](https://www.xnetaiops.synapxnet.cn) · [后端仓库 XnetAIops](https://github.com/synapxnet/XnetAIops) · [OpenXnet 开源社区](https://openxnet.synapxnet.com) · [查看许可](./LICENSE)
+[在线体验](https://goai.xnetaiops.synapxnet.online) · [后端仓库 XnetAIops](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) · [OpenXnet 开源社区](https://openxnet.synapxnet.com) · [查看许可](./LICENSE)
 
 </div>
 
@@ -34,7 +34,7 @@
 
 XnetAIops Web 是由 **SynapXnet 团队**开源的智能运维控制台，也是 XnetAIops 微服务体系的统一交互入口。控制台将主机、集群、服务、监控、Kubernetes 与镜像仓库集中到同一套界面中，便于运维人员在一个工作区完成日常巡检与变更操作。
 
-本仓库是平台前端，与 [XnetAIops](https://github.com/synapxnet/XnetAIops) 后端仓库共同组成企业级、多租户、前后端分离系统。项目基于 Vue 3、TypeScript、Vite、Ant Design Vue，并采用 [Vue Vben Admin 框架](https://github.com/vbenjs/vue-vben-admin) 构建，适合继续扩展企业级运维场景。
+本仓库是平台前端，与 [XnetAIops](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) 后端仓库共同组成企业级、多租户、前后端分离系统。项目基于 Vue 3、TypeScript、Vite、Ant Design Vue，并采用 [Vue Vben Admin 框架](https://github.com/vbenjs/vue-vben-admin) 构建，适合继续扩展企业级运维场景。
 
 ## 项目优势
 
@@ -76,36 +76,40 @@ flowchart LR
 - Pinia + Vue Router
 - pnpm 9.15.7
 
-## 快速开始
+## v1.3.0 获取与构建
 
-### 环境要求
-
-- Node.js 20+
-- pnpm 9.15.7
-
-### 本地开发
+使用 **Node.js 20.10.0 或更高版本**、固定的 **pnpm 9.15.7**。前端基于 Vue 3、TypeScript 5、Vite、Ant Design Vue 与 Vben 工作区：
 
 ```bash
+git clone --branch v1.3.0 --depth 1 https://github.com/synapxnet/XnetAIops-web.git
+cd XnetAIops-web
 corepack enable
-pnpm install
-pnpm dev:antd
+corepack prepare pnpm@9.15.7 --activate
+pnpm install --frozen-lockfile
+pnpm exec turbo build --filter=@vben/web-antd --env-mode=loose
 ```
 
-### 生产构建
+产物为 `apps/web-antd/dist`；通过配套 Nginx 或自己的 HTTPS 网关发布。仅启动静态前端不能启动业务后端或驻场 Agent。
 
-```bash
-pnpm build:antd
-```
+### 本地开发与接口
 
-部署前请根据目标环境检查 `apps/web-antd` 下的环境变量和 API 地址配置。不要将真实密钥、生产令牌或服务器凭据提交到仓库。
+开发命令为 `pnpm dev:antd`，默认端口 `5777`。先修改 `apps/web-antd/vite.config.mts` 中的旧内网代理目标，为自己的后端配置 `/usr`、`/clm`、`/hom`、`/svm`、`/mon`、`/k8s`、`/reg`；K8s 可用 `AIOPS_K8S_DEV_URL` 指定目标。开发代理不会自动发现服务器，也没有完整的驻场代理配置。
 
-## 在线体验
+生产 `.env.production` 使用同源 `/api/usr`、`/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg`。驻场 `/api/resident/v1/` 要由网关另行接到独立 Node 服务。后端、驻场、模型凭据和登录授权须分别配置；浏览器中不存放模型 API Key。
 
-- 访问地址：<https://www.xnetaiops.synapxnet.cn>
-- 演示手机号：`17870171303`
-- 演示验证码：`000000`
+本轮生产构建与 45 项前端回归通过；全量类型检查仍有 135 处已知问题，详见源码交付说明。构建成功不代表类型检查通过。
 
-固定验证码仅用于公开演示。生产部署应接入安全的身份认证与验证码服务。
+## 在线体验与登录
+
+- 当前 GOAI 演示入口：<https://goai.xnetaiops.synapxnet.online/#/auth/login>。
+- 演示手机号：`17870171303`；演示验证码：`000000`（6 位，仅用于本演示环境）。
+- 登录方式为“手机号 + 验证码”，不使用 OpenXnet 桌面端的密码登录。当前页面不发送短信，演示验证码由项目方约定。
+- 2026-09-18 已核验：登录成功，身份为 `goai_operator` / `OPERATOR`；页面标题为 `XnetAIops`，驻场状态返回 `platform=aiops`、`agentVersion=1.3.0`、`ONLINE`。
+- 此验证码只用于平台登录。AgentTeams 演示访问码、Live 执行授权和模型 API Key 是独立凭据，不可互换；后者不在公开 README 提供。
+
+API 网关与网页同源，基址为 `https://goai.xnetaiops.synapxnet.online`。登录为 `POST /api/usr/login`；身份读取为 `GET /api/usr/user/info`；驻场状态为 `GET /api/resident/v1/status`，后两项使用平台登录返回的 Bearer 令牌。业务模块前缀为 `/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg`。
+
+本轮仅执行登录及身份/驻场状态读取，未执行业务变更或模型调用。`modelConfigured=true` 表示存在服务端配置，不等于本轮已验证模型推理。公共演示账号不应用作生产认证方案。
 
 ## SynapXnet 开源生态
 
