@@ -8,7 +8,7 @@
 
 [![GOAI release](https://img.shields.io/badge/GOAI%20release-1.3.0-1677ff.svg)](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) [![Vue](https://img.shields.io/badge/Vue-3-42b883.svg)](https://vuejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/) [![License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](./LICENSE)
 
-[Live Demo](https://www.xnetaiops.synapxnet.cn) · [Backend: XnetAIops](https://github.com/synapxnet/XnetAIops) · [OpenXnet](https://openxnet.synapxnet.com) · [License](./LICENSE)
+[Live Demo](https://goai.xnetaiops.synapxnet.online) · [Backend: XnetAIops](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) · [OpenXnet](https://openxnet.synapxnet.com) · [License](./LICENSE)
 
 </div>
 
@@ -46,7 +46,7 @@ See [source delivery, setup and actual test results](https://github.com/synapxne
 
 XnetAIops Web is the open-source operations console maintained by the **SynapXnet team**. It unifies hosts, infrastructure clusters, services, monitoring, Kubernetes, image registries, and access control.
 
-Together with the [XnetAIops backend](https://github.com/synapxnet/XnetAIops), it forms an enterprise-grade, multi-tenant, frontend/backend-separated system. The console is built with Vue 3, TypeScript, Vite, Ant Design Vue, and the [Vue Vben Admin framework](https://github.com/vbenjs/vue-vben-admin).
+Together with the [XnetAIops backend](https://github.com/synapxnet/XnetAIops/tree/v1.3.0), it forms an enterprise-grade, multi-tenant, frontend/backend-separated system. The console is built with Vue 3, TypeScript, Vite, Ant Design Vue, and the [Vue Vben Admin framework](https://github.com/vbenjs/vue-vben-admin).
 
 ## Highlights
 
@@ -69,24 +69,40 @@ Together with the [XnetAIops backend](https://github.com/synapxnet/XnetAIops), i
 | REG         | Registries, projects, repositories, tags, and replication |
 | USR         | Users, roles, and platform access control                 |
 
-## Development
+## Get and Build v1.3.0
+
+Use **Node.js 20.10.0+** and **pnpm 9.15.7**. The application uses Vue 3, TypeScript 5, Vite, Ant Design Vue and the Vben workspace:
 
 ```bash
+git clone --branch v1.3.0 --depth 1 https://github.com/synapxnet/XnetAIops-web.git
+cd XnetAIops-web
 corepack enable
-pnpm install
-pnpm dev:antd
-pnpm build:antd
+corepack prepare pnpm@9.15.7 --activate
+pnpm install --frozen-lockfile
+pnpm exec turbo build --filter=@vben/web-antd --env-mode=loose
 ```
 
-Use Node.js 20+ and pnpm 9.15.7. Never commit production credentials or access tokens.
+Output is `apps/web-antd/dist`; serve it through the companion Nginx or an HTTPS gateway. Starting the static frontend does not start backend or resident Agent services.
 
-## Demo
+### Local development and APIs
 
-- URL: <https://www.xnetaiops.synapxnet.cn>
-- Phone: `12345678900`
-- Verification code: `000000`
+Run `pnpm dev:antd` on default port `5777` after adapting `apps/web-antd/vite.config.mts`: existing LAN proxy targets must point to your backend for `/usr`, `/clm`, `/hom`, `/svm`, `/mon`, `/k8s` and `/reg`. K8s supports `AIOPS_K8S_DEV_URL`. Development proxies do not discover servers or fully configure the resident endpoint automatically.
 
-The fixed code is only for the public showcase. Production must use secure authentication.
+Production `.env.production` uses same-origin `/api/usr`, `/api/clm`, `/api/hom`, `/api/svm`, `/api/mon`, `/api/k8s` and `/api/reg`. Configure `/api/resident/v1/` separately in the gateway for the independent Node service. Configure backend access, resident service, model credentials and login authorization separately; do not put model API keys in the browser.
+
+The production build and 45 frontend regression tests passed. The complete type check still reports 135 known issues; see the delivery notes. Build success is not a type-check pass.
+
+## Demo Access
+
+- Current GOAI entry: <https://goai.xnetaiops.synapxnet.online/#/auth/login>.
+- Demo phone: `17870171303`; demo verification code: `000000` (six digits, demo environment only).
+- Sign in with a phone number and code, not the OpenXnet desktop password. This screen does not send SMS; the project supplies the demo code.
+- Verified on 2026-09-18: login as `goai_operator` / `OPERATOR`; page title `XnetAIops`; resident status `platform=aiops`, `agentVersion=1.3.0`, `ONLINE`.
+- This code is separate from an AgentTeams demo access code, Live execution authorization and model API keys. Those credentials are not interchangeable and are not published here.
+
+The same-origin API gateway is `https://goai.xnetaiops.synapxnet.online`. Login: `POST /api/usr/login`; identity: `GET /api/usr/user/info`; resident status: `GET /api/resident/v1/status`. The last two require the platform Bearer token. Business prefixes are `/api/clm`, `/api/hom`, `/api/svm`, `/api/mon`, `/api/k8s` and `/api/reg`.
+
+This check performed login and read-only identity/resident requests, without business changes or model calls. `modelConfigured=true` means configuration exists, not that inference was tested. Public demo authentication must not be used for production.
 
 ## License and Upstream
 

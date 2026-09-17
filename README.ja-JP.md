@@ -8,7 +8,7 @@
 
 [![GOAI release](https://img.shields.io/badge/GOAI%20release-1.3.0-1677ff.svg)](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) [![Vue](https://img.shields.io/badge/Vue-3-42b883.svg)](https://vuejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/) [![License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](./LICENSE)
 
-[オンラインデモ](https://www.xnetaiops.synapxnet.cn) · [バックエンド: XnetAIops](https://github.com/synapxnet/XnetAIops) · [OpenXnet](https://openxnet.synapxnet.com) · [ライセンス](./LICENSE)
+[オンラインデモ](https://goai.xnetaiops.synapxnet.online) · [バックエンド: XnetAIops](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) · [OpenXnet](https://openxnet.synapxnet.com) · [ライセンス](./LICENSE)
 
 </div>
 
@@ -46,7 +46,7 @@
 
 XnetAIops Web は **SynapXnet チーム**が公開する運用管理コンソールです。ホスト、インフラクラスター、サービス、監視、Kubernetes、イメージレジストリ、アクセス制御を統合します。
 
-[XnetAIops バックエンド](https://github.com/synapxnet/XnetAIops) と組み合わせることで、企業向けマルチテナント、フロントエンド・バックエンド分離システムを構成します。Vue 3、TypeScript、Vite、Ant Design Vue、および [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) を採用しています。
+[XnetAIops バックエンド](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) と組み合わせることで、企業向けマルチテナント、フロントエンド・バックエンド分離システムを構成します。Vue 3、TypeScript、Vite、Ant Design Vue、および [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) を採用しています。
 
 ## 特長
 
@@ -69,24 +69,40 @@ XnetAIops Web は **SynapXnet チーム**が公開する運用管理コンソー
 | REG        | レジストリ、プロジェクト、タグ、同期           |
 | USR        | ユーザー、ロール、アクセス制御                 |
 
-## 開発
+## v1.3.0 の取得とビルド
+
+**Node.js 20.10.0 以上**、**pnpm 9.15.7** を使用します。Vue 3、TypeScript 5、Vite、Ant Design Vue、Vben ワークスペースに基づいています。
 
 ```bash
+git clone --branch v1.3.0 --depth 1 https://github.com/synapxnet/XnetAIops-web.git
+cd XnetAIops-web
 corepack enable
-pnpm install
-pnpm dev:antd
-pnpm build:antd
+corepack prepare pnpm@9.15.7 --activate
+pnpm install --frozen-lockfile
+pnpm exec turbo build --filter=@vben/web-antd --env-mode=loose
 ```
 
-Node.js 20+ と pnpm 9.15.7 を使用してください。本番の認証情報やトークンをコミットしないでください。
+出力は `apps/web-antd/dist` です。対応 Nginx または HTTPS ゲートウェイで公開します。静的フロントエンドだけではバックエンドや常駐 Agent は起動しません。
 
-## デモ
+### ローカル開発と API
 
-- URL: <https://www.xnetaiops.synapxnet.cn>
-- 電話番号: `12345678900`
-- 確認コード: `000000`
+`pnpm dev:antd` の既定ポートは `5777` です。先に `apps/web-antd/vite.config.mts` の旧 LAN プロキシを自分のバックエンドへ変更し、`/usr`、`/clm`、`/hom`、`/svm`、`/mon`、`/k8s`、`/reg` を設定してください。K8s は `AIOPS_K8S_DEV_URL` を使えます。サーバー自動検出や完全な常駐サービス設定は行いません。
 
-固定確認コードは公開デモ専用です。本番環境では安全な認証方式を使用してください。
+本番 `.env.production` は同一オリジンの `/api/usr`、`/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg` を使用します。独立 Node 常駐サービスへの `/api/resident/v1/` 転送はゲートウェイで別途設定します。モデル API キーはブラウザーに置かず、バックエンド・常駐・モデル・認証を個別に設定してください。
+
+本番ビルドと 45 件の回帰テストは成功しました。全体の型チェックには 135 件の既知問題が残っています。詳細は配布説明を参照してください。
+
+## デモへのアクセス
+
+- 現在の GOAI 入口: <https://goai.xnetaiops.synapxnet.online/#/auth/login>。
+- デモ電話番号: `17870171303`。確認コード: `000000`（6 桁、このデモ環境専用）。
+- 電話番号と確認コードでログインします。OpenXnet デスクトップのパスワードではありません。この画面は SMS を送信せず、コードはプロジェクトから提供されます。
+- 2026-09-18 の確認結果: `goai_operator` / `OPERATOR` でログイン成功。ページ名は `XnetAIops`、常駐 Agent は `platform=aiops`、`agentVersion=1.3.0`、`ONLINE`。
+- このコードはログイン専用です。AgentTeams デモアクセスコード、Live 実行承認、モデル API キーとは別であり、後者は公開しません。
+
+API ゲートウェイは同一オリジンの `https://goai.xnetaiops.synapxnet.online` です。ログインは `POST /api/usr/login`、身元確認は `GET /api/usr/user/info`、常駐状態は `GET /api/resident/v1/status`。後二者にはプラットフォームの Bearer トークンが必要です。業務の接頭辞は `/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg` です。
+
+今回確認したのはログインと読み取り専用の身元・常駐状態です。業務変更やモデル呼び出しは行っていません。`modelConfigured=true` は設定の存在を示し、推論の検証結果ではありません。公開デモの認証を本番環境で使用しないでください。
 
 ## ライセンスと上流プロジェクト
 

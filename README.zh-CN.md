@@ -14,12 +14,20 @@
 
 > 主 README 中的图片为历史界面截图，仅用于了解原有功能与布局，不作为 v1.3.0 新界面的验收证据。
 
-XnetAIops Web 是由 **SynapXnet 团队**开源的企业级、多租户智能运维控制台，与后端仓库共同组成前后端分离系统。项目覆盖主机、集群、服务、监控、Kubernetes、镜像仓库与平台权限管理。
+完整功能、构建命令和部署条件见[本仓 README](./README.md)。
 
-完整的项目介绍、模块说明、在线体验、页面截图、部署方式与开源许可统一维护在 [README.md](./README.md)。
+## 在线体验与登录
 
-- 在线体验：<https://www.xnetaiops.synapxnet.cn>
-- 后端仓库：[synapxnet/XnetAIops](https://github.com/synapxnet/XnetAIops)
-- OpenXnet 开源社区：<https://openxnet.synapxnet.com>
+- 当前 GOAI 演示入口：<https://goai.xnetaiops.synapxnet.online/#/auth/login>。
+- 演示手机号：`17870171303`；演示验证码：`000000`（6 位，仅用于本演示环境）。
+- 登录方式为“手机号 + 验证码”，不使用 OpenXnet 桌面端的密码登录。当前页面不发送短信，演示验证码由项目方约定。
+- 2026-09-18 已核验：登录成功，身份为 `goai_operator` / `OPERATOR`；页面标题为 `XnetAIops`，驻场状态返回 `platform=aiops`、`agentVersion=1.3.0`、`ONLINE`。
+- 此验证码只用于平台登录。AgentTeams 演示访问码、Live 执行授权和模型 API Key 是独立凭据，不可互换；后者不在公开 README 提供。
 
-前端基于 Vue 3、TypeScript、Ant Design Vue，并采用 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) 框架构建。项目遵循 MIT License，并依法保留上游框架的版权与许可声明。
+API 网关与网页同源，基址为 `https://goai.xnetaiops.synapxnet.online`。登录为 `POST /api/usr/login`；身份读取为 `GET /api/usr/user/info`；驻场状态为 `GET /api/resident/v1/status`，后两项使用平台登录返回的 Bearer 令牌。业务模块前缀为 `/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg`。
+
+本轮仅执行登录及身份/驻场状态读取，未执行业务变更或模型调用。`modelConfigured=true` 表示存在服务端配置，不等于本轮已验证模型推理。公共演示账号不应用作生产认证方案。
+
+## 上游来源与许可
+
+本平台前端使用 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin)，原维护者 [Vben](https://github.com/anncwb)。保留 [MIT © Vben-2020](./LICENSE) 及 SynapXnet 许可说明；上游框架文档不等同于 XnetAIops 产品版本或部署流程。
