@@ -14,13 +14,13 @@
 
 ## GOAI finals release · v1.3.0
 
-[Release & checksums](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) · [Download source ZIP](https://github.com/synapxnet/XnetAIops-web/releases/download/v1.3.0/XnetAIops-web-v1.3.0-a5e9c2c0-source.zip) · [v1.3.0 source](https://github.com/synapxnet/XnetAIops-web/tree/v1.3.0) · [Companion XnetAIops](https://github.com/synapxnet/XnetAIops/releases/tag/v1.3.0) · [OpenXnet desktop](https://github.com/synapxnet/OpenXnet/releases/tag/v1.3.0)
+[Release & checksums](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) · [Download source ZIP](https://github.com/synapxnet/XnetAIops-web/releases/download/v1.3.0/XnetAIops-web-v1.3.0-source.zip) · [v1.3.0 source](https://github.com/synapxnet/XnetAIops-web/tree/v1.3.0) · [Companion XnetAIops](https://github.com/synapxnet/XnetAIops/releases/tag/v1.3.0) · [OpenXnet desktop](https://github.com/synapxnet/OpenXnet/releases/tag/v1.3.0)
 
 > This default `display` branch retains historical code. The badge points to the GOAI release; use the `v1.3.0` tag or release assets for that version.
 
 The console includes a unified sign-in design, skins, resident Agent chat and configuration, operations assurance and controlled terminal interaction. Cross-platform collaboration and approval are coordinated through OpenXnet and AgentTeams; the UI alone does not grant execution permission.
 
-See [source delivery, setup and actual test results](https://github.com/synapxnet/XnetAIops-web/blob/a5e9c2c057ba29d94ee90d7e3acd645e89475f1c/docs/GOAI-FINALS-V1.3.0-SOURCE-DELIVERY.md) for deployment dependencies and known limits. This repository release does not indicate that a live service has been redeployed. The production build passed; the full type check still reports 135 issues.
+See [program verification baseline, setup and delivery notes](https://github.com/synapxnet/XnetAIops-web/blob/a5e9c2c057ba29d94ee90d7e3acd645e89475f1c/docs/GOAI-FINALS-V1.3.0-SOURCE-DELIVERY.md) for deployment dependencies and known limits. This repository release does not indicate that a live service has been redeployed. The production build passed; the full type check still reports 135 issues.
 
 > Historical screenshots below illustrate earlier layouts and are not evidence of the v1.3.0 UI.
 
