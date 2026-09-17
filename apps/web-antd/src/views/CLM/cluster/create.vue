@@ -1,7 +1,15 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { Card, Form, FormItem, Input, Select, Button, message } from 'ant-design-vue';
+import {
+  Card,
+  Form,
+  FormItem,
+  Input,
+  Select,
+  Button,
+  message,
+} from 'ant-design-vue';
 import { createCluster } from '../api/cluster';
 
 const router = useRouter();
@@ -43,28 +51,50 @@ function goBack() {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="创建集群">
-      <Form layout="vertical" :model="form" style="max-width: 600px">
-        <FormItem label="集群名称" required>
-          <Input v-model:value="form.clusterName" placeholder="请输入集群名称" />
-        </FormItem>
-        <FormItem label="集群编码" required>
-          <Input v-model:value="form.clusterCode" placeholder="请输入集群编码（唯一标识）" />
-        </FormItem>
-        <FormItem label="集群类型">
-          <Select v-model:value="form.clusterType" :options="clusterTypes" />
-        </FormItem>
-        <FormItem label="描述">
-          <Input.TextArea v-model:value="form.description" placeholder="请输入集群描述" :rows="3" />
-        </FormItem>
-        <FormItem>
-          <Button type="primary" :loading="submitting" @click="handleSubmit" style="margin-right: 12px">
-            创建
-          </Button>
-          <Button @click="goBack">取消</Button>
-        </FormItem>
-      </Form>
-    </Card>
-  </div>
+  <BusinessPage
+    title="创建集群"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/CLM/cluster/create"
+  >
+    <div class="p-4">
+      <Card>
+        <Form layout="vertical" :model="form" style="max-width: 600px">
+          <FormItem label="集群名称" required>
+            <Input
+              v-model:value="form.clusterName"
+              placeholder="请输入集群名称"
+            />
+          </FormItem>
+          <FormItem label="集群编码" required>
+            <Input
+              v-model:value="form.clusterCode"
+              placeholder="请输入集群编码（唯一标识）"
+            />
+          </FormItem>
+          <FormItem label="集群类型">
+            <Select v-model:value="form.clusterType" :options="clusterTypes" />
+          </FormItem>
+          <FormItem label="描述">
+            <Input.TextArea
+              v-model:value="form.description"
+              placeholder="请输入集群描述"
+              :rows="3"
+            />
+          </FormItem>
+          <FormItem>
+            <Button
+              type="primary"
+              :loading="submitting"
+              @click="handleSubmit"
+              style="margin-right: 12px"
+            >
+              创建
+            </Button>
+            <Button @click="goBack">取消</Button>
+          </FormItem>
+        </Form>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

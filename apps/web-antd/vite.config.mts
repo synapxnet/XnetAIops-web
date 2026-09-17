@@ -6,6 +6,13 @@ export default defineConfig(async () => {
     vite: {
       server: {
         proxy: {
+          // 终端沿同源路径握手，保留Origin供服务端验证。Handshake on the same-origin path and preserve Origin for server verification.
+          '/api/k8s/ws': {
+            changeOrigin: false,
+            rewrite: (path) => path.replace(/^\/api\/k8s\/ws/, '/ws'),
+            target: process.env.AIOPS_K8S_DEV_URL || 'http://127.0.0.1:9186',
+            ws: true,
+          },
           '/usr': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/usr/, '/api/usr'),
@@ -39,7 +46,7 @@ export default defineConfig(async () => {
           '/k8s': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/k8s/, '/api/k8s'),
-            target: 'http://192.168.1.156:9186',
+            target: process.env.AIOPS_K8S_DEV_URL || 'http://127.0.0.1:9186',
             ws: true,
           },
           '/reg': {

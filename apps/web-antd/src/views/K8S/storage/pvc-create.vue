@@ -1,7 +1,16 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { Card, Form, FormItem, Textarea, Button, Space, Alert, message } from 'ant-design-vue';
+import {
+  Card,
+  Form,
+  FormItem,
+  Textarea,
+  Button,
+  Space,
+  Alert,
+  message,
+} from 'ant-design-vue';
 import { createPVC } from '../api/storage';
 
 const router = useRouter();
@@ -26,30 +35,64 @@ spec:
 });
 
 async function handleSubmit() {
-  if (!form.value.yaml.trim()) { message.warning('请输入YAML'); return; }
+  if (!form.value.yaml.trim()) {
+    message.warning('请输入YAML');
+    return;
+  }
   submitting.value = true;
   try {
     await createPVC(clusterId, namespace, form.value.yaml);
     message.success('创建成功');
     router.push('/K8S/storage/pvc-list');
-  } catch (e: any) { message.error('创建失败: ' + e.message); }
-  finally { submitting.value = false; }
+  } catch (e: any) {
+    message.error('创建失败: ' + e.message);
+  } finally {
+    submitting.value = false;
+  }
 }
 
-function goBack() { router.push('/K8S/storage/pvc-list'); }
+function goBack() {
+  router.push('/K8S/storage/pvc-list');
+}
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="创建 PVC">
-      <template #extra><Button @click="goBack">返回</Button></template>
-      <Alert type="info" message="请填写YAML格式的PVC定义" show-icon class="mb-4" style="max-width:900px" />
-      <Form layout="vertical" :model="form" style="max-width:900px">
-        <FormItem label="YAML定义" required>
-          <Textarea v-model:value="form.yaml" :rows="14" style="font-family:monospace;font-size:12px" />
-        </FormItem>
-        <FormItem><Space><Button type="primary" :loading="submitting" @click="handleSubmit">创建</Button><Button @click="goBack">取消</Button></Space></FormItem>
-      </Form>
-    </Card>
-  </div>
+  <BusinessPage
+    title="创建存储卷"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/K8S/storage/pvc-create"
+  >
+    <div class="p-4">
+      <Card title="创建 PVC">
+        <template #extra><Button @click="goBack">返回</Button></template>
+        <Alert
+          type="info"
+          message="请填写YAML格式的PVC定义"
+          show-icon
+          class="mb-4"
+          style="max-width: 900px"
+        />
+        <Form layout="vertical" :model="form" style="max-width: 900px">
+          <FormItem label="YAML定义" required>
+            <Textarea
+              v-model:value="form.yaml"
+              :rows="14"
+              style="font-family: monospace; font-size: 12px"
+            />
+          </FormItem>
+          <FormItem
+            ><Space
+              ><Button
+                type="primary"
+                :loading="submitting"
+                @click="handleSubmit"
+                >创建</Button
+              ><Button @click="goBack">取消</Button></Space
+            ></FormItem
+          >
+        </Form>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

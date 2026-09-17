@@ -86,44 +86,55 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="部署日志">
-      <template #extra>
-        <Select
-          :value="selectedRegistryId"
-          placeholder="选择仓库"
-          style="width: 250px"
-          allow-clear
-          @change="handleRegistryChange"
-        >
-          <SelectOption v-for="r in registries" :key="r.id" :value="r.id">
-            {{ r.registryName }} ({{ r.registryType }})
-          </SelectOption>
-        </Select>
-      </template>
-
-      <Table
-        :columns="columns"
-        :data-source="logs"
-        :loading="loading"
-        row-key="id"
-        :pagination="{ pageSize: 20 }"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'action'">
-            {{ actionLabelMap[record.action] || record.action }}
-          </template>
-          <template v-else-if="column.key === 'status'">
-            <Tag :color="statusColorMap[record.status]">
-              {{ statusLabelMap[record.status] || record.status }}
-            </Tag>
-          </template>
-          <template v-else-if="column.key === 'logText'">
-            <pre v-if="record.logText" class="max-h-32 overflow-auto text-xs">{{ record.logText }}</pre>
-            <span v-else class="text-gray-400">-</span>
-          </template>
+  <BusinessPage
+    title="部署日志"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/REG/deploy/logs"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Select
+            :value="selectedRegistryId"
+            placeholder="选择仓库"
+            style="width: 250px"
+            allow-clear
+            @change="handleRegistryChange"
+          >
+            <SelectOption v-for="r in registries" :key="r.id" :value="r.id">
+              {{ r.registryName }} ({{ r.registryType }})
+            </SelectOption>
+          </Select>
         </template>
-      </Table>
-    </Card>
-  </div>
+
+        <Table
+          :columns="columns"
+          :data-source="logs"
+          :loading="loading"
+          row-key="id"
+          :pagination="{ pageSize: 20 }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'action'">
+              {{ actionLabelMap[record.action] || record.action }}
+            </template>
+            <template v-else-if="column.key === 'status'">
+              <Tag :color="statusColorMap[record.status]">
+                {{ statusLabelMap[record.status] || record.status }}
+              </Tag>
+            </template>
+            <template v-else-if="column.key === 'logText'">
+              <pre
+                v-if="record.logText"
+                class="max-h-32 overflow-auto text-xs"
+                >{{ record.logText }}</pre
+              >
+              <span v-else class="text-gray-400">-</span>
+            </template>
+          </template>
+        </Table>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

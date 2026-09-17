@@ -1,13 +1,31 @@
 <script lang="ts" setup>
 import { ref, onMounted, reactive } from 'vue';
 import {
-  Card, Table, Button, Space, Modal, Form, FormItem, Input, Textarea,
-  InputNumber, message,
+  Card,
+  Table,
+  Button,
+  Space,
+  Modal,
+  Form,
+  FormItem,
+  Input,
+  Textarea,
+  InputNumber,
+  message,
 } from 'ant-design-vue';
 import {
-  getFrameworks, createFramework, updateFramework, deleteFramework,
-  getServiceDefs, createServiceDef, updateServiceDef, deleteServiceDef,
-  getRoleDefs, createRoleDef, updateRoleDef, deleteRoleDef,
+  getFrameworks,
+  createFramework,
+  updateFramework,
+  deleteFramework,
+  getServiceDefs,
+  createServiceDef,
+  updateServiceDef,
+  deleteServiceDef,
+  getRoleDefs,
+  createRoleDef,
+  updateRoleDef,
+  deleteRoleDef,
 } from '../api/framework';
 import type { Framework, ServiceDef, RoleDef } from '../api/types';
 
@@ -28,7 +46,10 @@ const modalVisible = ref(false);
 const modalTitle = ref('创建框架');
 const editingId = ref<null | number>(null);
 const formState = reactive({
-  frameName: '', frameCode: '', frameVersion: '', description: '',
+  frameName: '',
+  frameCode: '',
+  frameVersion: '',
+  description: '',
 });
 
 // Service defs modal
@@ -41,9 +62,19 @@ const currentFrameworkId = ref<number>(0);
 const serviceColumns = [
   { title: '服务名称', dataIndex: 'serviceName', key: 'serviceName' },
   { title: '服务标签', dataIndex: 'serviceLabel', key: 'serviceLabel' },
-  { title: '版本', dataIndex: 'serviceVersion', key: 'serviceVersion', width: 100 },
+  {
+    title: '版本',
+    dataIndex: 'serviceVersion',
+    key: 'serviceVersion',
+    width: 100,
+  },
   { title: '排序', dataIndex: 'sortOrder', key: 'sortOrder', width: 80 },
-  { title: '描述', dataIndex: 'description', key: 'description', ellipsis: true },
+  {
+    title: '描述',
+    dataIndex: 'description',
+    key: 'description',
+    ellipsis: true,
+  },
   { title: '操作', key: 'action', width: 200 },
 ];
 
@@ -52,8 +83,12 @@ const serviceFormVisible = ref(false);
 const serviceFormTitle = ref('添加服务定义');
 const editingServiceId = ref<null | number>(null);
 const serviceForm = reactive({
-  serviceName: '', serviceLabel: '', serviceVersion: '',
-  description: '', packageName: '', sortOrder: 0,
+  serviceName: '',
+  serviceLabel: '',
+  serviceVersion: '',
+  description: '',
+  packageName: '',
+  sortOrder: 0,
 });
 
 // Role defs modal
@@ -77,8 +112,11 @@ const roleFormVisible = ref(false);
 const roleFormTitle = ref('添加角色定义');
 const editingRoleId = ref<null | number>(null);
 const roleForm = reactive({
-  roleName: '', roleType: 'MASTER', cardinality: '1',
-  jmxPort: 0, logFile: '',
+  roleName: '',
+  roleType: 'MASTER',
+  cardinality: '1',
+  jmxPort: 0,
+  logFile: '',
 });
 
 // --- Framework CRUD ---
@@ -235,7 +273,10 @@ async function showRoleDefs(record: ServiceDef) {
 async function fetchRoleDefs() {
   roleLoading.value = true;
   try {
-    const res = await getRoleDefs(currentFrameworkId.value, currentServiceDefId.value);
+    const res = await getRoleDefs(
+      currentFrameworkId.value,
+      currentServiceDefId.value,
+    );
     roleDefs.value = Array.isArray(res) ? res : [];
   } catch (e: any) {
     message.error('获取角色定义失败: ' + e.message);
@@ -272,7 +313,9 @@ async function handleRoleSubmit() {
       await updateRoleDef(editingRoleId.value, { ...roleForm });
       message.success('更新成功');
     } else {
-      await createRoleDef(currentFrameworkId.value, currentServiceDefId.value, { ...roleForm });
+      await createRoleDef(currentFrameworkId.value, currentServiceDefId.value, {
+        ...roleForm,
+      });
       message.success('创建成功');
     }
     roleFormVisible.value = false;
@@ -305,183 +348,271 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="框架管理">
-      <template #extra>
-        <Space>
-          <Button @click="fetchFrameworks">刷新</Button>
-          <Button type="primary" @click="showCreate">创建框架</Button>
-        </Space>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="frameworks"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 1000 }"
-        size="small"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showServiceDefs(_record as Framework)">
-                服务定义
-              </Button>
-              <Button type="link" size="small" @click="showEdit(_record as Framework)">
-                编辑
-              </Button>
-              <Button type="link" size="small" danger @click="handleDelete(_record as Framework)">
-                删除
-              </Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="框架管理"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/SVM/framework/list"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Space>
+            <Button @click="fetchFrameworks">刷新</Button>
+            <Button type="primary" @click="showCreate">创建框架</Button>
+          </Space>
         </template>
-      </Table>
-    </Card>
-
-    <!-- Create/Edit Framework Modal -->
-    <Modal
-      v-model:open="modalVisible"
-      :title="modalTitle"
-      @ok="handleSubmit"
-      :destroy-on-close="true"
-    >
-      <Form layout="vertical">
-        <FormItem label="框架名称" required>
-          <Input v-model:value="formState.frameName" placeholder="如: Hadoop" />
-        </FormItem>
-        <FormItem label="框架编码" required>
-          <Input v-model:value="formState.frameCode" placeholder="如: HADOOP" :disabled="!!editingId" />
-        </FormItem>
-        <FormItem label="版本" required>
-          <Input v-model:value="formState.frameVersion" placeholder="如: 3.3.6" />
-        </FormItem>
-        <FormItem label="描述">
-          <Textarea v-model:value="formState.description" :rows="3" />
-        </FormItem>
-      </Form>
-    </Modal>
-
-    <!-- Service Defs Modal -->
-    <Modal
-      v-model:open="serviceModalVisible"
-      :title="serviceModalTitle"
-      :footer="null"
-      width="900px"
-    >
-      <div style="margin-bottom: 12px; text-align: right">
-        <Button type="primary" size="small" @click="showCreateService">添加服务定义</Button>
-      </div>
-      <Table
-        :columns="serviceColumns"
-        :data-source="serviceDefs"
-        :loading="serviceLoading"
-        row-key="id"
-        size="small"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showRoleDefs(_record as ServiceDef)">
-                角色
-              </Button>
-              <Button type="link" size="small" @click="showEditService(_record as ServiceDef)">
-                编辑
-              </Button>
-              <Button type="link" size="small" danger @click="handleDeleteService(_record as ServiceDef)">
-                删除
-              </Button>
-            </Space>
+        <Table
+          :columns="columns"
+          :data-source="frameworks"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 1000 }"
+          size="small"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showServiceDefs(_record as Framework)"
+                >
+                  服务定义
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showEdit(_record as Framework)"
+                >
+                  编辑
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(_record as Framework)"
+                >
+                  删除
+                </Button>
+              </Space>
+            </template>
           </template>
-        </template>
-      </Table>
-    </Modal>
+        </Table>
+      </Card>
 
-    <!-- Service Def Form Modal -->
-    <Modal
-      v-model:open="serviceFormVisible"
-      :title="serviceFormTitle"
-      @ok="handleServiceSubmit"
-      :destroy-on-close="true"
-    >
-      <Form layout="vertical">
-        <FormItem label="服务名称" required>
-          <Input v-model:value="serviceForm.serviceName" placeholder="如: HDFS" />
-        </FormItem>
-        <FormItem label="服务标签" required>
-          <Input v-model:value="serviceForm.serviceLabel" placeholder="如: Hadoop分布式文件系统" />
-        </FormItem>
-        <FormItem label="版本">
-          <Input v-model:value="serviceForm.serviceVersion" placeholder="如: 3.3.6" />
-        </FormItem>
-        <FormItem label="包名">
-          <Input v-model:value="serviceForm.packageName" placeholder="如: hadoop-3.3.6.tar.gz" />
-        </FormItem>
-        <FormItem label="排序">
-          <InputNumber v-model:value="serviceForm.sortOrder" :min="0" style="width: 100%" />
-        </FormItem>
-        <FormItem label="描述">
-          <Textarea v-model:value="serviceForm.description" :rows="3" />
-        </FormItem>
-      </Form>
-    </Modal>
-
-    <!-- Role Defs Modal -->
-    <Modal
-      v-model:open="roleModalVisible"
-      :title="roleModalTitle"
-      :footer="null"
-      width="850px"
-    >
-      <div style="margin-bottom: 12px; text-align: right">
-        <Button type="primary" size="small" @click="showCreateRole">添加角色定义</Button>
-      </div>
-      <Table
-        :columns="roleColumns"
-        :data-source="roleDefs"
-        :loading="roleLoading"
-        row-key="id"
-        size="small"
+      <!-- Create/Edit Framework Modal -->
+      <Modal
+        v-model:open="modalVisible"
+        :title="modalTitle"
+        @ok="handleSubmit"
+        :destroy-on-close="true"
       >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showEditRole(_record as RoleDef)">
-                编辑
-              </Button>
-              <Button type="link" size="small" danger @click="handleDeleteRole(_record as RoleDef)">
-                删除
-              </Button>
-            </Space>
-          </template>
-        </template>
-      </Table>
-    </Modal>
+        <Form layout="vertical">
+          <FormItem label="框架名称" required>
+            <Input
+              v-model:value="formState.frameName"
+              placeholder="如: Hadoop"
+            />
+          </FormItem>
+          <FormItem label="框架编码" required>
+            <Input
+              v-model:value="formState.frameCode"
+              placeholder="如: HADOOP"
+              :disabled="!!editingId"
+            />
+          </FormItem>
+          <FormItem label="版本" required>
+            <Input
+              v-model:value="formState.frameVersion"
+              placeholder="如: 3.3.6"
+            />
+          </FormItem>
+          <FormItem label="描述">
+            <Textarea v-model:value="formState.description" :rows="3" />
+          </FormItem>
+        </Form>
+      </Modal>
 
-    <!-- Role Def Form Modal -->
-    <Modal
-      v-model:open="roleFormVisible"
-      :title="roleFormTitle"
-      @ok="handleRoleSubmit"
-      :destroy-on-close="true"
-    >
-      <Form layout="vertical">
-        <FormItem label="角色名称" required>
-          <Input v-model:value="roleForm.roleName" placeholder="如: NameNode" />
-        </FormItem>
-        <FormItem label="角色类型" required>
-          <Input v-model:value="roleForm.roleType" placeholder="如: MASTER / SLAVE / CLIENT" />
-        </FormItem>
-        <FormItem label="基数">
-          <Input v-model:value="roleForm.cardinality" placeholder="如: 1 或 1+" />
-        </FormItem>
-        <FormItem label="JMX端口">
-          <InputNumber v-model:value="roleForm.jmxPort" :min="0" style="width: 100%" />
-        </FormItem>
-        <FormItem label="日志文件">
-          <Input v-model:value="roleForm.logFile" placeholder="如: /var/log/hadoop/namenode.log" />
-        </FormItem>
-      </Form>
-    </Modal>
-  </div>
+      <!-- Service Defs Modal -->
+      <Modal
+        v-model:open="serviceModalVisible"
+        :title="serviceModalTitle"
+        :footer="null"
+        width="900px"
+      >
+        <div style="margin-bottom: 12px; text-align: right">
+          <Button type="primary" size="small" @click="showCreateService"
+            >添加服务定义</Button
+          >
+        </div>
+        <Table
+          :columns="serviceColumns"
+          :data-source="serviceDefs"
+          :loading="serviceLoading"
+          row-key="id"
+          size="small"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showRoleDefs(_record as ServiceDef)"
+                >
+                  角色
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showEditService(_record as ServiceDef)"
+                >
+                  编辑
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDeleteService(_record as ServiceDef)"
+                >
+                  删除
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Modal>
+
+      <!-- Service Def Form Modal -->
+      <Modal
+        v-model:open="serviceFormVisible"
+        :title="serviceFormTitle"
+        @ok="handleServiceSubmit"
+        :destroy-on-close="true"
+      >
+        <Form layout="vertical">
+          <FormItem label="服务名称" required>
+            <Input
+              v-model:value="serviceForm.serviceName"
+              placeholder="如: HDFS"
+            />
+          </FormItem>
+          <FormItem label="服务标签" required>
+            <Input
+              v-model:value="serviceForm.serviceLabel"
+              placeholder="如: Hadoop分布式文件系统"
+            />
+          </FormItem>
+          <FormItem label="版本">
+            <Input
+              v-model:value="serviceForm.serviceVersion"
+              placeholder="如: 3.3.6"
+            />
+          </FormItem>
+          <FormItem label="包名">
+            <Input
+              v-model:value="serviceForm.packageName"
+              placeholder="如: hadoop-3.3.6.tar.gz"
+            />
+          </FormItem>
+          <FormItem label="排序">
+            <InputNumber
+              v-model:value="serviceForm.sortOrder"
+              :min="0"
+              style="width: 100%"
+            />
+          </FormItem>
+          <FormItem label="描述">
+            <Textarea v-model:value="serviceForm.description" :rows="3" />
+          </FormItem>
+        </Form>
+      </Modal>
+
+      <!-- Role Defs Modal -->
+      <Modal
+        v-model:open="roleModalVisible"
+        :title="roleModalTitle"
+        :footer="null"
+        width="850px"
+      >
+        <div style="margin-bottom: 12px; text-align: right">
+          <Button type="primary" size="small" @click="showCreateRole"
+            >添加角色定义</Button
+          >
+        </div>
+        <Table
+          :columns="roleColumns"
+          :data-source="roleDefs"
+          :loading="roleLoading"
+          row-key="id"
+          size="small"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showEditRole(_record as RoleDef)"
+                >
+                  编辑
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDeleteRole(_record as RoleDef)"
+                >
+                  删除
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Modal>
+
+      <!-- Role Def Form Modal -->
+      <Modal
+        v-model:open="roleFormVisible"
+        :title="roleFormTitle"
+        @ok="handleRoleSubmit"
+        :destroy-on-close="true"
+      >
+        <Form layout="vertical">
+          <FormItem label="角色名称" required>
+            <Input
+              v-model:value="roleForm.roleName"
+              placeholder="如: NameNode"
+            />
+          </FormItem>
+          <FormItem label="角色类型" required>
+            <Input
+              v-model:value="roleForm.roleType"
+              placeholder="如: MASTER / SLAVE / CLIENT"
+            />
+          </FormItem>
+          <FormItem label="基数">
+            <Input
+              v-model:value="roleForm.cardinality"
+              placeholder="如: 1 或 1+"
+            />
+          </FormItem>
+          <FormItem label="JMX端口">
+            <InputNumber
+              v-model:value="roleForm.jmxPort"
+              :min="0"
+              style="width: 100%"
+            />
+          </FormItem>
+          <FormItem label="日志文件">
+            <Input
+              v-model:value="roleForm.logFile"
+              placeholder="如: /var/log/hadoop/namenode.log"
+            />
+          </FormItem>
+        </Form>
+      </Modal>
+    </div>
+  </BusinessPage>
 </template>

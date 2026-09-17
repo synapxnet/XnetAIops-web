@@ -1,7 +1,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { Card, Form, FormItem, Button, Space, Alert, message } from 'ant-design-vue';
+import {
+  Card,
+  Form,
+  FormItem,
+  Button,
+  Space,
+  Alert,
+  message,
+} from 'ant-design-vue';
 import { createService } from '../api/service';
 import YamlEditor from '../components/YamlEditor.vue';
 
@@ -28,35 +36,60 @@ spec:
 });
 
 async function handleSubmit() {
-  if (!form.value.yaml.trim()) { message.warning('请输入YAML内容'); return; }
+  if (!form.value.yaml.trim()) {
+    message.warning('请输入YAML内容');
+    return;
+  }
   submitting.value = true;
   try {
     await createService(clusterId, namespace, form.value.yaml);
     message.success('创建成功');
-    router.push(`/K8S/service/list?clusterId=${clusterId}&namespace=${namespace}`);
-  } catch (e: any) { message.error('创建失败: ' + e.message); }
-  finally { submitting.value = false; }
+    router.push(
+      `/K8S/service/list?clusterId=${clusterId}&namespace=${namespace}`,
+    );
+  } catch (e: any) {
+    message.error('创建失败: ' + e.message);
+  } finally {
+    submitting.value = false;
+  }
 }
 
-function goBack() { router.push('/K8S/service/list'); }
+function goBack() {
+  router.push('/K8S/service/list');
+}
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="创建 Service">
-      <template #extra><Button @click="goBack">返回</Button></template>
-      <Alert type="info" message="请填写YAML格式的Service定义" show-icon class="mb-4" style="max-width:900px" />
-      <Form layout="vertical" :model="form" style="max-width:900px">
-        <FormItem label="YAML定义" required>
-          <YamlEditor v-model="form.yaml" height="400px" />
-        </FormItem>
-        <FormItem>
-          <Space>
-            <Button type="primary" :loading="submitting" @click="handleSubmit">创建</Button>
-            <Button @click="goBack">取消</Button>
-          </Space>
-        </FormItem>
-      </Form>
-    </Card>
-  </div>
+  <BusinessPage
+    title="创建服务"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/K8S/service/create"
+  >
+    <div class="p-4">
+      <Card title="创建 Service">
+        <template #extra><Button @click="goBack">返回</Button></template>
+        <Alert
+          type="info"
+          message="请填写YAML格式的Service定义"
+          show-icon
+          class="mb-4"
+          style="max-width: 900px"
+        />
+        <Form layout="vertical" :model="form" style="max-width: 900px">
+          <FormItem label="YAML定义" required>
+            <YamlEditor v-model="form.yaml" height="400px" />
+          </FormItem>
+          <FormItem>
+            <Space>
+              <Button type="primary" :loading="submitting" @click="handleSubmit"
+                >创建</Button
+              >
+              <Button @click="goBack">取消</Button>
+            </Space>
+          </FormItem>
+        </Form>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

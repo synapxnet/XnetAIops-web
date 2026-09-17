@@ -18,6 +18,8 @@ import { message } from 'ant-design-vue';
 import { useAuthStore } from '#/store';
 
 import { refreshTokenApi } from './core';
+import { normalizeRequestFailure } from './public-error';
+import { publishPageRequest } from '../design/request-state';
 
 const {
   apiURL,
@@ -56,6 +58,8 @@ function appendOrganizationScopeHeaders(headers: Record<string, any>) {
   headers['X-Team-Uid'] = scope.teamUid;
 }
 
+
+/** 建立原生业务客户端并记录页面请求边界。Create a native business client with page-scoped request boundaries. */
 function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   const client = new RequestClient({
     ...options,
@@ -91,6 +95,15 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 请求头处理
   client.addRequestInterceptor({
     fulfilled: async (config) => {
+      // 捕获发起页面，迟到错误不会污染新路由。Capture the source page so late errors cannot affect a new route.
+      (config as any).__aiopsRoute = window.location.hash.startsWith('#/')
+        ? window.location.hash.slice(1)
+        : window.location.pathname + window.location.search;
+      (config as any).__aiopsRequestKey = [
+        config.method,
+        config.baseURL,
+        config.url,
+      ].join(':');
       const accessStore = useAccessStore();
       const userStore = useUserStore();
 
@@ -101,6 +114,24 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       }
       appendOrganizationScopeHeaders(config.headers);
       return config;
+    },
+  });
+
+  // 只有相同接口重试成功才移除其错误，不掩盖其他失败。Clear only the retried API error on success without hiding other failures.
+  client.addResponseInterceptor({
+    fulfilled: (response) => {
+      const context = response.config as typeof response.config & {
+        __aiopsRoute: string;
+        __aiopsRequestKey: string;
+      };
+      if (response.data?.code === 0)
+        publishPageRequest({
+          route: context.__aiopsRoute,
+          requestKey: context.__aiopsRequestKey,
+          failed: false,
+          message: '',
+        });
+      return response;
     },
   });
 
@@ -127,9 +158,20 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 通用的错误处理
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
-      const responseData = error?.response?.data ?? {};
-      const errorMessage = responseData?.error ?? responseData?.message ?? '';
-      message.error(errorMessage || msg);
+      const visibleMessage = normalizeRequestFailure(error, msg);
+      const inlineEvidence = /\/operations-workspace(?:\/|$)/.test(error?.config?.url ?? '');
+      if (!inlineEvidence) publishPageRequest({
+        route:
+          error?.config?.__aiopsRoute ||
+          (window.location.hash.startsWith('#/')
+            ? window.location.hash.slice(1)
+            : window.location.pathname + window.location.search),
+        requestKey: error?.config?.__aiopsRequestKey || 'unknown',
+        failed: true,
+        message: visibleMessage,
+      });
+      // 登录页没有业务状态容器，由请求层提供单条反馈。 / Authentication pages have no business status container.
+      if (window.location.hash.includes('/auth/')) message.error({ content: visibleMessage, key: 'request-error' });
     }),
   );
 

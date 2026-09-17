@@ -59,7 +59,12 @@ const statusLabelMap: Record<string, string> = {
 };
 
 const columns = [
-  { title: '仓库名称', dataIndex: 'registryName', key: 'registryName', width: 180 },
+  {
+    title: '仓库名称',
+    dataIndex: 'registryName',
+    key: 'registryName',
+    width: 180,
+  },
   { title: '类型', dataIndex: 'registryType', key: 'registryType', width: 120 },
   { title: '部署方式', dataIndex: 'deployMode', key: 'deployMode', width: 100 },
   { title: '状态', dataIndex: 'status', key: 'status', width: 100 },
@@ -167,91 +172,137 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="仓库管理">
-      <template #extra>
-        <Button type="primary" @click="goCreate">创建仓库</Button>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="registries"
-        :loading="loading"
-        :pagination="{ pageSize: 20 }"
-        row-key="id"
-        :scroll="{ x: 1300 }"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'registryType'">
-            <Tag :color="typeColorMap[record.registryType] || 'default'">
-              {{ typeLabelMap[record.registryType] || record.registryType }}
-            </Tag>
-          </template>
-          <template v-else-if="column.key === 'deployMode'">
-            <Tag :color="record.deployMode === 'ssh' ? 'purple' : 'cyan'">
-              {{ record.deployMode === 'ssh' ? 'SSH' : 'K8s' }}
-            </Tag>
-          </template>
-          <template v-else-if="column.key === 'status'">
-            <Tag :color="statusColorMap[record.status] || 'default'">
-              {{ statusLabelMap[record.status] || record.status }}
-            </Tag>
-          </template>
-          <template v-else-if="column.key === 'endpoint'">
-            <a
-              v-if="record.endpoint"
-              :href="record.endpoint"
-              target="_blank"
-            >
-              {{ record.endpoint }}
-            </a>
-            <span v-else class="text-gray-400">-</span>
-          </template>
-          <template v-else-if="column.key === 'action'">
-            <Space>
-              <Button size="small" type="link" @click="goDetail(record.id)">
-                详情
-              </Button>
-              <template v-if="record.status === 'deploying' || record.status === 'uninstalling'">
-                <Button size="small" type="link" danger @click="handleCancelDeploy(record)">
-                  取消
-                </Button>
-              </template>
-              <template v-if="record.status === 'not_deployed' || record.status === 'failed'">
-                <Button size="small" type="link" @click="handleDeploy(record)">
-                  部署
-                </Button>
-              </template>
-              <template v-if="record.status === 'running'">
-                <Button size="small" type="link" @click="handleAction(record, 'stop', '停止')">
-                  停止
-                </Button>
-                <Button size="small" type="link" @click="handleAction(record, 'restart', '重启')">
-                  重启
-                </Button>
-              </template>
-              <template v-if="record.status === 'stopped'">
-                <Button size="small" type="link" @click="handleAction(record, 'start', '启动')">
-                  启动
-                </Button>
-              </template>
-              <template v-if="record.status === 'running' || record.status === 'stopped'">
-                <Button size="small" type="link" danger @click="handleAction(record, 'undeploy', '卸载')">
-                  卸载
-                </Button>
-              </template>
-              <Button
-                v-if="record.status !== 'deploying' && record.status !== 'uninstalling'"
-                size="small"
-                type="link"
-                danger
-                @click="handleDelete(record)"
-              >
-                删除
-              </Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="仓库总览"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/REG/registry/list"
+  >
+    <div class="p-4">
+      <Card title="仓库管理">
+        <template #extra>
+          <Button type="primary" @click="goCreate">创建仓库</Button>
         </template>
-      </Table>
-    </Card>
-  </div>
+        <Table
+          :columns="columns"
+          :data-source="registries"
+          :loading="loading"
+          :pagination="{ pageSize: 20 }"
+          row-key="id"
+          :scroll="{ x: 1300 }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'registryType'">
+              <Tag :color="typeColorMap[record.registryType] || 'default'">
+                {{ typeLabelMap[record.registryType] || record.registryType }}
+              </Tag>
+            </template>
+            <template v-else-if="column.key === 'deployMode'">
+              <Tag :color="record.deployMode === 'ssh' ? 'purple' : 'cyan'">
+                {{ record.deployMode === 'ssh' ? 'SSH' : 'K8s' }}
+              </Tag>
+            </template>
+            <template v-else-if="column.key === 'status'">
+              <Tag :color="statusColorMap[record.status] || 'default'">
+                {{ statusLabelMap[record.status] || record.status }}
+              </Tag>
+            </template>
+            <template v-else-if="column.key === 'endpoint'">
+              <a v-if="record.endpoint" :href="record.endpoint" target="_blank">
+                {{ record.endpoint }}
+              </a>
+              <span v-else class="text-gray-400">-</span>
+            </template>
+            <template v-else-if="column.key === 'action'">
+              <Space>
+                <Button size="small" type="link" @click="goDetail(record.id)">
+                  详情
+                </Button>
+                <template
+                  v-if="
+                    record.status === 'deploying' ||
+                    record.status === 'uninstalling'
+                  "
+                >
+                  <Button
+                    size="small"
+                    type="link"
+                    danger
+                    @click="handleCancelDeploy(record)"
+                  >
+                    取消
+                  </Button>
+                </template>
+                <template
+                  v-if="
+                    record.status === 'not_deployed' ||
+                    record.status === 'failed'
+                  "
+                >
+                  <Button
+                    size="small"
+                    type="link"
+                    @click="handleDeploy(record)"
+                  >
+                    部署
+                  </Button>
+                </template>
+                <template v-if="record.status === 'running'">
+                  <Button
+                    size="small"
+                    type="link"
+                    @click="handleAction(record, 'stop', '停止')"
+                  >
+                    停止
+                  </Button>
+                  <Button
+                    size="small"
+                    type="link"
+                    @click="handleAction(record, 'restart', '重启')"
+                  >
+                    重启
+                  </Button>
+                </template>
+                <template v-if="record.status === 'stopped'">
+                  <Button
+                    size="small"
+                    type="link"
+                    @click="handleAction(record, 'start', '启动')"
+                  >
+                    启动
+                  </Button>
+                </template>
+                <template
+                  v-if="
+                    record.status === 'running' || record.status === 'stopped'
+                  "
+                >
+                  <Button
+                    size="small"
+                    type="link"
+                    danger
+                    @click="handleAction(record, 'undeploy', '卸载')"
+                  >
+                    卸载
+                  </Button>
+                </template>
+                <Button
+                  v-if="
+                    record.status !== 'deploying' &&
+                    record.status !== 'uninstalling'
+                  "
+                  size="small"
+                  type="link"
+                  danger
+                  @click="handleDelete(record)"
+                >
+                  删除
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

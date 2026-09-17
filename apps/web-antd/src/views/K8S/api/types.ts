@@ -74,6 +74,9 @@ export interface K8sNode {
   hostname?: string;
   cpuCapacity?: string;
   memoryCapacity?: string;
+  /** 明确的内存字节数；旧服务可能省略。 / Explicit memory bytes; older services may omit this field. */
+  memoryCapacityBytes?: number;
+  memoryAllocatableBytes?: number;
   podCapacity?: string;
   osImage?: string;
   kernelVersion?: string;

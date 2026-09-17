@@ -30,8 +30,18 @@ const columns = [
   { title: '状态', dataIndex: 'status', key: 'status', width: 100 },
   { title: 'CPU', key: 'cpu', width: 100 },
   { title: '内存', key: 'memory', width: 150 },
-  { title: '容器运行时', dataIndex: 'containerRuntime', key: 'containerRuntime', width: 160 },
-  { title: 'Kubelet版本', dataIndex: 'kubeletVersion', key: 'kubeletVersion', width: 130 },
+  {
+    title: '容器运行时',
+    dataIndex: 'containerRuntime',
+    key: 'containerRuntime',
+    width: 160,
+  },
+  {
+    title: 'Kubelet版本',
+    dataIndex: 'kubeletVersion',
+    key: 'kubeletVersion',
+    width: 130,
+  },
   { title: '操作', key: 'action', width: 200, fixed: 'right' as const },
 ];
 
@@ -92,7 +102,11 @@ function handleCordon(record: K8sNode) {
   });
 }
 
-function formatMemory(memStr: string | undefined): string {
+/** 优先读取明确的字节字段，并兼容旧版 Ki 数值。 / Prefer explicit bytes and retain the legacy Ki value fallback. */
+function formatMemory(memStr: string | undefined, bytes?: number): string {
+  if (typeof bytes === 'number' && Number.isFinite(bytes) && bytes >= 0) {
+    return (bytes / 1024 ** 3).toFixed(1) + ' GiB';
+  }
   if (!memStr) return '-';
   const num = Number.parseInt(memStr, 10);
   if (Number.isNaN(num)) return memStr;
@@ -104,60 +118,91 @@ onMounted(fetchClusters);
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="节点管理">
-      <template #extra>
-        <Space>
-          <span style="color: #8c8c8c;">选择集群:</span>
-          <Select
-            :value="selectedClusterId"
-            style="width: 200px;"
-            placeholder="选择集群"
-            @change="handleClusterChange"
-          >
-            <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
-              {{ c.name }}
-              <Tag v-if="c.status === 'active'" color="green" size="small" class="ml-1">运行中</Tag>
-            </SelectOption>
-          </Select>
-          <Button @click="fetchNodes">刷新</Button>
-        </Space>
-      </template>
-
-      <Table
-        :columns="columns"
-        :data-source="nodes"
-        :loading="loading"
-        row-key="name"
-        :scroll="{ x: 1200 }"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'name'">
-            <a @click="goDetail(record)">{{ record.name }}</a>
-            <Tag v-if="record.unschedulable" color="orange" size="small" class="ml-1">不可调度</Tag>
-          </template>
-          <template v-if="column.key === 'roles'">
-            <Tag v-for="role in record.roles" :key="role" color="blue" size="small">{{ role }}</Tag>
-          </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="record.status === 'Ready' ? 'green' : 'red'">{{ record.status }}</Tag>
-          </template>
-          <template v-if="column.key === 'cpu'">
-            {{ record.cpuCapacity || '-' }} 核
-          </template>
-          <template v-if="column.key === 'memory'">
-            {{ formatMemory(record.memoryCapacity) }}
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="goDetail(record)">详情</Button>
-              <Button type="link" size="small" @click="handleCordon(record)">
-                {{ record.unschedulable ? '取消调度限制' : '设为不可调度' }}
-              </Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="节点管理"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/K8S/node/list"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Space>
+            <span style="color: #8c8c8c">选择集群:</span>
+            <Select
+              :value="selectedClusterId"
+              style="width: 200px"
+              placeholder="选择集群"
+              @change="handleClusterChange"
+            >
+              <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
+                {{ c.name }}
+                <Tag
+                  v-if="c.status === 'active'"
+                  color="green"
+                  size="small"
+                  class="ml-1"
+                  >运行中</Tag
+                >
+              </SelectOption>
+            </Select>
+            <Button @click="fetchNodes">刷新</Button>
+          </Space>
         </template>
-      </Table>
-    </Card>
-  </div>
+
+        <Table
+          :columns="columns"
+          :data-source="nodes"
+          :loading="loading"
+          row-key="name"
+          :scroll="{ x: 1200 }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'name'">
+              <a @click="goDetail(record)">{{ record.name }}</a>
+              <Tag
+                v-if="record.unschedulable"
+                color="orange"
+                size="small"
+                class="ml-1"
+                >不可调度</Tag
+              >
+            </template>
+            <template v-if="column.key === 'roles'">
+              <Tag
+                v-for="role in record.roles"
+                :key="role"
+                color="blue"
+                size="small"
+                >{{ role }}</Tag
+              >
+            </template>
+            <template v-if="column.key === 'status'">
+              <Tag :color="record.status === 'Ready' ? 'green' : 'red'">{{
+                record.status
+              }}</Tag>
+            </template>
+            <template v-if="column.key === 'cpu'">
+              {{ record.cpuCapacity || '-' }} 核
+            </template>
+            <template v-if="column.key === 'memory'">
+              {{
+                formatMemory(record.memoryCapacity, record.memoryCapacityBytes)
+              }}
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button type="link" size="small" @click="goDetail(record)"
+                  >详情</Button
+                >
+                <Button type="link" size="small" @click="handleCordon(record)">
+                  {{ record.unschedulable ? '取消调度限制' : '设为不可调度' }}
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

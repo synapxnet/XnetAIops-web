@@ -133,7 +133,10 @@ async function handleCreate() {
       jenkinsUser: createForm.value.jenkinsUser.trim(),
       jenkinsToken: createForm.value.jenkinsToken.trim(),
     };
-    if (createForm.value.clusterId !== undefined && createForm.value.clusterId !== null) {
+    if (
+      createForm.value.clusterId !== undefined &&
+      createForm.value.clusterId !== null
+    ) {
       payload.clusterId = createForm.value.clusterId;
     }
     await createDevopsProject(payload);
@@ -156,162 +159,231 @@ onMounted(fetchProjects);
 </script>
 
 <template>
-  <div class="p-4">
-    <!-- Banner -->
-    <div class="devops-banner">
-      <h1 class="devops-banner-title">DevOps 工程</h1>
-      <p class="devops-banner-desc">
-        基于 Jenkins 的持续集成与持续部署平台，管理流水线、凭证和自动化构建
-      </p>
-    </div>
+  <BusinessPage
+    title="DevOps流水线"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/K8S/devops/projects"
+  >
+    <div class="p-4">
+      <!-- Banner -->
+      <div class="devops-banner">
+        <h1 class="devops-banner-title">DevOps 工程</h1>
+        <p class="devops-banner-desc">
+          基于 Jenkins 的持续集成与持续部署平台，管理流水线、凭证和自动化构建
+        </p>
+      </div>
 
-    <!-- Toolbar -->
-    <Card class="mb-4">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <Space>
-          <Input.Search
-            v-model:value="searchText"
-            placeholder="搜索工程名称/描述"
-            style="width: 280px;"
-            allow-clear
-          />
-        </Space>
-        <Space>
-          <Button @click="fetchProjects" :loading="loading">刷新</Button>
+      <!-- Toolbar -->
+      <Card class="mb-4">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <Space>
+            <Input.Search
+              v-model:value="searchText"
+              placeholder="搜索工程名称/描述"
+              style="width: 280px"
+              allow-clear
+            />
+          </Space>
+          <Space>
+            <Button @click="fetchProjects" :loading="loading">刷新</Button>
+            <Button type="primary" @click="openCreate">创建工程</Button>
+          </Space>
+        </div>
+      </Card>
+
+      <!-- Loading -->
+      <div v-if="loading" style="text-align: center; padding: 80px 0">
+        <Spin size="large" tip="加载中..." />
+      </div>
+
+      <!-- Project Grid -->
+      <template v-else-if="filteredProjects.length > 0">
+        <Row :gutter="[16, 16]">
+          <Col :span="8" v-for="project in filteredProjects" :key="project.id">
+            <Card hoverable class="project-card" @click="goDetail(project)">
+              <!-- Header -->
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: flex-start;
+                  margin-bottom: 12px;
+                "
+              >
+                <div style="flex: 1; overflow: hidden">
+                  <div class="project-name">{{ project.name }}</div>
+                  <div class="project-desc">
+                    {{ project.description || '暂无描述' }}
+                  </div>
+                </div>
+                <Tag
+                  :color="statusColorMap[project.status] || 'default'"
+                  style="flex-shrink: 0; margin-left: 8px"
+                >
+                  {{
+                    statusLabelMap[project.status] || project.status || '未知'
+                  }}
+                </Tag>
+              </div>
+
+              <!-- Metrics -->
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 8px;
+                  margin-bottom: 12px;
+                "
+              >
+                <div class="card-metric">
+                  <div class="card-metric-label">Jenkins URL</div>
+                  <div class="card-metric-value" style="font-size: 12px">
+                    <Tag
+                      v-if="project.jenkinsUrl"
+                      color="blue"
+                      style="
+                        max-width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      "
+                    >
+                      {{ project.jenkinsUrl }}
+                    </Tag>
+                    <span v-else style="color: #bfbfbf">未配置</span>
+                  </div>
+                </div>
+                <div class="card-metric">
+                  <div class="card-metric-label">流水线数量</div>
+                  <div class="card-metric-value">
+                    <span
+                      style="font-size: 20px; font-weight: 600; color: #1890ff"
+                      >{{ project.pipelineCount ?? 0 }}</span
+                    >
+                    <span
+                      style="font-size: 12px; color: #8c8c8c; margin-left: 4px"
+                      >条</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer -->
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  border-top: 1px solid hsl(var(--border));
+                  padding-top: 8px;
+                "
+              >
+                <span style="font-size: 12px; color: #8c8c8c">{{
+                  formatTime(project.createdAt)
+                }}</span>
+                <Space>
+                  <Button
+                    type="link"
+                    size="small"
+                    @click.stop="goDetail(project)"
+                    >管理</Button
+                  >
+                  <Button
+                    type="link"
+                    size="small"
+                    danger
+                    @click.stop="handleDelete(project)"
+                    >删除</Button
+                  >
+                </Space>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </template>
+
+      <!-- Empty State -->
+      <div v-else class="empty-state">
+        <Empty description="暂无 DevOps 工程">
           <Button type="primary" @click="openCreate">创建工程</Button>
-        </Space>
+        </Empty>
       </div>
-    </Card>
 
-    <!-- Loading -->
-    <div v-if="loading" style="text-align: center; padding: 80px 0;">
-      <Spin size="large" tip="加载中..." />
+      <!-- Create Modal -->
+      <Modal
+        v-model:open="createVisible"
+        title="创建 DevOps 工程"
+        :confirm-loading="createLoading"
+        ok-text="创建"
+        cancel-text="取消"
+        @ok="handleCreate"
+        :width="560"
+      >
+        <div style="padding: 16px 0">
+          <div class="form-item">
+            <label class="form-label">
+              <span style="color: #ff4d4f">*</span> 工程名称
+            </label>
+            <Input
+              v-model:value="createForm.name"
+              placeholder="请输入工程名称"
+              :maxlength="64"
+            />
+          </div>
+          <div class="form-item">
+            <label class="form-label">描述</label>
+            <Input.TextArea
+              v-model:value="createForm.description"
+              placeholder="请输入工程描述（可选）"
+              :rows="2"
+              :maxlength="256"
+            />
+          </div>
+          <div class="form-item">
+            <label class="form-label">
+              <span style="color: #ff4d4f">*</span> Jenkins URL
+            </label>
+            <Input
+              v-model:value="createForm.jenkinsUrl"
+              placeholder="例如: http://192.168.1.100:8080"
+            />
+          </div>
+          <div class="form-item">
+            <label class="form-label">
+              <span style="color: #ff4d4f">*</span> Jenkins 用户名
+            </label>
+            <Input
+              v-model:value="createForm.jenkinsUser"
+              placeholder="请输入 Jenkins 用户名"
+            />
+          </div>
+          <div class="form-item">
+            <label class="form-label">
+              <span style="color: #ff4d4f">*</span> Jenkins Token
+            </label>
+            <Input.Password
+              v-model:value="createForm.jenkinsToken"
+              placeholder="请输入 Jenkins API Token"
+            />
+          </div>
+          <div class="form-item">
+            <label class="form-label">关联集群 ID</label>
+            <Input
+              v-model:value="createForm.clusterId"
+              placeholder="关联 K8s 集群 ID（可选）"
+              type="number"
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
-
-    <!-- Project Grid -->
-    <template v-else-if="filteredProjects.length > 0">
-      <Row :gutter="[16, 16]">
-        <Col :span="8" v-for="project in filteredProjects" :key="project.id">
-          <Card hoverable class="project-card" @click="goDetail(project)">
-            <!-- Header -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-              <div style="flex: 1; overflow: hidden;">
-                <div class="project-name">{{ project.name }}</div>
-                <div class="project-desc">{{ project.description || '暂无描述' }}</div>
-              </div>
-              <Tag :color="statusColorMap[project.status] || 'default'" style="flex-shrink: 0; margin-left: 8px;">
-                {{ statusLabelMap[project.status] || project.status || '未知' }}
-              </Tag>
-            </div>
-
-            <!-- Metrics -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
-              <div class="card-metric">
-                <div class="card-metric-label">Jenkins URL</div>
-                <div class="card-metric-value" style="font-size: 12px;">
-                  <Tag v-if="project.jenkinsUrl" color="blue" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis;">
-                    {{ project.jenkinsUrl }}
-                  </Tag>
-                  <span v-else style="color: #bfbfbf;">未配置</span>
-                </div>
-              </div>
-              <div class="card-metric">
-                <div class="card-metric-label">流水线数量</div>
-                <div class="card-metric-value">
-                  <span style="font-size: 20px; font-weight: 600; color: #1890ff;">{{ project.pipelineCount ?? 0 }}</span>
-                  <span style="font-size: 12px; color: #8c8c8c; margin-left: 4px;">条</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer -->
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid hsl(var(--border)); padding-top: 8px;">
-              <span style="font-size: 12px; color: #8c8c8c;">{{ formatTime(project.createdAt) }}</span>
-              <Space>
-                <Button type="link" size="small" @click.stop="goDetail(project)">管理</Button>
-                <Button type="link" size="small" danger @click.stop="handleDelete(project)">删除</Button>
-              </Space>
-            </div>
-          </Card>
-        </Col>
-      </Row>
-    </template>
-
-    <!-- Empty State -->
-    <div v-else class="empty-state">
-      <Empty description="暂无 DevOps 工程">
-        <Button type="primary" @click="openCreate">创建工程</Button>
-      </Empty>
-    </div>
-
-    <!-- Create Modal -->
-    <Modal
-      v-model:open="createVisible"
-      title="创建 DevOps 工程"
-      :confirm-loading="createLoading"
-      ok-text="创建"
-      cancel-text="取消"
-      @ok="handleCreate"
-      :width="560"
-    >
-      <div style="padding: 16px 0;">
-        <div class="form-item">
-          <label class="form-label">
-            <span style="color: #ff4d4f;">*</span> 工程名称
-          </label>
-          <Input
-            v-model:value="createForm.name"
-            placeholder="请输入工程名称"
-            :maxlength="64"
-          />
-        </div>
-        <div class="form-item">
-          <label class="form-label">描述</label>
-          <Input.TextArea
-            v-model:value="createForm.description"
-            placeholder="请输入工程描述（可选）"
-            :rows="2"
-            :maxlength="256"
-          />
-        </div>
-        <div class="form-item">
-          <label class="form-label">
-            <span style="color: #ff4d4f;">*</span> Jenkins URL
-          </label>
-          <Input
-            v-model:value="createForm.jenkinsUrl"
-            placeholder="例如: http://192.168.1.100:8080"
-          />
-        </div>
-        <div class="form-item">
-          <label class="form-label">
-            <span style="color: #ff4d4f;">*</span> Jenkins 用户名
-          </label>
-          <Input
-            v-model:value="createForm.jenkinsUser"
-            placeholder="请输入 Jenkins 用户名"
-          />
-        </div>
-        <div class="form-item">
-          <label class="form-label">
-            <span style="color: #ff4d4f;">*</span> Jenkins Token
-          </label>
-          <Input.Password
-            v-model:value="createForm.jenkinsToken"
-            placeholder="请输入 Jenkins API Token"
-          />
-        </div>
-        <div class="form-item">
-          <label class="form-label">关联集群 ID</label>
-          <Input
-            v-model:value="createForm.clusterId"
-            placeholder="关联 K8s 集群 ID（可选）"
-            type="number"
-          />
-        </div>
-      </div>
-    </Modal>
-  </div>
+  </BusinessPage>
 </template>
 
 <style scoped>

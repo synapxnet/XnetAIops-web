@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Card, Table, Button, Tag, Space, Modal, message } from 'ant-design-vue';
+import { Table, Button, Tag, Space, Modal, message } from 'ant-design-vue';
 import { getClusters, deleteCluster } from '../api/cluster';
 import type { Cluster } from '../api/types';
 
@@ -12,10 +12,21 @@ const clusters = ref<Cluster[]>([]);
 const columns = [
   { title: '集群名称', dataIndex: 'clusterName', key: 'clusterName' },
   { title: '集群编码', dataIndex: 'clusterCode', key: 'clusterCode' },
-  { title: '类型', dataIndex: 'clusterType', key: 'clusterType', width: 100 },
+  {
+    title: '类型',
+    dataIndex: 'clusterType',
+    key: 'clusterType',
+    width: 136,
+    className: 'aiops-cluster-type-column',
+  },
   { title: '状态', dataIndex: 'status', key: 'status', width: 120 },
   { title: '主机数', dataIndex: 'totalHosts', key: 'totalHosts', width: 80 },
-  { title: '运行服务', dataIndex: 'runningServices', key: 'runningServices', width: 100 },
+  {
+    title: '运行服务',
+    dataIndex: 'runningServices',
+    key: 'runningServices',
+    width: 100,
+  },
   { title: '创建时间', dataIndex: 'createdAt', key: 'createdAt', width: 180 },
   { title: '操作', key: 'action', width: 200, fixed: 'right' as const },
 ];
@@ -71,32 +82,59 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="集群列表">
-      <template #extra>
-        <Button type="primary" @click="goCreate">创建集群</Button>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="clusters"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 1000 }"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[record.status] || 'default'">
-              {{ record.status }}
-            </Tag>
+  <BusinessPage
+    title="集群列表"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/CLM/cluster/list"
+  >
+    <div class="p-4">
+      <section class="aiops-list-workspace">
+        <header class="aiops-page-toolbar">
+          <h2>集群列表</h2>
+          <Space class="aiops-toolbar-actions">
+            <Button @click="fetchClusters">刷新</Button>
+            <Button type="primary" @click="goCreate">创建集群</Button>
+          </Space>
+        </header>
+        <Table
+          :columns="columns"
+          :data-source="clusters"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 1000 }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'status'">
+              <Tag :color="statusColorMap[record.status] || 'default'">
+                {{ record.status }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button type="link" size="small" @click="goDetail(record)"
+                  >详情</Button
+                >
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(record)"
+                  >删除</Button
+                >
+              </Space>
+            </template>
           </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="goDetail(record)">详情</Button>
-              <Button type="link" size="small" danger @click="handleDelete(record)">删除</Button>
-            </Space>
-          </template>
-        </template>
-      </Table>
-    </Card>
-  </div>
+        </Table>
+      </section>
+    </div>
+  </BusinessPage>
 </template>
+
+<style scoped>
+/* 类型标识保持完整，避免中等窗口宽度下拆词。 Keep type identifiers intact at medium window widths. */
+:deep(.aiops-cluster-type-column) {
+  min-width: 136px;
+  white-space: nowrap;
+}
+</style>

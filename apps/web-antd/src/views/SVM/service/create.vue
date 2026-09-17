@@ -2,8 +2,18 @@
 import { ref, onMounted, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import {
-  Card, Steps, Step, Button, Space, Form, FormItem, Select, SelectOption,
-  Table, Tag, message,
+  Card,
+  Steps,
+  Step,
+  Button,
+  Space,
+  Form,
+  FormItem,
+  Select,
+  SelectOption,
+  Table,
+  Tag,
+  message,
 } from 'ant-design-vue';
 import { getClusters } from '../../CLM/api/cluster';
 import { getFrameworks, getServiceDefs, getRoleDefs } from '../api/framework';
@@ -37,12 +47,16 @@ const submitting = ref(false);
 
 const canNext = computed(() => {
   if (currentStep.value === 0) {
-    return formState.clusterId && formState.frameworkId && formState.serviceDefId;
+    return (
+      formState.clusterId && formState.frameworkId && formState.serviceDefId
+    );
   }
   if (currentStep.value === 1) {
     // All roles must have hosts assigned
-    return roleDefs.value.length > 0 &&
-      roleDefs.value.every(r => roleHostAssignments.value[r.id]);
+    return (
+      roleDefs.value.length > 0 &&
+      roleDefs.value.every((r) => roleHostAssignments.value[r.id])
+    );
   }
   return true;
 });
@@ -51,14 +65,18 @@ async function fetchClusters() {
   try {
     const res = await getClusters();
     clusters.value = Array.isArray(res) ? res : [];
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 async function fetchFrameworks() {
   try {
     const res = await getFrameworks();
     frameworks.value = Array.isArray(res) ? res : [];
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 async function onFrameworkChange(val: number) {
@@ -69,19 +87,25 @@ async function onFrameworkChange(val: number) {
   try {
     const res = await getServiceDefs(val);
     serviceDefs.value = Array.isArray(res) ? res : [];
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 async function onServiceDefChange(val: number) {
   formState.serviceDefId = val;
-  selectedServiceDef.value = serviceDefs.value.find(s => s.id === val) || null;
+  selectedServiceDef.value =
+    serviceDefs.value.find((s) => s.id === val) || null;
 }
 
 async function loadStep2Data() {
   // Load role defs for selected service
   if (!formState.frameworkId || !formState.serviceDefId) return;
   try {
-    const res = await getRoleDefs(formState.frameworkId, formState.serviceDefId);
+    const res = await getRoleDefs(
+      formState.frameworkId,
+      formState.serviceDefId,
+    );
     roleDefs.value = Array.isArray(res) ? res : [];
     // Reset assignments
     roleHostAssignments.value = {};
@@ -111,12 +135,17 @@ function prevStep() {
 
 function getHostName(hostId: number | undefined) {
   if (!hostId) return '-';
-  const h = hosts.value.find(x => x.id === hostId);
+  const h = hosts.value.find((x) => x.id === hostId);
   return h ? `${h.hostname} (${h.ipAddress})` : String(hostId);
 }
 
 async function handleSubmit() {
-  if (!formState.clusterId || !formState.serviceDefId || !selectedServiceDef.value) return;
+  if (
+    !formState.clusterId ||
+    !formState.serviceDefId ||
+    !selectedServiceDef.value
+  )
+    return;
 
   submitting.value = true;
   try {
@@ -141,7 +170,7 @@ async function handleSubmit() {
     for (const roleDef of roleDefs.value) {
       const hostId = roleHostAssignments.value[roleDef.id];
       if (!hostId) continue;
-      const host = hosts.value.find(h => h.id === hostId);
+      const host = hosts.value.find((h) => h.id === hostId);
       await addRoleInstance(serviceInstanceId, {
         roleDefId: roleDef.id,
         roleName: roleDef.roleName,
@@ -173,104 +202,75 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card>
-      <template #title>
-        <Space>
-          <Button size="small" @click="goBack">返回</Button>
-          <span>创建服务</span>
-        </Space>
-      </template>
+  <BusinessPage
+    title="创建服务"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/SVM/service/create"
+  >
+    <div class="p-4">
+      <Card>
+        <template #title>
+          <Space>
+            <Button size="small" @click="goBack">返回</Button>
+            <span>创建服务</span>
+          </Space>
+        </template>
 
-      <Steps :current="currentStep" style="margin-bottom: 24px">
-        <Step title="选择服务" />
-        <Step title="分配角色" />
-        <Step title="确认创建" />
-      </Steps>
+        <Steps :current="currentStep" style="margin-bottom: 24px">
+          <Step title="选择服务" />
+          <Step title="分配角色" />
+          <Step title="确认创建" />
+        </Steps>
 
-      <!-- Step 1: Select cluster, framework, service def -->
-      <div v-if="currentStep === 0">
-        <Form layout="vertical" style="max-width: 500px">
-          <FormItem label="选择集群" required>
-            <Select
-              v-model:value="formState.clusterId"
-              placeholder="请选择集群"
-              style="width: 100%"
-            >
-              <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
-                {{ c.clusterName }}
-              </SelectOption>
-            </Select>
-          </FormItem>
-          <FormItem label="选择框架" required>
-            <Select
-              :value="formState.frameworkId"
-              placeholder="请选择框架"
-              style="width: 100%"
-              @change="onFrameworkChange"
-            >
-              <SelectOption v-for="f in frameworks" :key="f.id" :value="f.id">
-                {{ f.frameName }} ({{ f.frameVersion }})
-              </SelectOption>
-            </Select>
-          </FormItem>
-          <FormItem label="选择服务" required>
-            <Select
-              :value="formState.serviceDefId"
-              placeholder="请先选择框架"
-              style="width: 100%"
-              :disabled="!formState.frameworkId"
-              @change="onServiceDefChange"
-            >
-              <SelectOption v-for="s in serviceDefs" :key="s.id" :value="s.id">
-                {{ s.serviceName }} - {{ s.serviceLabel }}
-              </SelectOption>
-            </Select>
-          </FormItem>
-        </Form>
-      </div>
-
-      <!-- Step 2: Assign hosts to roles -->
-      <div v-if="currentStep === 1">
-        <Table
-          :data-source="roleDefs"
-          row-key="id"
-          size="small"
-          :pagination="false"
-          :columns="[
-            { title: '角色名称', dataIndex: 'roleName', key: 'roleName' },
-            { title: '角色类型', dataIndex: 'roleType', key: 'roleType', width: 100 },
-            { title: '基数', dataIndex: 'cardinality', key: 'cardinality', width: 80 },
-            { title: '分配主机', key: 'host', width: 300 },
-          ]"
-        >
-          <template #bodyCell="{ column, record: _record }">
-            <template v-if="column.key === 'host'">
+        <!-- Step 1: Select cluster, framework, service def -->
+        <div v-if="currentStep === 0">
+          <Form layout="vertical" style="max-width: 500px">
+            <FormItem label="选择集群" required>
               <Select
-                v-model:value="roleHostAssignments[(_record as RoleDef).id]"
-                placeholder="选择主机"
+                v-model:value="formState.clusterId"
+                placeholder="请选择集群"
                 style="width: 100%"
               >
-                <SelectOption v-for="h in hosts" :key="h.id" :value="h.id">
-                  {{ h.hostname }} ({{ h.ipAddress }})
+                <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
+                  {{ c.clusterName }}
                 </SelectOption>
               </Select>
-            </template>
-          </template>
-        </Table>
-        <div v-if="hosts.length === 0" style="color: hsl(var(--muted-foreground)); margin-top: 8px">
-          该集群下暂无主机，请先在主机管理中添加主机。
+            </FormItem>
+            <FormItem label="选择框架" required>
+              <Select
+                :value="formState.frameworkId"
+                placeholder="请选择框架"
+                style="width: 100%"
+                @change="onFrameworkChange"
+              >
+                <SelectOption v-for="f in frameworks" :key="f.id" :value="f.id">
+                  {{ f.frameName }} ({{ f.frameVersion }})
+                </SelectOption>
+              </Select>
+            </FormItem>
+            <FormItem label="选择服务" required>
+              <Select
+                :value="formState.serviceDefId"
+                placeholder="请先选择框架"
+                style="width: 100%"
+                :disabled="!formState.frameworkId"
+                @change="onServiceDefChange"
+              >
+                <SelectOption
+                  v-for="s in serviceDefs"
+                  :key="s.id"
+                  :value="s.id"
+                >
+                  {{ s.serviceName }} - {{ s.serviceLabel }}
+                </SelectOption>
+              </Select>
+            </FormItem>
+          </Form>
         </div>
-      </div>
 
-      <!-- Step 3: Review -->
-      <div v-if="currentStep === 2">
-        <Card title="服务信息" size="small" style="margin-bottom: 16px">
-          <p><strong>集群：</strong>{{ clusters.find(c => c.id === formState.clusterId)?.clusterName }}</p>
-          <p><strong>框架：</strong>{{ frameworks.find(f => f.id === formState.frameworkId)?.frameName }}</p>
-          <p><strong>服务：</strong>{{ selectedServiceDef?.serviceName }} - {{ selectedServiceDef?.serviceLabel }}</p>
-        </Card>
-        <Card title="角色分配" size="small">
+        <!-- Step 2: Assign hosts to roles -->
+        <div v-if="currentStep === 1">
           <Table
             :data-source="roleDefs"
             row-key="id"
@@ -278,39 +278,115 @@ onMounted(() => {
             :pagination="false"
             :columns="[
               { title: '角色名称', dataIndex: 'roleName', key: 'roleName' },
-              { title: '角色类型', dataIndex: 'roleType', key: 'roleType', width: 100 },
-              { title: '分配主机', key: 'host' },
+              {
+                title: '角色类型',
+                dataIndex: 'roleType',
+                key: 'roleType',
+                width: 100,
+              },
+              {
+                title: '基数',
+                dataIndex: 'cardinality',
+                key: 'cardinality',
+                width: 80,
+              },
+              { title: '分配主机', key: 'host', width: 300 },
             ]"
           >
             <template #bodyCell="{ column, record: _record }">
               <template v-if="column.key === 'host'">
-                <Tag color="blue">
-                  {{ getHostName(roleHostAssignments[(_record as RoleDef).id]) }}
-                </Tag>
+                <Select
+                  v-model:value="roleHostAssignments[(_record as RoleDef).id]"
+                  placeholder="选择主机"
+                  style="width: 100%"
+                >
+                  <SelectOption v-for="h in hosts" :key="h.id" :value="h.id">
+                    {{ h.hostname }} ({{ h.ipAddress }})
+                  </SelectOption>
+                </Select>
               </template>
             </template>
           </Table>
-        </Card>
-      </div>
+          <div
+            v-if="hosts.length === 0"
+            style="color: hsl(var(--muted-foreground)); margin-top: 8px"
+          >
+            该集群下暂无主机，请先在主机管理中添加主机。
+          </div>
+        </div>
 
-      <!-- Navigation buttons -->
-      <div style="margin-top: 24px; text-align: right">
-        <Space>
-          <Button v-if="currentStep > 0" @click="prevStep">上一步</Button>
-          <Button
-            v-if="currentStep < 2"
-            type="primary"
-            :disabled="!canNext"
-            @click="nextStep"
-          >下一步</Button>
-          <Button
-            v-if="currentStep === 2"
-            type="primary"
-            :loading="submitting"
-            @click="handleSubmit"
-          >确认创建</Button>
-        </Space>
-      </div>
-    </Card>
-  </div>
+        <!-- Step 3: Review -->
+        <div v-if="currentStep === 2">
+          <Card title="服务信息" size="small" style="margin-bottom: 16px">
+            <p>
+              <strong>集群：</strong
+              >{{
+                clusters.find((c) => c.id === formState.clusterId)?.clusterName
+              }}
+            </p>
+            <p>
+              <strong>框架：</strong
+              >{{
+                frameworks.find((f) => f.id === formState.frameworkId)
+                  ?.frameName
+              }}
+            </p>
+            <p>
+              <strong>服务：</strong>{{ selectedServiceDef?.serviceName }} -
+              {{ selectedServiceDef?.serviceLabel }}
+            </p>
+          </Card>
+          <Card title="角色分配" size="small">
+            <Table
+              :data-source="roleDefs"
+              row-key="id"
+              size="small"
+              :pagination="false"
+              :columns="[
+                { title: '角色名称', dataIndex: 'roleName', key: 'roleName' },
+                {
+                  title: '角色类型',
+                  dataIndex: 'roleType',
+                  key: 'roleType',
+                  width: 100,
+                },
+                { title: '分配主机', key: 'host' },
+              ]"
+            >
+              <template #bodyCell="{ column, record: _record }">
+                <template v-if="column.key === 'host'">
+                  <Tag color="blue">
+                    {{
+                      getHostName(roleHostAssignments[(_record as RoleDef).id])
+                    }}
+                  </Tag>
+                </template>
+              </template>
+            </Table>
+          </Card>
+        </div>
+
+        <!-- Navigation buttons -->
+        <div style="margin-top: 24px; text-align: right">
+          <Space>
+            <Button v-if="currentStep > 0" @click="prevStep">上一步</Button>
+            <Button
+              v-if="currentStep < 2"
+              type="primary"
+              :disabled="!canNext"
+              @click="nextStep"
+              >下一步</Button
+            >
+            <Button
+              v-if="currentStep === 2"
+              type="primary"
+              :loading="submitting"
+              @click="handleSubmit"
+              >确认创建</Button
+            >
+          </Space>
+        </div>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

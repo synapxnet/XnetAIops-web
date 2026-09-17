@@ -8,6 +8,7 @@ import { useAccessStore } from '@vben/stores';
 
 import { VbenFullScreen, VbenIconButton } from '@vben-core/shadcn-ui';
 
+import { useMediaQuery } from '@vueuse/core';
 import { Cascader } from 'ant-design-vue';
 
 import {
@@ -54,6 +55,7 @@ const accessStore = useAccessStore();
 const { globalSearchShortcutKey, preferencesButtonPosition } = usePreferences();
 const slots = useSlots();
 const { refresh } = useRefresh();
+const compactHeader = useMediaQuery('(max-width: 767px)');
 
 const rightSlots = computed(() => {
   const list = [{ index: REFERENCE_VALUE + 100, name: 'user-dropdown' }];
@@ -123,6 +125,29 @@ const leftSlots = computed(() => {
   return list.sort((a, b) => a.index - b.index);
 });
 
+/** 组织、皮肤和用户入口保持可见，其他工具可在窄屏展开。 Keep scope, skin and user access visible while grouping other tools on narrow screens. */
+const utilitySlots = computed(() =>
+  rightSlots.value.filter(
+    (slot) => !['header-right-45', 'user-dropdown'].includes(slot.name),
+  ),
+);
+
+/** Escape关闭窄屏工具面板，桌面工具保持展开。 Close the compact tools panel on Escape and retain desktop tools. */
+function closeToolMenu(event: Event) {
+  if (compactHeader.value && event.currentTarget instanceof HTMLDetailsElement)
+    event.currentTarget.open = false;
+}
+
+/** 焦点离开工具面板后收起，保留键盘在面板内移动。 Collapse tools after focus leaves while preserving internal keyboard navigation. */
+function closeToolsOnBlur(event: FocusEvent) {
+  const panel = event.currentTarget as HTMLDetailsElement;
+  if (
+    compactHeader.value &&
+    !panel.contains(event.relatedTarget as Node | null)
+  )
+    panel.open = false;
+}
+
 function clearPreferencesAndLogout() {
   emit('clearPreferencesAndLogout');
 }
@@ -169,47 +194,64 @@ function handleOrganizationChange(value: unknown) {
   >
     <slot name="menu"></slot>
   </div>
-  <span
-    class="mr-2 whitespace-nowrap font-medium text-gray-700 dark:text-gray-200"
-  >
-    请选择：租户/部门/团队
-  </span>
-  <div class="flex h-full min-w-0 flex-shrink-0 items-center">
-    <Cascader
-      :value="props.selectedOrgPath"
-      :options="props.treeData"
-      placeholder="请选择租户/部门/团队"
-      @change="handleOrganizationChange"
-      change-on-select
-      expand-trigger="hover"
-    />
-    <template v-for="slot in rightSlots" :key="slot.name">
-      <slot :name="slot.name">
-        <template v-if="slot.name === 'global-search'">
-          <GlobalSearch
-            :enable-shortcut-key="globalSearchShortcutKey"
-            :menus="accessStore.accessMenus"
-            class="mr-1 sm:mr-4"
-          />
-        </template>
+  <div class="layout-header-actions">
+    <div class="layout-header-organization">
+      <span class="organization-label" title="租户 / 部门 / 团队"
+        ><span class="organization-label-full">租户 / 部门 / 团队</span
+        ><span class="organization-label-short">组织</span></span
+      >
+      <Cascader
+        class="organization-cascader"
+        popup-class-name="aiops-organization-menu"
+        aria-label="选择租户、部门和团队"
+        :value="props.selectedOrgPath"
+        :options="props.treeData"
+        placeholder="选择组织"
+        @change="handleOrganizationChange"
+        change-on-select
+        expand-trigger="hover"
+      />
+    </div>
+    <div class="layout-header-skin"><slot name="header-right-45"></slot></div>
+    <details
+      v-if="utilitySlots.length"
+      class="layout-header-tools"
+      :open="!compactHeader"
+      @keydown.esc="closeToolMenu"
+      @focusout="closeToolsOnBlur"
+    >
+      <summary aria-label="更多工具" title="更多工具">•••</summary>
+      <div class="layout-header-tools-content">
+        <template v-for="slot in utilitySlots" :key="slot.name">
+          <slot :name="slot.name">
+            <template v-if="slot.name === 'global-search'">
+              <GlobalSearch
+                :enable-shortcut-key="globalSearchShortcutKey"
+                :menus="accessStore.accessMenus"
+                class="mr-1 sm:mr-4"
+              />
+            </template>
 
-        <template v-else-if="slot.name === 'preferences'">
-          <PreferencesButton
-            class="mr-1"
-            @clear-preferences-and-logout="clearPreferencesAndLogout"
-          />
+            <template v-else-if="slot.name === 'preferences'">
+              <PreferencesButton
+                class="mr-1"
+                @clear-preferences-and-logout="clearPreferencesAndLogout"
+              />
+            </template>
+            <template v-else-if="slot.name === 'theme-toggle'">
+              <ThemeToggle class="mr-1 mt-[2px]" />
+            </template>
+            <template v-else-if="slot.name === 'language-toggle'">
+              <LanguageToggle class="mr-1" />
+            </template>
+            <template v-else-if="slot.name === 'fullscreen'">
+              <VbenFullScreen class="mr-1" />
+            </template>
+          </slot>
         </template>
-        <template v-else-if="slot.name === 'theme-toggle'">
-          <ThemeToggle class="mr-1 mt-[2px]" />
-        </template>
-        <template v-else-if="slot.name === 'language-toggle'">
-          <LanguageToggle class="mr-1" />
-        </template>
-        <template v-else-if="slot.name === 'fullscreen'">
-          <VbenFullScreen class="mr-1" />
-        </template>
-      </slot>
-    </template>
+      </div>
+    </details>
+    <div class="layout-header-user"><slot name="user-dropdown"></slot></div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -223,5 +265,120 @@ function handleOrganizationChange(value: unknown) {
 
 .menu-align-end {
   --menu-align: end;
+}
+
+.layout-header-actions {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  gap: 6px;
+}
+.layout-header-organization {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 8px;
+}
+.organization-label {
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+  font-size: 12px;
+}
+.organization-label-short {
+  display: none;
+}
+.organization-cascader {
+  width: 220px;
+  min-width: 0;
+}
+.layout-header-skin,
+.layout-header-user {
+  flex-shrink: 0;
+}
+.layout-header-skin {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.layout-header-tools {
+  flex-shrink: 0;
+}
+.layout-header-tools > summary {
+  display: none;
+}
+.layout-header-tools-content {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.layout-header-tools:not([open]) > .layout-header-tools-content {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .organization-cascader {
+    width: 170px;
+  }
+  .organization-label-full {
+    display: none;
+  }
+  .organization-label-short {
+    display: inline;
+  }
+}
+@media (max-width: 767px) {
+  .layout-header-actions {
+    flex: 1 1 auto;
+    gap: 4px;
+  }
+  .layout-header-organization {
+    flex: 1 1 100px;
+    gap: 5px;
+  }
+  .organization-cascader {
+    flex: 1 1 95px;
+    width: 95px;
+    min-width: 65px;
+    max-width: 180px;
+  }
+  .layout-header-tools {
+    position: relative;
+  }
+  .layout-header-tools > summary {
+    display: flex;
+    width: 30px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    list-style: none;
+    border-radius: 6px;
+    color: hsl(var(--foreground));
+  }
+  .layout-header-tools > summary::-webkit-details-marker {
+    display: none;
+  }
+  .layout-header-tools > summary:hover {
+    background: hsl(var(--accent));
+  }
+  .layout-header-tools-content {
+    position: fixed;
+    right: 12px;
+    top: 56px;
+    z-index: 220;
+    flex-wrap: wrap;
+    max-width: calc(100vw - 24px);
+    padding: 12px;
+    border: 1px solid hsl(var(--border));
+    border-radius: 10px;
+    background: hsl(var(--popover));
+    box-shadow: 0 8px 28px #102a4620;
+  }
+  .layout-header-user :deep(.ml-1.mr-2) {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 </style>

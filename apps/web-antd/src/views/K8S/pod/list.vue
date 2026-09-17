@@ -1,15 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import {
-  Card,
-  Table,
-  Tag,
-  Space,
-  Button,
-  Modal,
-  message,
-} from 'ant-design-vue';
+import { Table, Tag, Space, Button, Modal, message } from 'ant-design-vue';
 import { getPods, deletePod } from '../api/pod';
 import K8sSelector from '../components/K8sSelector.vue';
 
@@ -19,9 +11,7 @@ const loading = ref(false);
 const selectedClusterId = ref<number | null>(
   route.query.clusterId ? Number(route.query.clusterId) : null,
 );
-const selectedNamespace = ref<string>(
-  (route.query.namespace as string) || '',
-);
+const selectedNamespace = ref<string>((route.query.namespace as string) || '');
 const pods = ref<any[]>([]);
 
 const columns = [
@@ -58,7 +48,9 @@ async function fetchPods() {
 }
 
 function goDetail(record: any) {
-  router.push(`/K8S/pod/detail/${selectedClusterId.value}/${record.namespace}/${record.name}`);
+  router.push(
+    `/K8S/pod/detail/${selectedClusterId.value}/${record.namespace}/${record.name}`,
+  );
 }
 
 function handleDelete(record: any) {
@@ -68,7 +60,11 @@ function handleDelete(record: any) {
     okType: 'danger',
     async onOk() {
       try {
-        await deletePod(selectedClusterId.value!, record.namespace, record.name);
+        await deletePod(
+          selectedClusterId.value!,
+          record.namespace,
+          record.name,
+        );
         message.success('删除成功');
         fetchPods();
       } catch (e: any) {
@@ -80,42 +76,66 @@ function handleDelete(record: any) {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="容器组 (Pod)">
-      <template #extra>
-        <Space>
-          <K8sSelector v-model:clusterId="selectedClusterId" v-model:namespace="selectedNamespace" @change="fetchPods" />
-          <Button @click="fetchPods">刷新</Button>
-        </Space>
-      </template>
+  <BusinessPage
+    title="容器组"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/K8S/pod/list"
+  >
+    <div class="p-4">
+      <section class="aiops-list-workspace">
+        <header class="aiops-page-toolbar">
+          <h2>容器组 <span class="aiops-title-meta">Pod</span></h2>
+          <Space class="aiops-toolbar-actions">
+            <K8sSelector
+              v-model:clusterId="selectedClusterId"
+              v-model:namespace="selectedNamespace"
+              @change="fetchPods"
+            />
+            <Button @click="fetchPods">刷新</Button>
+          </Space>
+        </header>
 
-      <Table
-        :columns="columns"
-        :data-source="pods"
-        :loading="loading"
-        row-key="name"
-        :scroll="{ x: 1200 }"
-        :pagination="{ pageSize: 20 }"
-        size="small"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'name'">
-            <a @click="goDetail(record)">{{ record.name }}</a>
+        <Table
+          :columns="columns"
+          :data-source="pods"
+          :loading="loading"
+          row-key="name"
+          :scroll="{ x: 1200 }"
+          :pagination="{ pageSize: 20 }"
+          size="small"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'name'">
+              <a @click="goDetail(record)">{{ record.name }}</a>
+            </template>
+            <template v-if="column.key === 'status'">
+              <Tag :color="statusColorMap[record.status] || 'default'">{{
+                record.status
+              }}</Tag>
+            </template>
+            <template v-if="column.key === 'restarts'">
+              <span :class="{ 'aiops-attention-value': record.restarts > 0 }">{{
+                record.restarts
+              }}</span>
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button type="link" size="small" @click="goDetail(record)"
+                  >详情</Button
+                >
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(record)"
+                  >删除</Button
+                >
+              </Space>
+            </template>
           </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[record.status] || 'default'">{{ record.status }}</Tag>
-          </template>
-          <template v-if="column.key === 'restarts'">
-            <span :style="{ color: record.restarts > 0 ? '#fa541c' : '#52c41a' }">{{ record.restarts }}</span>
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="goDetail(record)">详情</Button>
-              <Button type="link" size="small" danger @click="handleDelete(record)">删除</Button>
-            </Space>
-          </template>
-        </template>
-      </Table>
-    </Card>
-  </div>
+        </Table>
+      </section>
+    </div>
+  </BusinessPage>
 </template>

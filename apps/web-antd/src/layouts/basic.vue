@@ -19,42 +19,16 @@ import { openWindow } from '@vben/utils';
 import { getOrganizationTreeApi, type OrganizationTreeNode } from '#/api/core';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
+import SkinSettings from '#/components/SkinSettings.vue';
+import ResidentAgentPanel from '#/components/resident/ResidentAgentPanel.vue';
 
 const OPENXNET_URL = 'https://openxnet.synapxnet.com';
 const FRONTEND_REPOSITORY_URL = 'https://github.com/synapxnet/XnetAIops-web';
 const BACKEND_REPOSITORY_URL = 'https://github.com/synapxnet/XnetAIops';
 const ORGANIZATION_SCOPE_KEY = 'synapxnet:organization-scope';
 
-const notifications = ref<NotificationItem[]>([
-  {
-    avatar: 'https://avatar.vercel.sh/synapxnet.svg?text=SX',
-    date: '3小时前',
-    isRead: true,
-    message: '描述信息描述信息描述信息',
-    title: '收到了 14 份新周报',
-  },
-  {
-    avatar: 'https://avatar.vercel.sh/1',
-    date: '刚刚',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '朱偏右 回复了你',
-  },
-  {
-    avatar: 'https://avatar.vercel.sh/1',
-    date: '2024-01-01',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '曲丽丽 评论了你',
-  },
-  {
-    avatar: 'https://avatar.vercel.sh/satori',
-    date: '1天前',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '代办提醒',
-  },
-]);
+// 通知只能来自真实通知源，未接入时保持空态。Keep notifications empty until a real notification source is connected.
+const notifications = ref<NotificationItem[]>([]);
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -158,16 +132,18 @@ function findOrganizationNode(
   return findOrganizationNode(node.children ?? [], path, depth + 1);
 }
 
-/** 仅在当前页签保存组织范围，退出或换账号后不复用。 */
+/** 仅在当前页签保存组织范围并通知证据视图清理旧数据。 Stores scope in this tab and immediately notifies evidence views to clear stale data. */
 function writeOrganizationScope(scope: SelectedOrganization) {
   if (!scope.tenantUid || !scope.deptUid || !scope.teamUid) {
     globalThis.sessionStorage?.removeItem(ORGANIZATION_SCOPE_KEY);
+    window.dispatchEvent(new Event('synapxnet:organization-scope-changed'));
     return;
   }
   globalThis.sessionStorage?.setItem(
     ORGANIZATION_SCOPE_KEY,
     JSON.stringify(scope),
   );
+  window.dispatchEvent(new Event('synapxnet:organization-scope-changed'));
 }
 
 /** 加载当前用户被后端明确授权的组织树。 */
@@ -248,11 +224,26 @@ onMounted(fetchOrganizationTree);
 
 <template>
   <BasicLayout
+    :content-scope="
+      [
+        selectedOrganization.tenantUid,
+        selectedOrganization.deptUid,
+        selectedOrganization.teamUid,
+      ].join('/')
+    "
     :content-enabled="organizationTreeLoaded && selectedOrganization.dataAccess"
     :tree-data="organizationTree"
     @clear-preferences-and-logout="handleLogout"
     @organization-change="handleOrganizationChange"
   >
+    <template #header-right-45>
+      <ResidentAgentPanel
+        platform="aiops"
+        :scope="selectedOrganization"
+        :enabled="organizationTreeLoaded"
+      />
+      <SkinSettings />
+    </template>
     <template #content-placeholder>
       <section
         class="flex min-h-full items-center justify-center bg-white dark:bg-gray-950"

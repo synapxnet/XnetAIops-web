@@ -1,0 +1,339 @@
+{
+  "metadata": {
+    "copyright": "Copyright (C) 2026 Synapxnet. All rights reserved.",
+    "confidentiality": "Proprietary and Confidential. No copying, distribution or use without authorization.",
+    "author": "maoyo",
+    "department": "研发部",
+    "date": "2026-09-13",
+    "version": "1.0.0",
+    "securityLevel": "INTERNAL",
+    "maintainer": "maoyo",
+    "email": "synapxnet@gmail.com"
+  },
+  "contracts": [
+    {
+      "pattern": "^/api/clm/clusters$",
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "endpoint": "/clusters",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/clusters/[^/]+/variables$",
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "endpoint": "/clusters/${id}/variables",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/hadoop\\-clusters$",
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "endpoint": "/hadoop-clusters",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/hadoop\\-clusters/masters$",
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "endpoint": "/hadoop-clusters/masters",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/hadoop\\-clusters/status/[^/]+$",
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "endpoint": "/hadoop-clusters/status/${status}",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/jenkins\\-masters$",
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "endpoint": "/jenkins-masters",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/jenkins\\-masters/deployed$",
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "endpoint": "/jenkins-masters/deployed",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/jenkins\\-masters/hom\\-hosts$",
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "endpoint": "/jenkins-masters/hom-hosts",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/jenkins\\-versions/lts$",
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "endpoint": "/jenkins-versions/lts",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/jenkins\\-versions$",
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "endpoint": "/jenkins-versions",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/jenkins\\-nodes$",
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "endpoint": "/jenkins-nodes",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/mysql\\-instances$",
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "endpoint": "/mysql-instances",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/clm/redis\\-instances$",
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "endpoint": "/redis-instances",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/hom/hosts$",
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "endpoint": "/hosts",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/hom/racks$",
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "endpoint": "/racks",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters$",
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "endpoint": "/clusters",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters/[^/]+/components$",
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "endpoint": "/clusters/${id}/components",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters/[^/]+/events$",
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "endpoint": "/clusters/${id}/events",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters/[^/]+/node\\-ranking$",
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "endpoint": "/clusters/${id}/node-ranking",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/devops/projects$",
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "endpoint": "/devops/projects",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/devops/projects/[^/]+/pipelines$",
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "endpoint": "/devops/projects/${projectId}/pipelines",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/devops/projects/[^/]+/pipelines/[^/]+/runs$",
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "endpoint": "/devops/projects/${projectId}/pipelines/${pipelineId}/runs",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/devops/projects/[^/]+/pipelines/[^/]+/runs/[^/]+/stages$",
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "endpoint": "/devops/projects/${projectId}/pipelines/${pipelineId}/runs/${runId}/stages",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/devops/projects/[^/]+/credentials$",
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "endpoint": "/devops/projects/${projectId}/credentials",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters/[^/]+/namespaces$",
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "endpoint": "/clusters/${clusterId}/namespaces",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters/[^/]+/namespaces/[^/]+/events$",
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "endpoint": "/clusters/${clusterId}/namespaces/${namespace}/events",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters/[^/]+/namespaces/[^/]+/resource\\-quotas$",
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "endpoint": "/clusters/${clusterId}/namespaces/${namespace}/resource-quotas",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters/[^/]+/nodes$",
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "endpoint": "/clusters/${clusterId}/nodes",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/k8s/clusters/[^/]+/nodes/[^/]+/pods$",
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "endpoint": "/clusters/${clusterId}/nodes/${nodeName}/pods",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/mon/rules$",
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "endpoint": "/rules",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/mon/alerts$",
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "endpoint": "/alerts",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/mon/notify\\-groups$",
+      "file": "apps/web-antd/src/views/MON/api/notify.ts",
+      "endpoint": "/notify-groups",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/deploy/logs$",
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "endpoint": "/registries/${id}/deploy/logs",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/projects$",
+      "file": "apps/web-antd/src/views/REG/api/project.ts",
+      "endpoint": "/registries/${registryId}/projects",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries$",
+      "file": "apps/web-antd/src/views/REG/api/registry.ts",
+      "endpoint": "/registries",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/endpoints$",
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "endpoint": "/registries/${registryId}/endpoints",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/replications/policies$",
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "endpoint": "/registries/${registryId}/replications/policies",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/replications/executions$",
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "endpoint": "/registries/${registryId}/replications/executions",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/replications/executions/[^/]+/tasks$",
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "endpoint": "/registries/${registryId}/replications/executions/${executionId}/tasks",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/repositories$",
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "endpoint": "/registries/${registryId}/repositories",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/tags$",
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "endpoint": "/registries/${registryId}/tags",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/repositories/[^/]+/[^/]+/artifacts$",
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "endpoint": "/registries/${registryId}/repositories/${projectName}/${repoName}/artifacts",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/users$",
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "endpoint": "/registries/${registryId}/users",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/reg/registries/[^/]+/sync/tasks$",
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "endpoint": "/registries/${registryId}/sync/tasks",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/svm/commands$",
+      "file": "apps/web-antd/src/views/SVM/api/command.ts",
+      "endpoint": "/commands",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/svm/frameworks$",
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "endpoint": "/frameworks",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/svm/frameworks/[^/]+/services$",
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "endpoint": "/frameworks/${frameworkId}/services",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/svm/frameworks/[^/]+/services/[^/]+/roles$",
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "endpoint": "/frameworks/${frameworkId}/services/${serviceId}/roles",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/svm/services$",
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "endpoint": "/services",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/svm/services/[^/]+/roles$",
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "endpoint": "/services/${serviceInstanceId}/roles",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/usr/roles$",
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "endpoint": "/roles",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/usr/roles/[^/]+/users$",
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "endpoint": "/roles/${roleId}/users",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/usr/users$",
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "endpoint": "/users",
+      "response": "declared typed empty array"
+    },
+    {
+      "pattern": "^/api/usr/users/[^/]+/roles$",
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "endpoint": "/users/${userId}/roles",
+      "response": "declared typed empty array"
+    }
+  ]
+}

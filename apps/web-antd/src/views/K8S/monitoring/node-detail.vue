@@ -166,7 +166,12 @@ function buildOption(
       data: seriesCfgs.map((c) => c.name),
       show: seriesCfgs.length > 1,
     },
-    grid: { left: 55, right: 20, top: 35, bottom: seriesCfgs.length > 1 ? 30 : 15 },
+    grid: {
+      left: 55,
+      right: 20,
+      top: 35,
+      bottom: seriesCfgs.length > 1 ? 30 : 15,
+    },
     xAxis: {
       type: 'time',
       axisLabel: {
@@ -202,18 +207,56 @@ function renderCharts(m: any) {
     return v.toFixed(0) + ' B/s';
   };
 
-  init(cpuRef.value, buildOption('CPU使用率', [{ name: 'CPU', data: m.cpuUsage || [], color: '#1890ff' }], pctAxisFmt, pctFmt));
-  init(memRef.value, buildOption('内存使用率', [{ name: '内存', data: m.memoryUsage || [], color: '#722ed1' }], pctAxisFmt, pctFmt));
-  init(loadRef.value, buildOption('系统负载', [
-    { name: 'Load 1', data: m.load1 || [], color: '#f5222d' },
-    { name: 'Load 5', data: m.load5 || [], color: '#fa8c16' },
-    { name: 'Load 15', data: m.load15 || [], color: '#fadb14' },
-  ], (v) => v.toFixed(2)));
-  init(netRef.value, buildOption('网络流量', [
-    { name: '接收', data: m.networkReceive || [], color: '#13c2c2' },
-    { name: '发送', data: m.networkTransmit || [], color: '#eb2f96' },
-  ], bytesFmt));
-  init(diskRef.value, buildOption('磁盘IO利用率', [{ name: 'IO', data: m.diskIO || [], color: '#faad14' }], pctAxisFmt, pctFmt));
+  init(
+    cpuRef.value,
+    buildOption(
+      'CPU使用率',
+      [{ name: 'CPU', data: m.cpuUsage || [], color: '#1890ff' }],
+      pctAxisFmt,
+      pctFmt,
+    ),
+  );
+  init(
+    memRef.value,
+    buildOption(
+      '内存使用率',
+      [{ name: '内存', data: m.memoryUsage || [], color: '#722ed1' }],
+      pctAxisFmt,
+      pctFmt,
+    ),
+  );
+  init(
+    loadRef.value,
+    buildOption(
+      '系统负载',
+      [
+        { name: 'Load 1', data: m.load1 || [], color: '#f5222d' },
+        { name: 'Load 5', data: m.load5 || [], color: '#fa8c16' },
+        { name: 'Load 15', data: m.load15 || [], color: '#fadb14' },
+      ],
+      (v) => v.toFixed(2),
+    ),
+  );
+  init(
+    netRef.value,
+    buildOption(
+      '网络流量',
+      [
+        { name: '接收', data: m.networkReceive || [], color: '#13c2c2' },
+        { name: '发送', data: m.networkTransmit || [], color: '#eb2f96' },
+      ],
+      bytesFmt,
+    ),
+  );
+  init(
+    diskRef.value,
+    buildOption(
+      '磁盘IO利用率',
+      [{ name: 'IO', data: m.diskIO || [], color: '#faad14' }],
+      pctAxisFmt,
+      pctFmt,
+    ),
+  );
 }
 
 function handleResize() {
@@ -236,45 +279,100 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card class="mb-4">
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <h2 style="margin: 0">节点监控: {{ selectedNode || '请选择节点' }}</h2>
-        <Space>
-          <Select :value="selectedClusterId" style="width: 150px" placeholder="集群" @change="(v: number) => { selectedClusterId = v; fetchNodeList(); }">
-            <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">{{ c.name }}</SelectOption>
-          </Select>
-          <Select v-model:value="selectedNode" style="width: 200px" placeholder="节点" show-search @change="fetchData">
-            <SelectOption v-for="n in nodes" :key="n" :value="n">{{ n }}</SelectOption>
-          </Select>
-          <Select v-model:value="timeRange" size="small" style="width: 100px" @change="fetchData">
-            <SelectOption :value="1800">30分钟</SelectOption>
-            <SelectOption :value="3600">1小时</SelectOption>
-            <SelectOption :value="10800">3小时</SelectOption>
-            <SelectOption :value="86400">24小时</SelectOption>
-          </Select>
-          <Button @click="fetchData" :loading="loading">刷新</Button>
-          <Button @click="goBack">返回</Button>
-        </Space>
-      </div>
-    </Card>
+  <BusinessPage
+    title="节点监控"
+    description="将状态、配置与关联资料放在一起，继续处理当前资源。"
+    family="详情"
+    route-key="/K8S/monitoring/node-detail/:clusterId/:nodeName"
+  >
+    <div class="p-4">
+      <Card class="mb-4">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h2 style="margin: 0">
+            节点监控: {{ selectedNode || '请选择节点' }}
+          </h2>
+          <Space>
+            <Select
+              :value="selectedClusterId"
+              style="width: 150px"
+              placeholder="集群"
+              @change="
+                (v: number) => {
+                  selectedClusterId = v;
+                  fetchNodeList();
+                }
+              "
+            >
+              <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">{{
+                c.name
+              }}</SelectOption>
+            </Select>
+            <Select
+              v-model:value="selectedNode"
+              style="width: 200px"
+              placeholder="节点"
+              show-search
+              @change="fetchData"
+            >
+              <SelectOption v-for="n in nodes" :key="n" :value="n">{{
+                n
+              }}</SelectOption>
+            </Select>
+            <Select
+              v-model:value="timeRange"
+              size="small"
+              style="width: 100px"
+              @change="fetchData"
+            >
+              <SelectOption :value="1800">30分钟</SelectOption>
+              <SelectOption :value="3600">1小时</SelectOption>
+              <SelectOption :value="10800">3小时</SelectOption>
+              <SelectOption :value="86400">24小时</SelectOption>
+            </Select>
+            <Button @click="fetchData" :loading="loading">刷新</Button>
+            <Button @click="goBack">返回</Button>
+          </Space>
+        </div>
+      </Card>
 
-    <Spin :spinning="loading">
-      <Row :gutter="16" class="mb-4">
-        <Col :span="12"><Card size="small"><div ref="cpuRef" style="height: 260px" /></Card></Col>
-        <Col :span="12"><Card size="small"><div ref="memRef" style="height: 260px" /></Card></Col>
-      </Row>
-      <Row :gutter="16" class="mb-4">
-        <Col :span="12"><Card size="small"><div ref="loadRef" style="height: 260px" /></Card></Col>
-        <Col :span="12"><Card size="small"><div ref="netRef" style="height: 260px" /></Card></Col>
-      </Row>
-      <Row :gutter="16">
-        <Col :span="12"><Card size="small"><div ref="diskRef" style="height: 260px" /></Card></Col>
-      </Row>
+      <Spin :spinning="loading">
+        <Row :gutter="16" class="mb-4">
+          <Col :span="12"
+            ><Card size="small"><div ref="cpuRef" style="height: 260px" /></Card
+          ></Col>
+          <Col :span="12"
+            ><Card size="small"><div ref="memRef" style="height: 260px" /></Card
+          ></Col>
+        </Row>
+        <Row :gutter="16" class="mb-4">
+          <Col :span="12"
+            ><Card size="small"
+              ><div ref="loadRef" style="height: 260px" /></Card
+          ></Col>
+          <Col :span="12"
+            ><Card size="small"><div ref="netRef" style="height: 260px" /></Card
+          ></Col>
+        </Row>
+        <Row :gutter="16">
+          <Col :span="12"
+            ><Card size="small"
+              ><div ref="diskRef" style="height: 260px" /></Card
+          ></Col>
+        </Row>
 
-      <div v-if="!loading && !selectedNode" style="text-align: center; color: #8c8c8c; padding: 40px">
-        请选择集群和节点查看监控数据
-      </div>
-    </Spin>
-  </div>
+        <div
+          v-if="!loading && !selectedNode"
+          style="text-align: center; color: #8c8c8c; padding: 40px"
+        >
+          请选择集群和节点查看监控数据
+        </div>
+      </Spin>
+    </div>
+  </BusinessPage>
 </template>

@@ -55,8 +55,18 @@ const pipelineColumns = [
   { title: '名称', dataIndex: 'name', key: 'name' },
   { title: '类型', dataIndex: 'type', key: 'type', width: 120 },
   { title: '状态', dataIndex: 'status', key: 'status', width: 100 },
-  { title: '最新运行', dataIndex: 'lastRunStatus', key: 'lastRunStatus', width: 280 },
-  { title: '最后运行时间', dataIndex: 'lastRunTime', key: 'lastRunTime', width: 180 },
+  {
+    title: '最新运行',
+    dataIndex: 'lastRunStatus',
+    key: 'lastRunStatus',
+    width: 280,
+  },
+  {
+    title: '最后运行时间',
+    dataIndex: 'lastRunTime',
+    key: 'lastRunTime',
+    width: 180,
+  },
   { title: '操作', key: 'action', width: 160 },
 ];
 
@@ -84,8 +94,14 @@ async function fetchPipelines() {
       .filter((p: any) => p.lastRunId)
       .map(async (p: any) => {
         try {
-          const stages = await getPipelineRunStages(projectId.value, p.id, p.lastRunId);
-          pipelineStagesMap.value[p.id] = Array.isArray(stages) ? stages : (stages as any)?.data || [];
+          const stages = await getPipelineRunStages(
+            projectId.value,
+            p.id,
+            p.lastRunId,
+          );
+          pipelineStagesMap.value[p.id] = Array.isArray(stages)
+            ? stages
+            : (stages as any)?.data || [];
         } catch {
           // ignore - will fallback to Tag display
         }
@@ -146,7 +162,12 @@ const credentialForm = reactive<Record<string, any>>({
 const credentialColumns = [
   { title: '名称', dataIndex: 'name', key: 'name' },
   { title: '类型', dataIndex: 'type', key: 'type', width: 160 },
-  { title: '描述', dataIndex: 'description', key: 'description', ellipsis: true },
+  {
+    title: '描述',
+    dataIndex: 'description',
+    key: 'description',
+    ellipsis: true,
+  },
   { title: '创建时间', dataIndex: 'createdAt', key: 'createdAt', width: 180 },
   { title: '操作', key: 'action', width: 100 },
 ];
@@ -155,7 +176,7 @@ const credentialTypeLabels: Record<string, string> = {
   'username-password': '用户名/密码',
   'ssh-key': 'SSH 密钥',
   'access-token': '访问令牌',
-  'kubeconfig': 'Kubeconfig',
+  kubeconfig: 'Kubeconfig',
 };
 
 async function fetchCredentials() {
@@ -335,295 +356,355 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Spin :spinning="loading">
-      <!-- Header -->
-      <Card class="mb-4">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-          <div>
-            <h2 style="margin: 0; font-size: 22px;">
-              {{ project?.name || '加载中...' }}
-              <Tag
-                v-if="project?.status"
-                :color="project.status === 'active' ? 'green' : project.status === 'error' ? 'red' : 'default'"
-                style="margin-left: 8px; vertical-align: middle;"
-              >
-                {{ project.status === 'active' ? '运行中' : project.status }}
-              </Tag>
-            </h2>
-            <div style="color: #8c8c8c; margin-top: 4px;">
-              {{ project?.description || '' }}
+  <BusinessPage
+    title="工程详情"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/K8S/devops/projects/:projectId"
+  >
+    <div class="p-4">
+      <Spin :spinning="loading">
+        <!-- Header -->
+        <Card class="mb-4">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div>
+              <h2 style="margin: 0; font-size: 22px">
+                {{ project?.name || '加载中...' }}
+                <Tag
+                  v-if="project?.status"
+                  :color="
+                    project.status === 'active'
+                      ? 'green'
+                      : project.status === 'error'
+                        ? 'red'
+                        : 'default'
+                  "
+                  style="margin-left: 8px; vertical-align: middle"
+                >
+                  {{ project.status === 'active' ? '运行中' : project.status }}
+                </Tag>
+              </h2>
+              <div style="color: #8c8c8c; margin-top: 4px">
+                {{ project?.description || '' }}
+              </div>
             </div>
+            <Space>
+              <Button @click="fetchProject">刷新</Button>
+              <Button @click="goBack">返回列表</Button>
+            </Space>
           </div>
-          <Space>
-            <Button @click="fetchProject">刷新</Button>
-            <Button @click="goBack">返回列表</Button>
-          </Space>
-        </div>
-      </Card>
+        </Card>
 
-      <!-- Tabs -->
-      <Card>
-        <Tabs v-model:activeKey="activeTab" @change="handleTabChange">
-          <!-- Tab 1: Pipelines -->
-          <TabPane key="pipelines" tab="流水线">
-            <div style="margin-bottom: 16px;">
-              <Button type="primary" @click="goCreatePipeline">创建流水线</Button>
-            </div>
-            <Table
-              :columns="pipelineColumns"
-              :data-source="pipelines"
-              :loading="pipelinesLoading"
-              :pagination="{ pageSize: 10 }"
-              row-key="id"
-              size="small"
-            >
-              <template #bodyCell="{ column, record }">
-                <template v-if="column.key === 'name'">
-                  <a @click="goPipelineDetail(record)">{{ record.name }}</a>
+        <!-- Tabs -->
+        <Card>
+          <Tabs v-model:activeKey="activeTab" @change="handleTabChange">
+            <!-- Tab 1: Pipelines -->
+            <TabPane key="pipelines" tab="流水线">
+              <div style="margin-bottom: 16px">
+                <Button type="primary" @click="goCreatePipeline"
+                  >创建流水线</Button
+                >
+              </div>
+              <Table
+                :columns="pipelineColumns"
+                :data-source="pipelines"
+                :loading="pipelinesLoading"
+                :pagination="{ pageSize: 10 }"
+                row-key="id"
+                size="small"
+              >
+                <template #bodyCell="{ column, record }">
+                  <template v-if="column.key === 'name'">
+                    <a @click="goPipelineDetail(record)">{{ record.name }}</a>
+                  </template>
+                  <template v-if="column.key === 'status'">
+                    <Tag :color="statusColorMap[record.status] || 'default'">
+                      {{ record.status }}
+                    </Tag>
+                  </template>
+                  <template v-if="column.key === 'lastRunStatus'">
+                    <StagePipeline
+                      v-if="pipelineStagesMap[record.id]?.length"
+                      :stages="pipelineStagesMap[record.id]"
+                      size="mini"
+                    />
+                    <Tag
+                      v-else-if="record.lastRunStatus"
+                      :color="
+                        runStatusColorMap[record.lastRunStatus] || 'default'
+                      "
+                    >
+                      {{ record.lastRunStatus }}
+                    </Tag>
+                    <span v-else style="color: #8c8c8c">-</span>
+                  </template>
+                  <template v-if="column.key === 'action'">
+                    <Space>
+                      <Button
+                        type="link"
+                        size="small"
+                        @click="handleRunPipeline(record)"
+                      >
+                        运行
+                      </Button>
+                      <Popconfirm
+                        title="确定要删除该流水线吗？"
+                        ok-text="确定"
+                        cancel-text="取消"
+                        @confirm="handleDeletePipeline(record)"
+                      >
+                        <Button type="link" danger size="small">删除</Button>
+                      </Popconfirm>
+                    </Space>
+                  </template>
                 </template>
-                <template v-if="column.key === 'status'">
-                  <Tag :color="statusColorMap[record.status] || 'default'">
-                    {{ record.status }}
-                  </Tag>
-                </template>
-                <template v-if="column.key === 'lastRunStatus'">
-                  <StagePipeline
-                    v-if="pipelineStagesMap[record.id]?.length"
-                    :stages="pipelineStagesMap[record.id]"
-                    size="mini"
-                  />
-                  <Tag
-                    v-else-if="record.lastRunStatus"
-                    :color="runStatusColorMap[record.lastRunStatus] || 'default'"
-                  >
-                    {{ record.lastRunStatus }}
-                  </Tag>
-                  <span v-else style="color: #8c8c8c;">-</span>
-                </template>
-                <template v-if="column.key === 'action'">
-                  <Space>
-                    <Button type="link" size="small" @click="handleRunPipeline(record)">
-                      运行
-                    </Button>
+              </Table>
+            </TabPane>
+
+            <!-- Tab 2: Credentials -->
+            <TabPane key="credentials" tab="凭证">
+              <div style="margin-bottom: 16px">
+                <Button type="primary" @click="openCredentialModal"
+                  >创建凭证</Button
+                >
+              </div>
+              <Table
+                :columns="credentialColumns"
+                :data-source="credentials"
+                :loading="credentialsLoading"
+                :pagination="{ pageSize: 10 }"
+                row-key="id"
+                size="small"
+              >
+                <template #bodyCell="{ column, record }">
+                  <template v-if="column.key === 'type'">
+                    <Tag color="blue">
+                      {{ credentialTypeLabels[record.type] || record.type }}
+                    </Tag>
+                  </template>
+                  <template v-if="column.key === 'action'">
                     <Popconfirm
-                      title="确定要删除该流水线吗？"
+                      title="确定要删除该凭证吗？"
                       ok-text="确定"
                       cancel-text="取消"
-                      @confirm="handleDeletePipeline(record)"
+                      @confirm="handleDeleteCredential(record)"
                     >
                       <Button type="link" danger size="small">删除</Button>
                     </Popconfirm>
-                  </Space>
+                  </template>
                 </template>
+              </Table>
+
+              <!-- Create Credential Modal -->
+              <Modal
+                v-model:open="credentialModalVisible"
+                title="创建凭证"
+                :confirm-loading="credentialSubmitting"
+                ok-text="创建"
+                cancel-text="取消"
+                @ok="handleCreateCredential"
+              >
+                <Form layout="vertical" style="margin-top: 16px">
+                  <FormItem label="名称" required>
+                    <Input
+                      v-model:value="credentialForm.name"
+                      placeholder="请输入凭证名称"
+                    />
+                  </FormItem>
+                  <FormItem label="类型">
+                    <Select
+                      v-model:value="credentialForm.type"
+                      style="width: 100%"
+                    >
+                      <SelectOption value="username-password"
+                        >用户名/密码</SelectOption
+                      >
+                      <SelectOption value="ssh-key">SSH 密钥</SelectOption>
+                      <SelectOption value="access-token">访问令牌</SelectOption>
+                      <SelectOption value="kubeconfig">Kubeconfig</SelectOption>
+                    </Select>
+                  </FormItem>
+                  <FormItem label="描述">
+                    <Input
+                      v-model:value="credentialForm.description"
+                      placeholder="请输入描述"
+                    />
+                  </FormItem>
+
+                  <!-- Dynamic fields: username-password -->
+                  <template v-if="credentialForm.type === 'username-password'">
+                    <FormItem label="用户名">
+                      <Input
+                        v-model:value="credentialForm.username"
+                        placeholder="请输入用户名"
+                      />
+                    </FormItem>
+                    <FormItem label="密码">
+                      <InputPassword
+                        v-model:value="credentialForm.password"
+                        placeholder="请输入密码"
+                      />
+                    </FormItem>
+                  </template>
+
+                  <!-- Dynamic fields: ssh-key -->
+                  <template v-if="credentialForm.type === 'ssh-key'">
+                    <FormItem label="用户名">
+                      <Input
+                        v-model:value="credentialForm.username"
+                        placeholder="请输入用户名"
+                      />
+                    </FormItem>
+                    <FormItem label="私钥">
+                      <Input.TextArea
+                        v-model:value="credentialForm.privateKey"
+                        placeholder="请粘贴 SSH 私钥"
+                        :rows="6"
+                      />
+                    </FormItem>
+                    <FormItem label="密码短语">
+                      <InputPassword
+                        v-model:value="credentialForm.passphrase"
+                        placeholder="请输入密码短语（可选）"
+                      />
+                    </FormItem>
+                  </template>
+
+                  <!-- Dynamic fields: access-token -->
+                  <template v-if="credentialForm.type === 'access-token'">
+                    <FormItem label="令牌">
+                      <InputPassword
+                        v-model:value="credentialForm.token"
+                        placeholder="请输入访问令牌"
+                      />
+                    </FormItem>
+                  </template>
+
+                  <!-- Dynamic fields: kubeconfig -->
+                  <template v-if="credentialForm.type === 'kubeconfig'">
+                    <FormItem label="Kubeconfig">
+                      <Input.TextArea
+                        v-model:value="credentialForm.kubeconfig"
+                        placeholder="请粘贴 Kubeconfig 内容"
+                        :rows="8"
+                      />
+                    </FormItem>
+                  </template>
+                </Form>
+              </Modal>
+            </TabPane>
+
+            <!-- Tab 3: Settings -->
+            <TabPane key="settings" tab="设置">
+              <!-- View mode -->
+              <template v-if="!editMode">
+                <Descriptions bordered :column="2" size="small">
+                  <DescriptionsItem label="工程名称">
+                    {{ project?.name || '-' }}
+                  </DescriptionsItem>
+                  <DescriptionsItem label="描述">
+                    {{ project?.description || '-' }}
+                  </DescriptionsItem>
+                  <DescriptionsItem label="Jenkins URL">
+                    {{ project?.jenkinsUrl || '-' }}
+                  </DescriptionsItem>
+                  <DescriptionsItem label="Jenkins 用户">
+                    {{ project?.jenkinsUser || '-' }}
+                  </DescriptionsItem>
+                  <DescriptionsItem label="Jenkins Token">
+                    {{ project?.jenkinsToken ? '******' : '-' }}
+                  </DescriptionsItem>
+                  <DescriptionsItem label="创建时间">
+                    {{ project?.createdAt || '-' }}
+                  </DescriptionsItem>
+                </Descriptions>
+                <div style="margin-top: 16px">
+                  <Button type="primary" @click="enterEditMode">编辑</Button>
+                </div>
               </template>
-            </Table>
-          </TabPane>
 
-          <!-- Tab 2: Credentials -->
-          <TabPane key="credentials" tab="凭证">
-            <div style="margin-bottom: 16px;">
-              <Button type="primary" @click="openCredentialModal">创建凭证</Button>
-            </div>
-            <Table
-              :columns="credentialColumns"
-              :data-source="credentials"
-              :loading="credentialsLoading"
-              :pagination="{ pageSize: 10 }"
-              row-key="id"
-              size="small"
-            >
-              <template #bodyCell="{ column, record }">
-                <template v-if="column.key === 'type'">
-                  <Tag color="blue">
-                    {{ credentialTypeLabels[record.type] || record.type }}
-                  </Tag>
-                </template>
-                <template v-if="column.key === 'action'">
-                  <Popconfirm
-                    title="确定要删除该凭证吗？"
-                    ok-text="确定"
-                    cancel-text="取消"
-                    @confirm="handleDeleteCredential(record)"
-                  >
-                    <Button type="link" danger size="small">删除</Button>
-                  </Popconfirm>
-                </template>
+              <!-- Edit mode -->
+              <template v-else>
+                <Form layout="vertical" style="max-width: 600px">
+                  <FormItem label="工程名称" required>
+                    <Input
+                      v-model:value="settingsForm.name"
+                      placeholder="请输入工程名称"
+                    />
+                  </FormItem>
+                  <FormItem label="描述">
+                    <Input
+                      v-model:value="settingsForm.description"
+                      placeholder="请输入描述"
+                    />
+                  </FormItem>
+                  <FormItem label="Jenkins URL">
+                    <Input
+                      v-model:value="settingsForm.jenkinsUrl"
+                      placeholder="例如: http://jenkins.example.com"
+                    />
+                  </FormItem>
+                  <FormItem label="Jenkins 用户">
+                    <Input
+                      v-model:value="settingsForm.jenkinsUser"
+                      placeholder="请输入 Jenkins 用户名"
+                    />
+                  </FormItem>
+                  <FormItem label="Jenkins Token">
+                    <InputPassword
+                      v-model:value="settingsForm.jenkinsToken"
+                      placeholder="请输入 Jenkins API Token"
+                    />
+                  </FormItem>
+                  <FormItem>
+                    <Space>
+                      <Button
+                        :loading="testingConnection"
+                        @click="handleTestConnection"
+                      >
+                        测试连接
+                      </Button>
+                      <Button
+                        type="primary"
+                        :loading="settingsSubmitting"
+                        @click="handleSaveSettings"
+                      >
+                        保存
+                      </Button>
+                      <Button @click="cancelEditMode">取消</Button>
+                    </Space>
+                  </FormItem>
+                </Form>
               </template>
-            </Table>
 
-            <!-- Create Credential Modal -->
-            <Modal
-              v-model:open="credentialModalVisible"
-              title="创建凭证"
-              :confirm-loading="credentialSubmitting"
-              ok-text="创建"
-              cancel-text="取消"
-              @ok="handleCreateCredential"
-            >
-              <Form layout="vertical" style="margin-top: 16px;">
-                <FormItem label="名称" required>
-                  <Input v-model:value="credentialForm.name" placeholder="请输入凭证名称" />
-                </FormItem>
-                <FormItem label="类型">
-                  <Select v-model:value="credentialForm.type" style="width: 100%;">
-                    <SelectOption value="username-password">用户名/密码</SelectOption>
-                    <SelectOption value="ssh-key">SSH 密钥</SelectOption>
-                    <SelectOption value="access-token">访问令牌</SelectOption>
-                    <SelectOption value="kubeconfig">Kubeconfig</SelectOption>
-                  </Select>
-                </FormItem>
-                <FormItem label="描述">
-                  <Input v-model:value="credentialForm.description" placeholder="请输入描述" />
-                </FormItem>
-
-                <!-- Dynamic fields: username-password -->
-                <template v-if="credentialForm.type === 'username-password'">
-                  <FormItem label="用户名">
-                    <Input v-model:value="credentialForm.username" placeholder="请输入用户名" />
-                  </FormItem>
-                  <FormItem label="密码">
-                    <InputPassword
-                      v-model:value="credentialForm.password"
-                      placeholder="请输入密码"
-                    />
-                  </FormItem>
-                </template>
-
-                <!-- Dynamic fields: ssh-key -->
-                <template v-if="credentialForm.type === 'ssh-key'">
-                  <FormItem label="用户名">
-                    <Input v-model:value="credentialForm.username" placeholder="请输入用户名" />
-                  </FormItem>
-                  <FormItem label="私钥">
-                    <Input.TextArea
-                      v-model:value="credentialForm.privateKey"
-                      placeholder="请粘贴 SSH 私钥"
-                      :rows="6"
-                    />
-                  </FormItem>
-                  <FormItem label="密码短语">
-                    <InputPassword
-                      v-model:value="credentialForm.passphrase"
-                      placeholder="请输入密码短语（可选）"
-                    />
-                  </FormItem>
-                </template>
-
-                <!-- Dynamic fields: access-token -->
-                <template v-if="credentialForm.type === 'access-token'">
-                  <FormItem label="令牌">
-                    <InputPassword
-                      v-model:value="credentialForm.token"
-                      placeholder="请输入访问令牌"
-                    />
-                  </FormItem>
-                </template>
-
-                <!-- Dynamic fields: kubeconfig -->
-                <template v-if="credentialForm.type === 'kubeconfig'">
-                  <FormItem label="Kubeconfig">
-                    <Input.TextArea
-                      v-model:value="credentialForm.kubeconfig"
-                      placeholder="请粘贴 Kubeconfig 内容"
-                      :rows="8"
-                    />
-                  </FormItem>
-                </template>
-              </Form>
-            </Modal>
-          </TabPane>
-
-          <!-- Tab 3: Settings -->
-          <TabPane key="settings" tab="设置">
-            <!-- View mode -->
-            <template v-if="!editMode">
-              <Descriptions bordered :column="2" size="small">
-                <DescriptionsItem label="工程名称">
-                  {{ project?.name || '-' }}
-                </DescriptionsItem>
-                <DescriptionsItem label="描述">
-                  {{ project?.description || '-' }}
-                </DescriptionsItem>
-                <DescriptionsItem label="Jenkins URL">
-                  {{ project?.jenkinsUrl || '-' }}
-                </DescriptionsItem>
-                <DescriptionsItem label="Jenkins 用户">
-                  {{ project?.jenkinsUser || '-' }}
-                </DescriptionsItem>
-                <DescriptionsItem label="Jenkins Token">
-                  {{ project?.jenkinsToken ? '******' : '-' }}
-                </DescriptionsItem>
-                <DescriptionsItem label="创建时间">
-                  {{ project?.createdAt || '-' }}
-                </DescriptionsItem>
-              </Descriptions>
-              <div style="margin-top: 16px;">
-                <Button type="primary" @click="enterEditMode">编辑</Button>
+              <!-- Delete project -->
+              <div
+                style="
+                  margin-top: 40px;
+                  padding-top: 24px;
+                  border-top: 1px solid hsl(var(--border));
+                "
+              >
+                <h3 style="color: #ff4d4f; margin-bottom: 8px">危险操作</h3>
+                <p style="color: #8c8c8c; margin-bottom: 16px">
+                  删除工程后，关联的所有流水线和凭证数据将被永久清除，此操作不可恢复。
+                </p>
+                <Button danger type="primary" @click="handleDeleteProject"
+                  >删除工程</Button
+                >
               </div>
-            </template>
-
-            <!-- Edit mode -->
-            <template v-else>
-              <Form layout="vertical" style="max-width: 600px;">
-                <FormItem label="工程名称" required>
-                  <Input v-model:value="settingsForm.name" placeholder="请输入工程名称" />
-                </FormItem>
-                <FormItem label="描述">
-                  <Input v-model:value="settingsForm.description" placeholder="请输入描述" />
-                </FormItem>
-                <FormItem label="Jenkins URL">
-                  <Input
-                    v-model:value="settingsForm.jenkinsUrl"
-                    placeholder="例如: http://jenkins.example.com"
-                  />
-                </FormItem>
-                <FormItem label="Jenkins 用户">
-                  <Input
-                    v-model:value="settingsForm.jenkinsUser"
-                    placeholder="请输入 Jenkins 用户名"
-                  />
-                </FormItem>
-                <FormItem label="Jenkins Token">
-                  <InputPassword
-                    v-model:value="settingsForm.jenkinsToken"
-                    placeholder="请输入 Jenkins API Token"
-                  />
-                </FormItem>
-                <FormItem>
-                  <Space>
-                    <Button
-                      :loading="testingConnection"
-                      @click="handleTestConnection"
-                    >
-                      测试连接
-                    </Button>
-                    <Button
-                      type="primary"
-                      :loading="settingsSubmitting"
-                      @click="handleSaveSettings"
-                    >
-                      保存
-                    </Button>
-                    <Button @click="cancelEditMode">取消</Button>
-                  </Space>
-                </FormItem>
-              </Form>
-            </template>
-
-            <!-- Delete project -->
-            <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid hsl(var(--border));">
-              <h3 style="color: #ff4d4f; margin-bottom: 8px;">危险操作</h3>
-              <p style="color: #8c8c8c; margin-bottom: 16px;">
-                删除工程后，关联的所有流水线和凭证数据将被永久清除，此操作不可恢复。
-              </p>
-              <Button danger type="primary" @click="handleDeleteProject">删除工程</Button>
-            </div>
-          </TabPane>
-        </Tabs>
-      </Card>
-    </Spin>
-  </div>
+            </TabPane>
+          </Tabs>
+        </Card>
+      </Spin>
+    </div>
+  </BusinessPage>
 </template>
 
 <style scoped>

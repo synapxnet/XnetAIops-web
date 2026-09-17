@@ -18,9 +18,16 @@ import {
 } from 'ant-design-vue';
 import { h } from 'vue';
 import {
-  getDeployment, scaleDeployment, restartDeployment, getDeploymentRevisions, rollbackDeployment,
-  getStatefulSet, scaleStatefulSet, restartStatefulSet,
-  getDaemonSet, restartDaemonSet,
+  getDeployment,
+  scaleDeployment,
+  restartDeployment,
+  getDeploymentRevisions,
+  rollbackDeployment,
+  getStatefulSet,
+  scaleStatefulSet,
+  restartStatefulSet,
+  getDaemonSet,
+  restartDaemonSet,
 } from '../api/workload';
 import { getPods } from '../api/pod';
 import YamlEditor from '../components/YamlEditor.vue';
@@ -78,7 +85,9 @@ async function fetchData() {
 }
 
 function goBack() {
-  router.push(`/K8S/workload/list?clusterId=${clusterId}&namespace=${namespace}`);
+  router.push(
+    `/K8S/workload/list?clusterId=${clusterId}&namespace=${namespace}`,
+  );
 }
 
 function goPodDetail(record: any) {
@@ -99,20 +108,29 @@ async function fetchPods() {
     const res = await getPods(clusterId, namespace);
     const all = Array.isArray(res) ? res : [];
     workloadPods.value = all.filter((p: any) =>
-      p.ownerReferences?.some((o: any) => o.name === name || o.name?.startsWith(name + '-')),
+      p.ownerReferences?.some(
+        (o: any) => o.name === name || o.name?.startsWith(name + '-'),
+      ),
     );
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 function handleScale() {
   let newReplicas = workload.value?.replicas || 0;
   Modal.confirm({
     title: `伸缩 ${name}`,
-    content: () => h(InputNumber, {
-      min: 0, max: 100, value: newReplicas,
-      'onUpdate:value': (val: number) => { newReplicas = val; },
-      style: { width: '100%' },
-    }),
+    content: () =>
+      h(InputNumber, {
+        min: 0,
+        max: 100,
+        value: newReplicas,
+        'onUpdate:value': (val: number) => {
+          newReplicas = val;
+        },
+        style: { width: '100%' },
+      }),
     async onOk() {
       try {
         if (kind === 'Deployment') {
@@ -176,145 +194,227 @@ function formatResources(resources: any, type: string): string {
   return parts.join(', ') || '-';
 }
 
-onMounted(() => { fetchData(); fetchPods(); });
+onMounted(() => {
+  fetchData();
+  fetchPods();
+});
 </script>
 
 <template>
-  <div class="p-4">
-    <Spin :spinning="loading">
-      <!-- 顶部 -->
-      <Card class="mb-4">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <h2 style="margin: 0;">
-              <Tag color="blue">{{ kind }}</Tag>
-              {{ name }}
-            </h2>
-            <Space class="mt-1">
-              <Tag :color="workload?.status === 'Running' ? 'green' : 'orange'">
-                {{ workload?.status || '-' }}
-              </Tag>
-              <a style="color: #8c8c8c;" @click="router.push(`/K8S/namespace/detail/${clusterId}/${namespace}`)">{{ namespace }}</a>
+  <BusinessPage
+    title="工作负载详情"
+    description="将状态、配置与关联资料放在一起，继续处理当前资源。"
+    family="详情"
+    route-key="/K8S/workload/detail/:clusterId/:namespace/:kind/:name"
+  >
+    <div class="p-4">
+      <Spin :spinning="loading">
+        <!-- 顶部 -->
+        <Card class="mb-4">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <div>
+              <h2 style="margin: 0">
+                <Tag color="blue">{{ kind }}</Tag>
+                {{ name }}
+              </h2>
+              <Space class="mt-1">
+                <Tag
+                  :color="workload?.status === 'Running' ? 'green' : 'orange'"
+                >
+                  {{ workload?.status || '-' }}
+                </Tag>
+                <a
+                  style="color: #8c8c8c"
+                  @click="
+                    router.push(
+                      `/K8S/namespace/detail/${clusterId}/${namespace}`,
+                    )
+                  "
+                  >{{ namespace }}</a
+                >
+              </Space>
+            </div>
+            <Space>
+              <Button v-if="kind !== 'DaemonSet'" @click="handleScale"
+                >伸缩</Button
+              >
+              <Button @click="handleRestart">重启</Button>
+              <Button @click="fetchData">刷新</Button>
+              <Button @click="goBack">返回列表</Button>
             </Space>
           </div>
-          <Space>
-            <Button v-if="kind !== 'DaemonSet'" @click="handleScale">伸缩</Button>
-            <Button @click="handleRestart">重启</Button>
-            <Button @click="fetchData">刷新</Button>
-            <Button @click="goBack">返回列表</Button>
-          </Space>
-        </div>
-      </Card>
+        </Card>
 
-      <Tabs v-model:activeKey="activeTab">
-        <!-- 基本信息 -->
-        <TabPane key="info" tab="基本信息">
-          <Card title="属性" class="mb-4">
-            <Descriptions bordered :column="2" size="small">
-              <DescriptionsItem label="名称">{{ workload?.name }}</DescriptionsItem>
-              <DescriptionsItem label="命名空间">{{ workload?.namespace }}</DescriptionsItem>
-              <DescriptionsItem label="类型">{{ workload?.kind }}</DescriptionsItem>
-              <DescriptionsItem label="状态">
-                <Tag :color="workload?.status === 'Running' ? 'green' : 'orange'">{{ workload?.status }}</Tag>
-              </DescriptionsItem>
-              <DescriptionsItem v-if="kind !== 'DaemonSet'" label="副本数">
-                {{ workload?.readyReplicas || 0 }} / {{ workload?.replicas || 0 }}
-              </DescriptionsItem>
-              <DescriptionsItem v-if="workload?.strategy" label="策略">{{ workload.strategy }}</DescriptionsItem>
-              <DescriptionsItem label="创建时间">{{ workload?.createdAt || '-' }}</DescriptionsItem>
-            </Descriptions>
-          </Card>
+        <Tabs v-model:activeKey="activeTab">
+          <!-- 基本信息 -->
+          <TabPane key="info" tab="基本信息">
+            <Card title="属性" class="mb-4">
+              <Descriptions bordered :column="2" size="small">
+                <DescriptionsItem label="名称">{{
+                  workload?.name
+                }}</DescriptionsItem>
+                <DescriptionsItem label="命名空间">{{
+                  workload?.namespace
+                }}</DescriptionsItem>
+                <DescriptionsItem label="类型">{{
+                  workload?.kind
+                }}</DescriptionsItem>
+                <DescriptionsItem label="状态">
+                  <Tag
+                    :color="workload?.status === 'Running' ? 'green' : 'orange'"
+                    >{{ workload?.status }}</Tag
+                  >
+                </DescriptionsItem>
+                <DescriptionsItem v-if="kind !== 'DaemonSet'" label="副本数">
+                  {{ workload?.readyReplicas || 0 }} /
+                  {{ workload?.replicas || 0 }}
+                </DescriptionsItem>
+                <DescriptionsItem v-if="workload?.strategy" label="策略">{{
+                  workload.strategy
+                }}</DescriptionsItem>
+                <DescriptionsItem label="创建时间">{{
+                  workload?.createdAt || '-'
+                }}</DescriptionsItem>
+              </Descriptions>
+            </Card>
 
-          <!-- 容器信息 -->
-          <Card v-if="workload?.containers" title="容器" class="mb-4">
-            <Table
-              :columns="containerColumns"
-              :data-source="workload.containers"
-              :pagination="false"
-              row-key="name"
-              size="small"
-            >
-              <template #bodyCell="{ column, record }">
-                <template v-if="column.key === 'ports'">
-                  <span v-if="record.ports && record.ports.length > 0">
-                    <Tag v-for="(p, idx) in record.ports" :key="idx" size="small">
-                      {{ p.containerPort }}/{{ p.protocol || 'TCP' }}
+            <!-- 容器信息 -->
+            <Card v-if="workload?.containers" title="容器" class="mb-4">
+              <Table
+                :columns="containerColumns"
+                :data-source="workload.containers"
+                :pagination="false"
+                row-key="name"
+                size="small"
+              >
+                <template #bodyCell="{ column, record }">
+                  <template v-if="column.key === 'ports'">
+                    <span v-if="record.ports && record.ports.length > 0">
+                      <Tag
+                        v-for="(p, idx) in record.ports"
+                        :key="idx"
+                        size="small"
+                      >
+                        {{ p.containerPort }}/{{ p.protocol || 'TCP' }}
+                      </Tag>
+                    </span>
+                    <span v-else>-</span>
+                  </template>
+                  <template v-if="column.key === 'requests'">
+                    {{ formatResources(record.resources, 'requests') }}
+                  </template>
+                  <template v-if="column.key === 'limits'">
+                    {{ formatResources(record.resources, 'limits') }}
+                  </template>
+                </template>
+              </Table>
+            </Card>
+
+            <!-- 标签 -->
+            <Card v-if="workload?.labels" title="标签 (Labels)" class="mb-4">
+              <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                <Tag
+                  v-for="(value, key) in workload.labels"
+                  :key="key"
+                  color="blue"
+                >
+                  {{ key }}={{ value }}
+                </Tag>
+              </div>
+            </Card>
+          </TabPane>
+
+          <!-- 修订历史（仅Deployment） -->
+          <TabPane
+            v-if="kind === 'Deployment'"
+            key="revisions"
+            :tab="`修订记录 (${revisions.length})`"
+          >
+            <Card>
+              <Table
+                :columns="revisionColumns"
+                :data-source="revisions"
+                :pagination="false"
+                row-key="revision"
+                size="small"
+              >
+                <template #bodyCell="{ column, record }">
+                  <template v-if="column.key === 'replicas'">
+                    {{ record.readyReplicas || 0 }}/{{ record.replicas || 0 }}
+                  </template>
+                  <template v-if="column.key === 'images'">
+                    <Tag
+                      v-for="(img, idx) in record.images || []"
+                      :key="idx"
+                      size="small"
+                      style="margin: 2px"
+                    >
+                      {{ img.split('/').pop() }}
                     </Tag>
-                  </span>
-                  <span v-else>-</span>
+                  </template>
+                  <template v-if="column.key === 'action'">
+                    <Button
+                      type="link"
+                      size="small"
+                      @click="handleRollback(record.revision)"
+                      >回滚</Button
+                    >
+                  </template>
                 </template>
-                <template v-if="column.key === 'requests'">
-                  {{ formatResources(record.resources, 'requests') }}
-                </template>
-                <template v-if="column.key === 'limits'">
-                  {{ formatResources(record.resources, 'limits') }}
-                </template>
-              </template>
-            </Table>
-          </Card>
+              </Table>
+            </Card>
+          </TabPane>
 
-          <!-- 标签 -->
-          <Card v-if="workload?.labels" title="标签 (Labels)" class="mb-4">
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-              <Tag v-for="(value, key) in workload.labels" :key="key" color="blue">
-                {{ key }}={{ value }}
-              </Tag>
-            </div>
-          </Card>
-        </TabPane>
+          <!-- Pod列表 -->
+          <TabPane key="pods" :tab="`Pod列表 (${workloadPods.length})`">
+            <Card>
+              <Table
+                :columns="workloadPodColumns"
+                :data-source="workloadPods"
+                :pagination="false"
+                row-key="name"
+                size="small"
+              >
+                <template #bodyCell="{ column, record }">
+                  <template v-if="column.key === 'name'">
+                    <a @click="goPodDetail(record)">{{ record.name }}</a>
+                  </template>
+                  <template v-if="column.key === 'status'">
+                    <Tag
+                      :color="
+                        record.status === 'Running'
+                          ? 'green'
+                          : record.status === 'Succeeded'
+                            ? 'blue'
+                            : 'red'
+                      "
+                    >
+                      {{ record.status }}
+                    </Tag>
+                  </template>
+                </template>
+              </Table>
+            </Card>
+          </TabPane>
 
-        <!-- 修订历史（仅Deployment） -->
-        <TabPane v-if="kind === 'Deployment'" key="revisions" :tab="`修订记录 (${revisions.length})`">
-          <Card>
-            <Table
-              :columns="revisionColumns"
-              :data-source="revisions"
-              :pagination="false"
-              row-key="revision"
-              size="small"
-            >
-              <template #bodyCell="{ column, record }">
-                <template v-if="column.key === 'replicas'">
-                  {{ record.readyReplicas || 0 }}/{{ record.replicas || 0 }}
-                </template>
-                <template v-if="column.key === 'images'">
-                  <Tag v-for="(img, idx) in (record.images || [])" :key="idx" size="small" style="margin: 2px;">
-                    {{ img.split('/').pop() }}
-                  </Tag>
-                </template>
-                <template v-if="column.key === 'action'">
-                  <Button type="link" size="small" @click="handleRollback(record.revision)">回滚</Button>
-                </template>
-              </template>
-            </Table>
-          </Card>
-        </TabPane>
-
-        <!-- Pod列表 -->
-        <TabPane key="pods" :tab="`Pod列表 (${workloadPods.length})`">
-          <Card>
-            <Table :columns="workloadPodColumns" :data-source="workloadPods" :pagination="false" row-key="name" size="small">
-              <template #bodyCell="{ column, record }">
-                <template v-if="column.key === 'name'">
-                  <a @click="goPodDetail(record)">{{ record.name }}</a>
-                </template>
-                <template v-if="column.key === 'status'">
-                  <Tag :color="record.status === 'Running' ? 'green' : record.status === 'Succeeded' ? 'blue' : 'red'">
-                    {{ record.status }}
-                  </Tag>
-                </template>
-              </template>
-            </Table>
-          </Card>
-        </TabPane>
-
-        <!-- YAML -->
-        <TabPane key="yaml" tab="YAML">
-          <Card>
-            <YamlEditor :model-value="workload?.yaml || ''" :read-only="true" height="600px" />
-          </Card>
-        </TabPane>
-      </Tabs>
-    </Spin>
-  </div>
+          <!-- YAML -->
+          <TabPane key="yaml" tab="YAML">
+            <Card>
+              <YamlEditor
+                :model-value="workload?.yaml || ''"
+                :read-only="true"
+                height="600px"
+              />
+            </Card>
+          </TabPane>
+        </Tabs>
+      </Spin>
+    </div>
+  </BusinessPage>
 </template>

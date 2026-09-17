@@ -13,7 +13,10 @@ export const overridesPreferences = defineOverridesPreferences({
     defaultHomePath: '/dashboard/overview',
     enableCheckUpdates: false,
     name: import.meta.env.VITE_APP_TITLE,
+    preferencesButtonPosition: 'header',
   },
+  breadcrumb: { enable: false },
+  theme: { colorPrimary: '#187bbd', mode: 'light', radius: '0.75' },
   copyright: {
     companyName: 'SynapXnet',
     companySiteLink: 'https://openxnet.synapxnet.com',

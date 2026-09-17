@@ -1,8 +1,16 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import {
-  Card, Table, Button, Tag, Space, Modal, Progress, message,
-  Select, SelectOption,
+  Card,
+  Table,
+  Button,
+  Tag,
+  Space,
+  Modal,
+  Progress,
+  message,
+  Select,
+  SelectOption,
 } from 'ant-design-vue';
 import { getCommands, getCommandDetail, cancelCommand } from '../api/command';
 import { getClusters } from '../../CLM/api/cluster';
@@ -26,23 +34,35 @@ const columns = [
 ];
 
 const statusColorMap: Record<string, string> = {
-  pending: 'default', running: 'blue', success: 'green',
-  failed: 'red', cancelled: 'orange',
+  pending: 'default',
+  running: 'blue',
+  success: 'green',
+  failed: 'red',
+  cancelled: 'orange',
 };
 
 const statusLabelMap: Record<string, string> = {
-  pending: '等待中', running: '执行中', success: '成功',
-  failed: '失败', cancelled: '已取消',
+  pending: '等待中',
+  running: '执行中',
+  success: '成功',
+  failed: '失败',
+  cancelled: '已取消',
 };
 
 const typeColorMap: Record<string, string> = {
-  install: 'blue', start: 'green', stop: 'orange',
-  restart: 'cyan', config_update: 'purple',
+  install: 'blue',
+  start: 'green',
+  stop: 'orange',
+  restart: 'cyan',
+  config_update: 'purple',
 };
 
 const typeLabelMap: Record<string, string> = {
-  install: '安装', start: '启动', stop: '停止',
-  restart: '重启', config_update: '配置更新',
+  install: '安装',
+  start: '启动',
+  stop: '停止',
+  restart: '重启',
+  config_update: '配置更新',
 };
 
 // Detail modal
@@ -71,7 +91,9 @@ async function fetchClusters() {
   try {
     const res = await getClusters();
     clusters.value = Array.isArray(res) ? res : [];
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 async function fetchCommands() {
@@ -80,7 +102,9 @@ async function fetchCommands() {
     const res = await getCommands(selectedClusterId.value);
     commands.value = Array.isArray(res) ? res : [];
     // Auto-refresh if there are active commands
-    const hasActive = commands.value.some(c => c.status === 'pending' || c.status === 'running');
+    const hasActive = commands.value.some(
+      (c) => c.status === 'pending' || c.status === 'running',
+    );
     if (hasActive) {
       startAutoRefresh();
     } else {
@@ -138,7 +162,9 @@ function handleCancel(record: Command) {
 function startAutoRefresh() {
   if (refreshTimer) return;
   refreshTimer = setInterval(() => {
-    const hasActive = commands.value.some(c => c.status === 'pending' || c.status === 'running');
+    const hasActive = commands.value.some(
+      (c) => c.status === 'pending' || c.status === 'running',
+    );
     if (hasActive) {
       fetchCommandsSilent();
     } else {
@@ -158,7 +184,9 @@ async function fetchCommandsSilent() {
   try {
     const res = await getCommands(selectedClusterId.value);
     commands.value = Array.isArray(res) ? res : [];
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 onMounted(() => {
@@ -172,116 +200,157 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="指令中心">
-      <template #extra>
-        <Space>
-          <Select
-            v-model:value="selectedClusterId"
-            placeholder="选择集群"
-            style="width: 200px"
-            allow-clear
-            @change="onClusterChange"
-          >
-            <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
-              {{ c.clusterName }}
-            </SelectOption>
-          </Select>
-          <Button @click="fetchCommands">刷新</Button>
-        </Space>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="commands"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 1000 }"
-        size="small"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'commandType'">
-            <Tag :color="typeColorMap[(_record as any).commandType] || 'default'">
-              {{ typeLabelMap[(_record as any).commandType] || (_record as any).commandType }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[(_record as any).status] || 'default'">
-              {{ statusLabelMap[(_record as any).status] || (_record as any).status }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'progress'">
-            <Progress
-              :percent="(_record as any).progress || 0"
-              size="small"
-              :status="
-                (_record as any).status === 'failed'
-                  ? 'exception'
-                  : (_record as any).status === 'success'
-                    ? 'success'
-                    : 'active'
-              "
-            />
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showDetail(_record as Command)">
-                详情
-              </Button>
-              <Button
-                v-if="(_record as any).status === 'pending' || (_record as any).status === 'running'"
-                type="link" size="small" danger
-                @click="handleCancel(_record as Command)"
+  <BusinessPage
+    title="指令中心"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/SVM/command/list"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Space>
+            <Select
+              v-model:value="selectedClusterId"
+              placeholder="选择集群"
+              style="width: 200px"
+              allow-clear
+              @change="onClusterChange"
+            >
+              <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
+                {{ c.clusterName }}
+              </SelectOption>
+            </Select>
+            <Button @click="fetchCommands">刷新</Button>
+          </Space>
+        </template>
+        <Table
+          :columns="columns"
+          :data-source="commands"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 1000 }"
+          size="small"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'commandType'">
+              <Tag
+                :color="typeColorMap[(_record as any).commandType] || 'default'"
               >
-                取消
-              </Button>
-            </Space>
-          </template>
-        </template>
-      </Table>
-    </Card>
-
-    <!-- Command Detail Modal -->
-    <Modal
-      v-model:open="detailVisible"
-      :title="detailTitle"
-      :footer="null"
-      width="900px"
-    >
-      <Table
-        :columns="hostColumns"
-        :data-source="detailHosts"
-        :loading="detailLoading"
-        row-key="id"
-        size="small"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[(_record as any).status] || 'default'">
-              {{ statusLabelMap[(_record as any).status] || (_record as any).status }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'progress'">
-            <Progress :percent="(_record as any).progress || 0" size="small" />
-          </template>
-        </template>
-        <template #expandedRowRender="{ record: hostRecord }">
-          <Table
-            :columns="roleColumns"
-            :data-source="(hostRecord as any).roles || []"
-            row-key="id"
-            size="small"
-            :pagination="false"
-          >
-            <template #bodyCell="{ column, record: _roleRecord }">
-              <template v-if="column.key === 'status'">
-                <Tag :color="statusColorMap[(_roleRecord as any).status] || 'default'">
-                  {{ statusLabelMap[(_roleRecord as any).status] || (_roleRecord as any).status }}
-                </Tag>
-              </template>
+                {{
+                  typeLabelMap[(_record as any).commandType] ||
+                  (_record as any).commandType
+                }}
+              </Tag>
             </template>
-          </Table>
-        </template>
-      </Table>
-    </Modal>
-  </div>
+            <template v-if="column.key === 'status'">
+              <Tag
+                :color="statusColorMap[(_record as any).status] || 'default'"
+              >
+                {{
+                  statusLabelMap[(_record as any).status] ||
+                  (_record as any).status
+                }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'progress'">
+              <Progress
+                :percent="(_record as any).progress || 0"
+                size="small"
+                :status="
+                  (_record as any).status === 'failed'
+                    ? 'exception'
+                    : (_record as any).status === 'success'
+                      ? 'success'
+                      : 'active'
+                "
+              />
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showDetail(_record as Command)"
+                >
+                  详情
+                </Button>
+                <Button
+                  v-if="
+                    (_record as any).status === 'pending' ||
+                    (_record as any).status === 'running'
+                  "
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleCancel(_record as Command)"
+                >
+                  取消
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
+
+      <!-- Command Detail Modal -->
+      <Modal
+        v-model:open="detailVisible"
+        :title="detailTitle"
+        :footer="null"
+        width="900px"
+      >
+        <Table
+          :columns="hostColumns"
+          :data-source="detailHosts"
+          :loading="detailLoading"
+          row-key="id"
+          size="small"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'status'">
+              <Tag
+                :color="statusColorMap[(_record as any).status] || 'default'"
+              >
+                {{
+                  statusLabelMap[(_record as any).status] ||
+                  (_record as any).status
+                }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'progress'">
+              <Progress
+                :percent="(_record as any).progress || 0"
+                size="small"
+              />
+            </template>
+          </template>
+          <template #expandedRowRender="{ record: hostRecord }">
+            <Table
+              :columns="roleColumns"
+              :data-source="(hostRecord as any).roles || []"
+              row-key="id"
+              size="small"
+              :pagination="false"
+            >
+              <template #bodyCell="{ column, record: _roleRecord }">
+                <template v-if="column.key === 'status'">
+                  <Tag
+                    :color="
+                      statusColorMap[(_roleRecord as any).status] || 'default'
+                    "
+                  >
+                    {{
+                      statusLabelMap[(_roleRecord as any).status] ||
+                      (_roleRecord as any).status
+                    }}
+                  </Tag>
+                </template>
+              </template>
+            </Table>
+          </template>
+        </Table>
+      </Modal>
+    </div>
+  </BusinessPage>
 </template>

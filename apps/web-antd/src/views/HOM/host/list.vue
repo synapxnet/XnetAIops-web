@@ -1,7 +1,16 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Card, Table, Button, Tag, Space, Modal, Progress, message } from 'ant-design-vue';
+import {
+  Card,
+  Table,
+  Button,
+  Tag,
+  Space,
+  Modal,
+  Progress,
+  message,
+} from 'ant-design-vue';
 import { getHosts, deleteHost } from '../api/host';
 import type { Host } from '../api/types';
 
@@ -41,12 +50,16 @@ function cpuPercent(record: Host) {
 
 function memPercent(record: Host) {
   if (!record.totalMemGb || record.totalMemGb === 0) return 0;
-  return Math.round((Number(record.usedMemGb) / Number(record.totalMemGb)) * 100);
+  return Math.round(
+    (Number(record.usedMemGb) / Number(record.totalMemGb)) * 100,
+  );
 }
 
 function diskPercent(record: Host) {
   if (!record.totalDiskGb || record.totalDiskGb === 0) return 0;
-  return Math.round((Number(record.usedDiskGb) / Number(record.totalDiskGb)) * 100);
+  return Math.round(
+    (Number(record.usedDiskGb) / Number(record.totalDiskGb)) * 100,
+  );
 }
 
 async function fetchHosts() {
@@ -92,42 +105,73 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="主机列表">
-      <template #extra>
-        <Button type="primary" @click="goAdd">添加主机</Button>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="hosts"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 1200 }"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'cpu'">
-            <Progress :percent="cpuPercent(record)" size="small" :stroke-color="cpuPercent(record) > 80 ? '#ff4d4f' : '#52c41a'" />
-          </template>
-          <template v-if="column.key === 'mem'">
-            <Progress :percent="memPercent(record)" size="small" :stroke-color="memPercent(record) > 80 ? '#ff4d4f' : '#1890ff'" />
-          </template>
-          <template v-if="column.key === 'disk'">
-            <Progress :percent="diskPercent(record)" size="small" :stroke-color="diskPercent(record) > 80 ? '#ff4d4f' : '#faad14'" />
-          </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[record.status] || 'default'">{{ record.status }}</Tag>
-          </template>
-          <template v-if="column.key === 'agentStatus'">
-            <Tag :color="agentColorMap[record.agentStatus] || 'default'">{{ record.agentStatus }}</Tag>
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="goDetail(record)">详情</Button>
-              <Button type="link" size="small" danger @click="handleDelete(record)">删除</Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="主机列表"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/HOM/host/list"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Button type="primary" @click="goAdd">添加主机</Button>
         </template>
-      </Table>
-    </Card>
-  </div>
+        <Table
+          :columns="columns"
+          :data-source="hosts"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 1200 }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'cpu'">
+              <Progress
+                :percent="cpuPercent(record)"
+                size="small"
+                :stroke-color="cpuPercent(record) > 80 ? '#ff4d4f' : '#52c41a'"
+              />
+            </template>
+            <template v-if="column.key === 'mem'">
+              <Progress
+                :percent="memPercent(record)"
+                size="small"
+                :stroke-color="memPercent(record) > 80 ? '#ff4d4f' : '#1890ff'"
+              />
+            </template>
+            <template v-if="column.key === 'disk'">
+              <Progress
+                :percent="diskPercent(record)"
+                size="small"
+                :stroke-color="diskPercent(record) > 80 ? '#ff4d4f' : '#faad14'"
+              />
+            </template>
+            <template v-if="column.key === 'status'">
+              <Tag :color="statusColorMap[record.status] || 'default'">{{
+                record.status
+              }}</Tag>
+            </template>
+            <template v-if="column.key === 'agentStatus'">
+              <Tag :color="agentColorMap[record.agentStatus] || 'default'">{{
+                record.agentStatus
+              }}</Tag>
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button type="link" size="small" @click="goDetail(record)"
+                  >详情</Button
+                >
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(record)"
+                  >删除</Button
+                >
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

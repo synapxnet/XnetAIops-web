@@ -2,24 +2,56 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {
-  Card, Table, Button, Space, Tag, Modal, Input, Select,
-  Row, Col, Statistic, message, Tooltip, Tabs, Popconfirm,
+  Card,
+  Table,
+  Button,
+  Space,
+  Tag,
+  Modal,
+  Input,
+  Select,
+  Row,
+  Col,
+  Statistic,
+  message,
+  Tooltip,
+  Tabs,
+  Popconfirm,
 } from 'ant-design-vue';
 import {
-  PlusOutlined, ReloadOutlined, DeleteOutlined,
-  PlayCircleOutlined, PauseCircleOutlined, EyeOutlined,
-  CloudServerOutlined, ClusterOutlined, SearchOutlined,
-  KeyOutlined, UndoOutlined, PoweroffOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+  DeleteOutlined,
+  PlayCircleOutlined,
+  PauseCircleOutlined,
+  EyeOutlined,
+  CloudServerOutlined,
+  ClusterOutlined,
+  SearchOutlined,
+  KeyOutlined,
+  UndoOutlined,
+  PoweroffOutlined,
 } from '@ant-design/icons-vue';
 import {
-  getJenkinsMasters, deleteJenkinsMaster, checkJenkinsMasterStatus,
-  startJenkins, stopJenkins, restartJenkins, uninstallJenkins, getInitialPassword,
-  getStatusText, getStatusColor,
+  getJenkinsMasters,
+  deleteJenkinsMaster,
+  checkJenkinsMasterStatus,
+  startJenkins,
+  stopJenkins,
+  restartJenkins,
+  uninstallJenkins,
+  getInitialPassword,
+  getStatusText,
+  getStatusColor,
 } from '../api/jenkinsMaster';
 import {
-  getJenkinsNodes, deleteJenkinsNode, checkJenkinsNodeStatus,
-  startAgent, stopAgent,
-  getStatusText as getNodeStatusText, getStatusColor as getNodeStatusColor,
+  getJenkinsNodes,
+  deleteJenkinsNode,
+  checkJenkinsNodeStatus,
+  startAgent,
+  stopAgent,
+  getStatusText as getNodeStatusText,
+  getStatusColor as getNodeStatusColor,
 } from '../api/jenkinsNode';
 import type { JenkinsMaster, JenkinsNode } from '../api/types';
 
@@ -57,8 +89,18 @@ let refreshTimer: ReturnType<typeof setInterval> | null = null;
 const masterColumns = [
   { title: '名称', dataIndex: 'name', key: 'name', ellipsis: true },
   { title: '主机', dataIndex: 'host', key: 'host', width: 150 },
-  { title: 'Jenkins端口', dataIndex: 'jenkins_port', key: 'jenkins_port', width: 100 },
-  { title: '版本', dataIndex: 'jenkins_version', key: 'jenkins_version', width: 100 },
+  {
+    title: 'Jenkins端口',
+    dataIndex: 'jenkins_port',
+    key: 'jenkins_port',
+    width: 100,
+  },
+  {
+    title: '版本',
+    dataIndex: 'jenkins_version',
+    key: 'jenkins_version',
+    width: 100,
+  },
   { title: '状态', dataIndex: 'status', key: 'status', width: 100 },
   { title: '创建时间', dataIndex: 'created_at', key: 'created_at', width: 170 },
   { title: '操作', key: 'action', width: 300, fixed: 'right' as const },
@@ -72,7 +114,13 @@ const nodeColumns = [
   { title: '操作系统', dataIndex: 'os_type', key: 'os_type', width: 80 },
   { title: 'CPU', dataIndex: 'cpu_cores', key: 'cpu_cores', width: 60 },
   { title: '内存(GB)', dataIndex: 'ram_gb', key: 'ram_gb', width: 80 },
-  { title: '标签', dataIndex: 'labels', key: 'labels', width: 120, ellipsis: true },
+  {
+    title: '标签',
+    dataIndex: 'labels',
+    key: 'labels',
+    width: 120,
+    ellipsis: true,
+  },
   { title: '状态', dataIndex: 'status', key: 'status', width: 100 },
   { title: '操作', key: 'action', width: 260, fixed: 'right' as const },
 ];
@@ -81,20 +129,24 @@ const nodeColumns = [
 
 const filteredMasterList = computed(() => {
   return masterList.value.filter((item) => {
-    const matchSearch = !masterSearchText.value ||
+    const matchSearch =
+      !masterSearchText.value ||
       item.name?.toLowerCase().includes(masterSearchText.value.toLowerCase()) ||
       item.host?.toLowerCase().includes(masterSearchText.value.toLowerCase());
-    const matchStatus = !masterStatusFilter.value || item.status === masterStatusFilter.value;
+    const matchStatus =
+      !masterStatusFilter.value || item.status === masterStatusFilter.value;
     return matchSearch && matchStatus;
   });
 });
 
 const filteredNodeList = computed(() => {
   return nodeList.value.filter((item) => {
-    const matchSearch = !nodeSearchText.value ||
+    const matchSearch =
+      !nodeSearchText.value ||
       item.name?.toLowerCase().includes(nodeSearchText.value.toLowerCase()) ||
       item.host?.toLowerCase().includes(nodeSearchText.value.toLowerCase());
-    const matchStatus = !nodeStatusFilter.value || item.status === nodeStatusFilter.value;
+    const matchStatus =
+      !nodeStatusFilter.value || item.status === nodeStatusFilter.value;
     return matchSearch && matchStatus;
   });
 });
@@ -103,7 +155,9 @@ const filteredNodeList = computed(() => {
 
 const masterStats = computed(() => ({
   total: masterList.value.length,
-  running: masterList.value.filter((m) => m.status === 'running' || m.status === 'deployed').length,
+  running: masterList.value.filter(
+    (m) => m.status === 'running' || m.status === 'deployed',
+  ).length,
   stopped: masterList.value.filter((m) => m.status === 'stopped').length,
   failed: masterList.value.filter((m) => m.status === 'failed').length,
 }));
@@ -145,8 +199,12 @@ const loadNodes = async () => {
 
 // ==================== 导航 ====================
 
-function goDeployMaster() { router.push('/CLM/jenkins/deploy?type=master'); }
-function goDeployNode() { router.push('/CLM/jenkins/deploy?type=node'); }
+function goDeployMaster() {
+  router.push('/CLM/jenkins/deploy?type=master');
+}
+function goDeployNode() {
+  router.push('/CLM/jenkins/deploy?type=node');
+}
 
 // ==================== Master操作 ====================
 
@@ -155,7 +213,9 @@ const handleRefreshMasterStatus = async (record: JenkinsMaster) => {
     await checkJenkinsMasterStatus(record.id!);
     message.success('状态已刷新');
     loadMasters();
-  } catch (e: any) { message.error('刷新状态失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('刷新状态失败: ' + e.message);
+  }
 };
 
 const handleMasterStart = async (record: JenkinsMaster) => {
@@ -163,7 +223,9 @@ const handleMasterStart = async (record: JenkinsMaster) => {
     await startJenkins(record.id!);
     message.success('启动命令已发送');
     setTimeout(loadMasters, 2000);
-  } catch (e: any) { message.error('启动失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('启动失败: ' + e.message);
+  }
 };
 
 const handleMasterStop = async (record: JenkinsMaster) => {
@@ -171,7 +233,9 @@ const handleMasterStop = async (record: JenkinsMaster) => {
     await stopJenkins(record.id!);
     message.success('停止命令已发送');
     setTimeout(loadMasters, 2000);
-  } catch (e: any) { message.error('停止失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('停止失败: ' + e.message);
+  }
 };
 
 const handleMasterRestart = async (record: JenkinsMaster) => {
@@ -179,15 +243,20 @@ const handleMasterRestart = async (record: JenkinsMaster) => {
     await restartJenkins(record.id!);
     message.success('重启命令已发送');
     setTimeout(loadMasters, 2000);
-  } catch (e: any) { message.error('重启失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('重启失败: ' + e.message);
+  }
 };
 
 const handleGetPassword = async (record: JenkinsMaster) => {
   try {
-    const res = await getInitialPassword(record.id!) as any;
-    initialPasswordText.value = res?.data || res || record.initial_password || '未获取到';
+    const res = (await getInitialPassword(record.id!)) as any;
+    initialPasswordText.value =
+      res?.data || res || record.initial_password || '未获取到';
     passwordModalVisible.value = true;
-  } catch (e: any) { message.error('获取密码失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('获取密码失败: ' + e.message);
+  }
 };
 
 const handleViewMasterLog = (record: JenkinsMaster) => {
@@ -201,7 +270,9 @@ const handleDeleteMaster = async (id: number) => {
     await deleteJenkinsMaster(id);
     message.success('删除成功');
     loadMasters();
-  } catch (e: any) { message.error('删除失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('删除失败: ' + e.message);
+  }
 };
 
 const handleMasterUninstall = async (record: JenkinsMaster) => {
@@ -214,7 +285,9 @@ const handleMasterUninstall = async (record: JenkinsMaster) => {
         await uninstallJenkins(record.id!);
         message.success('卸载成功');
         loadMasters();
-      } catch (e: any) { message.error('卸载失败: ' + e.message); }
+      } catch (e: any) {
+        message.error('卸载失败: ' + e.message);
+      }
     },
   });
 };
@@ -226,7 +299,9 @@ const handleRefreshNodeStatus = async (record: JenkinsNode) => {
     await checkJenkinsNodeStatus(record.id!);
     message.success('状态已刷新');
     loadNodes();
-  } catch (e: any) { message.error('刷新状态失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('刷新状态失败: ' + e.message);
+  }
 };
 
 const handleNodeStart = async (record: JenkinsNode) => {
@@ -234,7 +309,9 @@ const handleNodeStart = async (record: JenkinsNode) => {
     await startAgent(record.id!);
     message.success('Agent启动命令已发送');
     setTimeout(loadNodes, 2000);
-  } catch (e: any) { message.error('启动失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('启动失败: ' + e.message);
+  }
 };
 
 const handleNodeStop = async (record: JenkinsNode) => {
@@ -242,7 +319,9 @@ const handleNodeStop = async (record: JenkinsNode) => {
     await stopAgent(record.id!);
     message.success('已停止');
     setTimeout(loadNodes, 2000);
-  } catch (e: any) { message.error('停止失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('停止失败: ' + e.message);
+  }
 };
 
 const handleViewNodeLog = (record: JenkinsNode) => {
@@ -256,7 +335,9 @@ const handleDeleteNode = async (id: number) => {
     await deleteJenkinsNode(id);
     message.success('删除成功');
     loadNodes();
-  } catch (e: any) { message.error('删除失败: ' + e.message); }
+  } catch (e: any) {
+    message.error('删除失败: ' + e.message);
+  }
 };
 
 // ==================== Tab切换 ====================
@@ -293,232 +374,330 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="jenkins-container">
-    <!-- 统计卡片 -->
-    <Row :gutter="16" class="stats-row">
-      <Col :span="6">
-        <Card>
-          <Statistic title="Master总数" :value="masterStats.total" :value-style="{ color: '#1890ff' }">
-            <template #prefix><CloudServerOutlined /></template>
-          </Statistic>
-        </Card>
-      </Col>
-      <Col :span="6">
-        <Card>
-          <Statistic title="Master运行中" :value="masterStats.running" :value-style="{ color: '#52c41a' }" />
-        </Card>
-      </Col>
-      <Col :span="6">
-        <Card>
-          <Statistic title="Node总数" :value="nodeStats.total" :value-style="{ color: '#1890ff' }">
-            <template #prefix><ClusterOutlined /></template>
-          </Statistic>
-        </Card>
-      </Col>
-      <Col :span="6">
-        <Card>
-          <Statistic title="Node运行中" :value="nodeStats.running" :value-style="{ color: '#52c41a' }" />
-        </Card>
-      </Col>
-    </Row>
+  <BusinessPage
+    title="Jenkins 部署"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/CLM/jenkins/list"
+  >
+    <div class="jenkins-container">
+      <!-- 统计卡片 -->
+      <Row :gutter="16" class="stats-row">
+        <Col :span="6">
+          <Card>
+            <Statistic
+              title="Master总数"
+              :value="masterStats.total"
+              :value-style="{ color: '#1890ff' }"
+            >
+              <template #prefix><CloudServerOutlined /></template>
+            </Statistic>
+          </Card>
+        </Col>
+        <Col :span="6">
+          <Card>
+            <Statistic
+              title="Master运行中"
+              :value="masterStats.running"
+              :value-style="{ color: '#52c41a' }"
+            />
+          </Card>
+        </Col>
+        <Col :span="6">
+          <Card>
+            <Statistic
+              title="Node总数"
+              :value="nodeStats.total"
+              :value-style="{ color: '#1890ff' }"
+            >
+              <template #prefix><ClusterOutlined /></template>
+            </Statistic>
+          </Card>
+        </Col>
+        <Col :span="6">
+          <Card>
+            <Statistic
+              title="Node运行中"
+              :value="nodeStats.running"
+              :value-style="{ color: '#52c41a' }"
+            />
+          </Card>
+        </Col>
+      </Row>
 
-    <!-- 主内容区域 -->
-    <Card class="main-card">
-      <Tabs v-model:activeKey="activeTab" @change="handleTabChange">
-        <!-- ====== Master Tab ====== -->
-        <Tabs.TabPane key="master" tab="Jenkins Master">
-          <div class="table-toolbar">
-            <Space>
-              <Input
-                v-model:value="masterSearchText"
-                placeholder="搜索名称或地址"
-                style="width: 200px"
-                allow-clear
-              >
-                <template #prefix><SearchOutlined /></template>
-              </Input>
-              <Select v-model:value="masterStatusFilter" placeholder="状态筛选" style="width: 120px" allow-clear>
-                <Select.Option value="pending">待部署</Select.Option>
-                <Select.Option value="deploying">部署中</Select.Option>
-                <Select.Option value="deployed">已部署</Select.Option>
-                <Select.Option value="running">运行中</Select.Option>
-                <Select.Option value="stopped">已停止</Select.Option>
-                <Select.Option value="failed">失败</Select.Option>
-              </Select>
-            </Space>
-            <Space>
-              <Button @click="loadMasters">
-                <template #icon><ReloadOutlined /></template>
-                刷新
-              </Button>
-              <Button type="primary" @click="goDeployMaster">
-                <template #icon><PlusOutlined /></template>
-                部署Master
-              </Button>
-            </Space>
-          </div>
+      <!-- 主内容区域 -->
+      <Card class="main-card">
+        <Tabs v-model:activeKey="activeTab" @change="handleTabChange">
+          <!-- ====== Master Tab ====== -->
+          <Tabs.TabPane key="master" tab="Jenkins Master">
+            <div class="table-toolbar">
+              <Space>
+                <Input
+                  v-model:value="masterSearchText"
+                  placeholder="搜索名称或地址"
+                  style="width: 200px"
+                  allow-clear
+                >
+                  <template #prefix><SearchOutlined /></template>
+                </Input>
+                <Select
+                  v-model:value="masterStatusFilter"
+                  placeholder="状态筛选"
+                  style="width: 120px"
+                  allow-clear
+                >
+                  <Select.Option value="pending">待部署</Select.Option>
+                  <Select.Option value="deploying">部署中</Select.Option>
+                  <Select.Option value="deployed">已部署</Select.Option>
+                  <Select.Option value="running">运行中</Select.Option>
+                  <Select.Option value="stopped">已停止</Select.Option>
+                  <Select.Option value="failed">失败</Select.Option>
+                </Select>
+              </Space>
+              <Space>
+                <Button @click="loadMasters">
+                  <template #icon><ReloadOutlined /></template>
+                  刷新
+                </Button>
+                <Button type="primary" @click="goDeployMaster">
+                  <template #icon><PlusOutlined /></template>
+                  部署Master
+                </Button>
+              </Space>
+            </div>
 
-          <Table
-            :columns="masterColumns"
-            :data-source="filteredMasterList"
-            :loading="masterLoading"
-            :row-key="(record: any) => record.id"
-            :scroll="{ x: 1300 }"
-            :pagination="{ pageSize: 10, showSizeChanger: true, showTotal: (total: number) => `共 ${total} 条` }"
-          >
-            <template #bodyCell="{ column, record }">
-              <template v-if="column.key === 'status'">
-                <Tag :color="getStatusColor(record.status)">
-                  {{ getStatusText(record.status) }}
-                </Tag>
-              </template>
-              <template v-else-if="column.key === 'action'">
-                <Space size="small">
-                  <Tooltip title="刷新状态">
-                    <Button size="small" @click="handleRefreshMasterStatus(record)">
-                      <template #icon><ReloadOutlined /></template>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip :title="record.status === 'running' ? '停止' : '启动'">
-                    <Button
-                      size="small"
-                      :type="record.status === 'running' ? 'default' : 'primary'"
-                      :disabled="record.status === 'deploying' || record.status === 'pending'"
-                      @click="record.status === 'running' ? handleMasterStop(record) : handleMasterStart(record)"
+            <Table
+              :columns="masterColumns"
+              :data-source="filteredMasterList"
+              :loading="masterLoading"
+              :row-key="(record: any) => record.id"
+              :scroll="{ x: 1300 }"
+              :pagination="{
+                pageSize: 10,
+                showSizeChanger: true,
+                showTotal: (total: number) => `共 ${total} 条`,
+              }"
+            >
+              <template #bodyCell="{ column, record }">
+                <template v-if="column.key === 'status'">
+                  <Tag :color="getStatusColor(record.status)">
+                    {{ getStatusText(record.status) }}
+                  </Tag>
+                </template>
+                <template v-else-if="column.key === 'action'">
+                  <Space size="small">
+                    <Tooltip title="刷新状态">
+                      <Button
+                        size="small"
+                        @click="handleRefreshMasterStatus(record)"
+                      >
+                        <template #icon><ReloadOutlined /></template>
+                      </Button>
+                    </Tooltip>
+                    <Tooltip
+                      :title="record.status === 'running' ? '停止' : '启动'"
                     >
-                      <template #icon>
-                        <PauseCircleOutlined v-if="record.status === 'running'" />
-                        <PlayCircleOutlined v-else />
-                      </template>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip v-if="record.status === 'running'" title="重启">
-                    <Button size="small" @click="handleMasterRestart(record)">
-                      <template #icon><UndoOutlined /></template>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="初始密码">
-                    <Button size="small" @click="handleGetPassword(record)">
-                      <template #icon><KeyOutlined /></template>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="查看日志">
-                    <Button size="small" @click="handleViewMasterLog(record)">
-                      <template #icon><EyeOutlined /></template>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip v-if="record.status === 'deployed' || record.status === 'running'" title="卸载">
-                    <Button size="small" danger @click="handleMasterUninstall(record)">
-                      <template #icon><PoweroffOutlined /></template>
-                    </Button>
-                  </Tooltip>
-                  <Popconfirm title="确定要删除这个Master吗？" @confirm="handleDeleteMaster(record.id)">
-                    <Button size="small" danger>
-                      <template #icon><DeleteOutlined /></template>
-                    </Button>
-                  </Popconfirm>
-                </Space>
-              </template>
-            </template>
-          </Table>
-        </Tabs.TabPane>
-
-        <!-- ====== Node Tab ====== -->
-        <Tabs.TabPane key="node" tab="Jenkins Node">
-          <div class="table-toolbar">
-            <Space>
-              <Input
-                v-model:value="nodeSearchText"
-                placeholder="搜索名称或地址"
-                style="width: 200px"
-                allow-clear
-              >
-                <template #prefix><SearchOutlined /></template>
-              </Input>
-              <Select v-model:value="nodeStatusFilter" placeholder="状态筛选" style="width: 120px" allow-clear>
-                <Select.Option value="pending">待部署</Select.Option>
-                <Select.Option value="deploying">部署中</Select.Option>
-                <Select.Option value="running">运行中</Select.Option>
-                <Select.Option value="stopped">已停止</Select.Option>
-                <Select.Option value="failed">失败</Select.Option>
-              </Select>
-            </Space>
-            <Space>
-              <Button @click="loadNodes">
-                <template #icon><ReloadOutlined /></template>
-                刷新
-              </Button>
-              <Button type="primary" @click="goDeployNode">
-                <template #icon><PlusOutlined /></template>
-                部署Node
-              </Button>
-            </Space>
-          </div>
-
-          <Table
-            :columns="nodeColumns"
-            :data-source="filteredNodeList"
-            :loading="nodeLoading"
-            :row-key="(record: any) => record.id"
-            :scroll="{ x: 1100 }"
-            :pagination="{ pageSize: 10, showSizeChanger: true, showTotal: (total: number) => `共 ${total} 条` }"
-          >
-            <template #bodyCell="{ column, record }">
-              <template v-if="column.key === 'status'">
-                <Tag :color="getNodeStatusColor(record.status)">
-                  {{ getNodeStatusText(record.status) }}
-                </Tag>
-              </template>
-              <template v-else-if="column.key === 'action'">
-                <Space size="small">
-                  <Tooltip title="刷新状态">
-                    <Button size="small" @click="handleRefreshNodeStatus(record)">
-                      <template #icon><ReloadOutlined /></template>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip :title="record.status === 'running' ? '停止' : '启动'">
-                    <Button
-                      size="small"
-                      :type="record.status === 'running' ? 'default' : 'primary'"
-                      :disabled="record.status === 'deploying' || record.status === 'pending'"
-                      @click="record.status === 'running' ? handleNodeStop(record) : handleNodeStart(record)"
+                      <Button
+                        size="small"
+                        :type="
+                          record.status === 'running' ? 'default' : 'primary'
+                        "
+                        :disabled="
+                          record.status === 'deploying' ||
+                          record.status === 'pending'
+                        "
+                        @click="
+                          record.status === 'running'
+                            ? handleMasterStop(record)
+                            : handleMasterStart(record)
+                        "
+                      >
+                        <template #icon>
+                          <PauseCircleOutlined
+                            v-if="record.status === 'running'"
+                          />
+                          <PlayCircleOutlined v-else />
+                        </template>
+                      </Button>
+                    </Tooltip>
+                    <Tooltip v-if="record.status === 'running'" title="重启">
+                      <Button size="small" @click="handleMasterRestart(record)">
+                        <template #icon><UndoOutlined /></template>
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="初始密码">
+                      <Button size="small" @click="handleGetPassword(record)">
+                        <template #icon><KeyOutlined /></template>
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="查看日志">
+                      <Button size="small" @click="handleViewMasterLog(record)">
+                        <template #icon><EyeOutlined /></template>
+                      </Button>
+                    </Tooltip>
+                    <Tooltip
+                      v-if="
+                        record.status === 'deployed' ||
+                        record.status === 'running'
+                      "
+                      title="卸载"
                     >
-                      <template #icon>
-                        <PauseCircleOutlined v-if="record.status === 'running'" />
-                        <PlayCircleOutlined v-else />
-                      </template>
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="查看日志">
-                    <Button size="small" @click="handleViewNodeLog(record)">
-                      <template #icon><EyeOutlined /></template>
-                    </Button>
-                  </Tooltip>
-                  <Popconfirm title="确定要删除这个Node吗？" @confirm="handleDeleteNode(record.id)">
-                    <Button size="small" danger>
-                      <template #icon><DeleteOutlined /></template>
-                    </Button>
-                  </Popconfirm>
-                </Space>
+                      <Button
+                        size="small"
+                        danger
+                        @click="handleMasterUninstall(record)"
+                      >
+                        <template #icon><PoweroffOutlined /></template>
+                      </Button>
+                    </Tooltip>
+                    <Popconfirm
+                      title="确定要删除这个Master吗？"
+                      @confirm="handleDeleteMaster(record.id)"
+                    >
+                      <Button size="small" danger>
+                        <template #icon><DeleteOutlined /></template>
+                      </Button>
+                    </Popconfirm>
+                  </Space>
+                </template>
               </template>
-            </template>
-          </Table>
-        </Tabs.TabPane>
-      </Tabs>
-    </Card>
+            </Table>
+          </Tabs.TabPane>
 
-    <!-- 日志弹窗 -->
-    <Modal v-model:open="logModalVisible" :title="currentLogTitle" width="800px" :footer="null">
-      <pre class="log-content">{{ currentLog }}</pre>
-    </Modal>
+          <!-- ====== Node Tab ====== -->
+          <Tabs.TabPane key="node" tab="Jenkins Node">
+            <div class="table-toolbar">
+              <Space>
+                <Input
+                  v-model:value="nodeSearchText"
+                  placeholder="搜索名称或地址"
+                  style="width: 200px"
+                  allow-clear
+                >
+                  <template #prefix><SearchOutlined /></template>
+                </Input>
+                <Select
+                  v-model:value="nodeStatusFilter"
+                  placeholder="状态筛选"
+                  style="width: 120px"
+                  allow-clear
+                >
+                  <Select.Option value="pending">待部署</Select.Option>
+                  <Select.Option value="deploying">部署中</Select.Option>
+                  <Select.Option value="running">运行中</Select.Option>
+                  <Select.Option value="stopped">已停止</Select.Option>
+                  <Select.Option value="failed">失败</Select.Option>
+                </Select>
+              </Space>
+              <Space>
+                <Button @click="loadNodes">
+                  <template #icon><ReloadOutlined /></template>
+                  刷新
+                </Button>
+                <Button type="primary" @click="goDeployNode">
+                  <template #icon><PlusOutlined /></template>
+                  部署Node
+                </Button>
+              </Space>
+            </div>
 
-    <!-- 初始密码弹窗 -->
-    <Modal v-model:open="passwordModalVisible" title="Jenkins 初始密码" :footer="null">
-      <div class="bg-muted rounded-md p-4 text-center font-mono text-base">
-        {{ initialPasswordText }}
-      </div>
-    </Modal>
-  </div>
+            <Table
+              :columns="nodeColumns"
+              :data-source="filteredNodeList"
+              :loading="nodeLoading"
+              :row-key="(record: any) => record.id"
+              :scroll="{ x: 1100 }"
+              :pagination="{
+                pageSize: 10,
+                showSizeChanger: true,
+                showTotal: (total: number) => `共 ${total} 条`,
+              }"
+            >
+              <template #bodyCell="{ column, record }">
+                <template v-if="column.key === 'status'">
+                  <Tag :color="getNodeStatusColor(record.status)">
+                    {{ getNodeStatusText(record.status) }}
+                  </Tag>
+                </template>
+                <template v-else-if="column.key === 'action'">
+                  <Space size="small">
+                    <Tooltip title="刷新状态">
+                      <Button
+                        size="small"
+                        @click="handleRefreshNodeStatus(record)"
+                      >
+                        <template #icon><ReloadOutlined /></template>
+                      </Button>
+                    </Tooltip>
+                    <Tooltip
+                      :title="record.status === 'running' ? '停止' : '启动'"
+                    >
+                      <Button
+                        size="small"
+                        :type="
+                          record.status === 'running' ? 'default' : 'primary'
+                        "
+                        :disabled="
+                          record.status === 'deploying' ||
+                          record.status === 'pending'
+                        "
+                        @click="
+                          record.status === 'running'
+                            ? handleNodeStop(record)
+                            : handleNodeStart(record)
+                        "
+                      >
+                        <template #icon>
+                          <PauseCircleOutlined
+                            v-if="record.status === 'running'"
+                          />
+                          <PlayCircleOutlined v-else />
+                        </template>
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="查看日志">
+                      <Button size="small" @click="handleViewNodeLog(record)">
+                        <template #icon><EyeOutlined /></template>
+                      </Button>
+                    </Tooltip>
+                    <Popconfirm
+                      title="确定要删除这个Node吗？"
+                      @confirm="handleDeleteNode(record.id)"
+                    >
+                      <Button size="small" danger>
+                        <template #icon><DeleteOutlined /></template>
+                      </Button>
+                    </Popconfirm>
+                  </Space>
+                </template>
+              </template>
+            </Table>
+          </Tabs.TabPane>
+        </Tabs>
+      </Card>
+
+      <!-- 日志弹窗 -->
+      <Modal
+        v-model:open="logModalVisible"
+        :title="currentLogTitle"
+        width="800px"
+        :footer="null"
+      >
+        <pre class="log-content">{{ currentLog }}</pre>
+      </Modal>
+
+      <!-- 初始密码弹窗 -->
+      <Modal
+        v-model:open="passwordModalVisible"
+        title="Jenkins 初始密码"
+        :footer="null"
+      >
+        <div class="bg-muted rounded-md p-4 text-center font-mono text-base">
+          {{ initialPasswordText }}
+        </div>
+      </Modal>
+    </div>
+  </BusinessPage>
 </template>
 
 <style scoped>

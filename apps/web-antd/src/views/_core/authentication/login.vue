@@ -12,8 +12,6 @@ defineOptions({ name: 'Login' });
 
 const authStore = useAuthStore();
 const CODE_LENGTH = 6;
-const DEMO_PHONE = '17870171303';
-const DEMO_VERIFICATION_CODE = '000000';
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -22,18 +20,15 @@ const formSchema = computed((): VbenFormSchema[] => {
       componentProps: {
         placeholder: $t('authentication.mobile'),
       },
-      defaultValue: DEMO_PHONE,
+      defaultValue: '',
       fieldName: 'phoneNumber',
       label: $t('authentication.mobile'),
       rules: z
         .string()
         .min(1, { message: $t('authentication.mobileTip') })
-        .refine(
-          (v) => /^\d{11}$/.test(v),
-          {
-            message: $t('authentication.mobileErrortip'),
-          },
-        ),
+        .refine((v) => /^\d{11}$/.test(v), {
+          message: $t('authentication.mobileErrortip'),
+        }),
     },
     {
       component: 'VbenPinInput',
@@ -42,7 +37,7 @@ const formSchema = computed((): VbenFormSchema[] => {
         placeholder: $t('authentication.code'),
         showSendButton: false,
       },
-      defaultValue: DEMO_VERIFICATION_CODE,
+      defaultValue: '',
       fieldName: 'code',
       label: $t('authentication.code'),
       rules: z.string().length(CODE_LENGTH, {

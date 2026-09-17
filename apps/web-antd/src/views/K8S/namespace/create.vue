@@ -26,7 +26,10 @@ async function handleSubmit() {
     message.warning('请输入命名空间名称');
     return;
   }
-  if (!/^[a-z][\da-z-]*[a-z\d]$/.test(form.value.name) && form.value.name.length > 1) {
+  if (
+    !/^[a-z][\da-z-]*[a-z\d]$/.test(form.value.name) &&
+    form.value.name.length > 1
+  ) {
     message.warning('命名空间名称只能包含小写字母、数字和连字符');
     return;
   }
@@ -48,27 +51,36 @@ function goBack() {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="创建命名空间">
-      <template #extra>
-        <Button @click="goBack">返回</Button>
-      </template>
+  <BusinessPage
+    title="创建命名空间"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/K8S/namespace/create"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Button @click="goBack">返回</Button>
+        </template>
 
-      <Form layout="vertical" :model="form" style="max-width: 600px;">
-        <FormItem label="命名空间名称" required>
-          <Input
-            v-model:value="form.name"
-            placeholder="请输入命名空间名称（小写字母、数字、连字符）"
-          />
-        </FormItem>
+        <Form layout="vertical" :model="form" style="max-width: 600px">
+          <FormItem label="命名空间名称" required>
+            <Input
+              v-model:value="form.name"
+              placeholder="请输入命名空间名称（小写字母、数字、连字符）"
+            />
+          </FormItem>
 
-        <FormItem>
-          <Space>
-            <Button type="primary" :loading="submitting" @click="handleSubmit">创建</Button>
-            <Button @click="goBack">取消</Button>
-          </Space>
-        </FormItem>
-      </Form>
-    </Card>
-  </div>
+          <FormItem>
+            <Space>
+              <Button type="primary" :loading="submitting" @click="handleSubmit"
+                >创建</Button
+              >
+              <Button @click="goBack">取消</Button>
+            </Space>
+          </FormItem>
+        </Form>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

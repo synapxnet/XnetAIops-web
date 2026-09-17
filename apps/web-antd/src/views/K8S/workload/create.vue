@@ -11,15 +11,17 @@ import {
   message,
 } from 'ant-design-vue';
 import {
-  createDeployment, createStatefulSet, createDaemonSet,
+  createDeployment,
+  createStatefulSet,
+  createDaemonSet,
 } from '../api/workload';
 import YamlEditor from '../components/YamlEditor.vue';
 
 const router = useRouter();
 const route = useRoute();
 const clusterId = Number(route.query.clusterId);
-const namespace = route.query.namespace as string || 'default';
-const kind = (route.query.kind as string || 'deployment').toLowerCase();
+const namespace = (route.query.namespace as string) || 'default';
+const kind = ((route.query.kind as string) || 'deployment').toLowerCase();
 const submitting = ref(false);
 
 const kindLabel: Record<string, string> = {
@@ -108,7 +110,9 @@ async function handleSubmit() {
       await createDaemonSet(clusterId, namespace, form.value.yaml);
     }
     message.success('创建成功');
-    router.push(`/K8S/workload/list?clusterId=${clusterId}&namespace=${namespace}`);
+    router.push(
+      `/K8S/workload/list?clusterId=${clusterId}&namespace=${namespace}`,
+    );
   } catch (e: any) {
     message.error('创建失败: ' + e.message);
   } finally {
@@ -117,37 +121,48 @@ async function handleSubmit() {
 }
 
 function goBack() {
-  router.push(`/K8S/workload/list?clusterId=${clusterId}&namespace=${namespace}`);
+  router.push(
+    `/K8S/workload/list?clusterId=${clusterId}&namespace=${namespace}`,
+  );
 }
 </script>
 
 <template>
-  <div class="p-4">
-    <Card :title="`创建 ${kindLabel[kind] || 'Deployment'}`">
-      <template #extra>
-        <Button @click="goBack">返回</Button>
-      </template>
+  <BusinessPage
+    title="创建工作负载"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/K8S/workload/create"
+  >
+    <div class="p-4">
+      <Card :title="`创建 ${kindLabel[kind] || 'Deployment'}`">
+        <template #extra>
+          <Button @click="goBack">返回</Button>
+        </template>
 
-      <Alert
-        type="info"
-        message="请填写YAML格式的资源定义，也可以直接修改下方模板"
-        show-icon
-        class="mb-4"
-        style="max-width: 900px;"
-      />
+        <Alert
+          type="info"
+          message="请填写YAML格式的资源定义，也可以直接修改下方模板"
+          show-icon
+          class="mb-4"
+          style="max-width: 900px"
+        />
 
-      <Form layout="vertical" :model="form" style="max-width: 900px;">
-        <FormItem label="YAML定义" required>
-          <YamlEditor v-model="form.yaml" height="500px" />
-        </FormItem>
+        <Form layout="vertical" :model="form" style="max-width: 900px">
+          <FormItem label="YAML定义" required>
+            <YamlEditor v-model="form.yaml" height="500px" />
+          </FormItem>
 
-        <FormItem>
-          <Space>
-            <Button type="primary" :loading="submitting" @click="handleSubmit">创建</Button>
-            <Button @click="goBack">取消</Button>
-          </Space>
-        </FormItem>
-      </Form>
-    </Card>
-  </div>
+          <FormItem>
+            <Space>
+              <Button type="primary" :loading="submitting" @click="handleSubmit"
+                >创建</Button
+              >
+              <Button @click="goBack">取消</Button>
+            </Space>
+          </FormItem>
+        </Form>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

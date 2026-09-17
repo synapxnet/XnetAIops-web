@@ -2,7 +2,17 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {
-  Card, Form, FormItem, Input, InputNumber, Select, Button, Alert, Descriptions, DescriptionsItem, message,
+  Card,
+  Form,
+  FormItem,
+  Input,
+  InputNumber,
+  Select,
+  Button,
+  Alert,
+  Descriptions,
+  DescriptionsItem,
+  message,
 } from 'ant-design-vue';
 import { createHost, testSshConnection } from '../api/host';
 import { getClusters } from '../../CLM/api/cluster';
@@ -102,73 +112,107 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="添加主机">
-      <Form layout="vertical" :model="form" style="max-width: 700px">
-        <FormItem label="所属集群" required>
-          <Select
-            v-model:value="form.clusterId"
-            placeholder="请选择集群"
-            :options="clusters.map(c => ({ label: c.clusterName, value: c.id }))"
-          />
-        </FormItem>
-        <FormItem label="IP地址" required>
-          <Input v-model:value="form.ipAddress" placeholder="192.168.1.100" />
-        </FormItem>
-        <FormItem label="主机名">
-          <Input v-model:value="form.hostname" placeholder="主机名（可通过SSH测试自动获取）" />
-        </FormItem>
-        <div style="display: flex; gap: 16px">
-          <FormItem label="SSH端口" style="width: 120px">
-            <InputNumber v-model:value="form.sshPort" :min="1" :max="65535" />
+  <BusinessPage
+    title="添加主机"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/HOM/host/add"
+  >
+    <div class="p-4">
+      <Card>
+        <Form layout="vertical" :model="form" style="max-width: 700px">
+          <FormItem label="所属集群" required>
+            <Select
+              v-model:value="form.clusterId"
+              placeholder="请选择集群"
+              :options="
+                clusters.map((c) => ({ label: c.clusterName, value: c.id }))
+              "
+            />
           </FormItem>
-          <FormItem label="SSH用户" style="flex: 1">
-            <Input v-model:value="form.sshUser" placeholder="root" />
+          <FormItem label="IP地址" required>
+            <Input v-model:value="form.ipAddress" placeholder="192.168.1.100" />
           </FormItem>
-        </div>
-        <FormItem label="密码">
-          <Input.Password v-model:value="form.password" placeholder="SSH密码" />
-        </FormItem>
-        <FormItem>
-          <Button :loading="testing" @click="handleTestConnection" style="margin-right: 12px">
-            测试连接
-          </Button>
-        </FormItem>
+          <FormItem label="主机名">
+            <Input
+              v-model:value="form.hostname"
+              placeholder="主机名（可通过SSH测试自动获取）"
+            />
+          </FormItem>
+          <div style="display: flex; gap: 16px">
+            <FormItem label="SSH端口" style="width: 120px">
+              <InputNumber v-model:value="form.sshPort" :min="1" :max="65535" />
+            </FormItem>
+            <FormItem label="SSH用户" style="flex: 1">
+              <Input v-model:value="form.sshUser" placeholder="root" />
+            </FormItem>
+          </div>
+          <FormItem label="密码">
+            <Input.Password
+              v-model:value="form.password"
+              placeholder="SSH密码"
+            />
+          </FormItem>
+          <FormItem>
+            <Button
+              :loading="testing"
+              @click="handleTestConnection"
+              style="margin-right: 12px"
+            >
+              测试连接
+            </Button>
+          </FormItem>
 
-        <Alert
-          v-if="testResult?.success"
-          type="success"
-          show-icon
-          style="margin-bottom: 16px"
-        >
-          <template #message>连接成功</template>
-          <template #description>
-            <Descriptions size="small" :column="2" bordered>
-              <DescriptionsItem label="操作系统">{{ testResult.osInfo || '-' }}</DescriptionsItem>
-              <DescriptionsItem label="CPU架构">{{ testResult.cpuArch || '-' }}</DescriptionsItem>
-              <DescriptionsItem label="CPU核数">{{ testResult.cpuCores || '-' }}</DescriptionsItem>
-              <DescriptionsItem label="内存(GB)">{{ testResult.totalMemGb || '-' }}</DescriptionsItem>
-              <DescriptionsItem label="磁盘(GB)">{{ testResult.totalDiskGb || '-' }}</DescriptionsItem>
-            </Descriptions>
-          </template>
-        </Alert>
+          <Alert
+            v-if="testResult?.success"
+            type="success"
+            show-icon
+            style="margin-bottom: 16px"
+          >
+            <template #message>连接成功</template>
+            <template #description>
+              <Descriptions size="small" :column="2" bordered>
+                <DescriptionsItem label="操作系统">{{
+                  testResult.osInfo || '-'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="CPU架构">{{
+                  testResult.cpuArch || '-'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="CPU核数">{{
+                  testResult.cpuCores || '-'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="内存(GB)">{{
+                  testResult.totalMemGb || '-'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="磁盘(GB)">{{
+                  testResult.totalDiskGb || '-'
+                }}</DescriptionsItem>
+              </Descriptions>
+            </template>
+          </Alert>
 
-        <div style="display: flex; gap: 16px">
-          <FormItem label="机架" style="flex: 1">
-            <Input v-model:value="form.rack" placeholder="如: /rack1" />
-          </FormItem>
-          <FormItem label="节点标签" style="flex: 1">
-            <Input v-model:value="form.nodeLabel" placeholder="如: worker" />
-          </FormItem>
-        </div>
+          <div style="display: flex; gap: 16px">
+            <FormItem label="机架" style="flex: 1">
+              <Input v-model:value="form.rack" placeholder="如: /rack1" />
+            </FormItem>
+            <FormItem label="节点标签" style="flex: 1">
+              <Input v-model:value="form.nodeLabel" placeholder="如: worker" />
+            </FormItem>
+          </div>
 
-        <FormItem>
-          <Button type="primary" :loading="submitting" @click="handleSubmit" style="margin-right: 12px">
-            添加主机
-          </Button>
-          <Button @click="goBack">取消</Button>
-        </FormItem>
-      </Form>
-    </Card>
-  </div>
+          <FormItem>
+            <Button
+              type="primary"
+              :loading="submitting"
+              @click="handleSubmit"
+              style="margin-right: 12px"
+            >
+              添加主机
+            </Button>
+            <Button @click="goBack">取消</Button>
+          </FormItem>
+        </Form>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

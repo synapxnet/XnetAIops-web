@@ -34,9 +34,7 @@ const pipelineId = route.query.pipelineId
   ? Number(route.query.pipelineId)
   : null;
 const isEdit = computed(() => !!pipelineId);
-const pageTitle = computed(() =>
-  isEdit.value ? '编辑流水线' : '创建流水线',
-);
+const pageTitle = computed(() => (isEdit.value ? '编辑流水线' : '创建流水线'));
 
 const submitting = ref(false);
 const loading = ref(false);
@@ -56,9 +54,7 @@ const form = reactive({
   timerTrigger: '',
 });
 
-const showSourceFields = computed(
-  () => form.sourceType !== 'none',
-);
+const showSourceFields = computed(() => form.sourceType !== 'none');
 
 const showJenkinsfile = computed(
   () => form.sourceType === 'none' || form.type === 'pipeline',
@@ -80,9 +76,10 @@ async function loadPipeline() {
   loading.value = true;
   try {
     const res = await getPipeline(projectId, pipelineId);
-    const data = res && typeof res === 'object' && 'data' in (res as any)
-      ? (res as any).data
-      : res;
+    const data =
+      res && typeof res === 'object' && 'data' in (res as any)
+        ? (res as any).data
+        : res;
     if (data) {
       form.name = data.name || '';
       form.description = data.description || '';
@@ -140,9 +137,7 @@ async function handleSubmit() {
     }
     router.back();
   } catch (e: any) {
-    message.error(
-      (isEdit.value ? '更新' : '创建') + '失败: ' + e.message,
-    );
+    message.error((isEdit.value ? '更新' : '创建') + '失败: ' + e.message);
   } finally {
     submitting.value = false;
   }
@@ -161,145 +156,149 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card :title="pageTitle" :loading="loading">
-      <template #extra>
-        <Button @click="goBack">返回</Button>
-      </template>
+  <BusinessPage
+    title="创建流水线"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/K8S/devops/projects/:projectId/pipeline/create"
+  >
+    <div class="p-4">
+      <Card :title="pageTitle" :loading="loading">
+        <template #extra>
+          <Button @click="goBack">返回</Button>
+        </template>
 
-      <Form layout="vertical" :model="form">
-        <!-- 名称 -->
-        <FormItem label="名称" required>
-          <Input
-            v-model:value="form.name"
-            placeholder="请输入流水线名称"
-          />
-        </FormItem>
+        <Form layout="vertical" :model="form">
+          <!-- 名称 -->
+          <FormItem label="名称" required>
+            <Input v-model:value="form.name" placeholder="请输入流水线名称" />
+          </FormItem>
 
-        <!-- 描述 -->
-        <FormItem label="描述">
-          <Textarea
-            v-model:value="form.description"
-            placeholder="请输入流水线描述"
-            :rows="3"
-          />
-        </FormItem>
-
-        <!-- 类型 -->
-        <FormItem label="类型">
-          <RadioGroup v-model:value="form.type">
-            <Radio value="pipeline">自定义流水线</Radio>
-            <Radio value="multi-branch">多分支流水线</Radio>
-          </RadioGroup>
-        </FormItem>
-
-        <Divider />
-
-        <!-- 代码来源 -->
-        <FormItem label="代码来源">
-          <Select v-model:value="form.sourceType" style="width: 100%">
-            <SelectOption value="none">无</SelectOption>
-            <SelectOption value="git">Git</SelectOption>
-            <SelectOption value="github">GitHub</SelectOption>
-            <SelectOption value="gitlab">GitLab</SelectOption>
-          </Select>
-        </FormItem>
-
-        <!-- Source fields (shown when sourceType is not "none") -->
-        <template v-if="showSourceFields">
-          <FormItem label="仓库地址" required>
-            <Input
-              v-model:value="form.sourceUrl"
-              placeholder="https://github.com/your-org/your-repo.git"
+          <!-- 描述 -->
+          <FormItem label="描述">
+            <Textarea
+              v-model:value="form.description"
+              placeholder="请输入流水线描述"
+              :rows="3"
             />
           </FormItem>
 
-          <FormItem label="分支">
-            <Input
-              v-model:value="form.sourceBranch"
-              placeholder="main"
-            />
+          <!-- 类型 -->
+          <FormItem label="类型">
+            <RadioGroup v-model:value="form.type">
+              <Radio value="pipeline">自定义流水线</Radio>
+              <Radio value="multi-branch">多分支流水线</Radio>
+            </RadioGroup>
           </FormItem>
 
-          <FormItem label="凭证">
-            <Select
-              v-model:value="form.credentialId"
-              style="width: 100%"
-              placeholder="请选择凭证（可选）"
-              allow-clear
-            >
-              <SelectOption
-                v-for="cred in credentials"
-                :key="cred.id"
-                :value="cred.id"
-              >
-                {{ cred.name }}
-                <span v-if="cred.type" style="color: hsl(var(--muted-foreground))">
-                  ({{ cred.type }})
-                </span>
-              </SelectOption>
+          <Divider />
+
+          <!-- 代码来源 -->
+          <FormItem label="代码来源">
+            <Select v-model:value="form.sourceType" style="width: 100%">
+              <SelectOption value="none">无</SelectOption>
+              <SelectOption value="git">Git</SelectOption>
+              <SelectOption value="github">GitHub</SelectOption>
+              <SelectOption value="gitlab">GitLab</SelectOption>
             </Select>
           </FormItem>
-        </template>
 
-        <Divider />
+          <!-- Source fields (shown when sourceType is not "none") -->
+          <template v-if="showSourceFields">
+            <FormItem label="仓库地址" required>
+              <Input
+                v-model:value="form.sourceUrl"
+                placeholder="https://github.com/your-org/your-repo.git"
+              />
+            </FormItem>
 
-        <!-- Jenkinsfile -->
-        <template v-if="showJenkinsfile">
-          <FormItem label="Jenkinsfile" required>
-            <PipelineEditor
-              v-model="form.jenkinsfile"
-              :initial-jenkinsfile="form.jenkinsfile"
-            />
-          </FormItem>
+            <FormItem label="分支">
+              <Input v-model:value="form.sourceBranch" placeholder="main" />
+            </FormItem>
 
-          <Divider />
-        </template>
-
-        <!-- 高级设置 -->
-        <div style="margin-bottom: 16px">
-          <Button type="link" @click="advancedVisible = !advancedVisible">
-            {{ advancedVisible ? '收起' : '展开' }}高级设置
-          </Button>
-        </div>
-
-        <template v-if="advancedVisible">
-          <Alert
-            type="info"
-            message="高级设置为可选项，通常使用默认值即可"
-            show-icon
-            style="margin-bottom: 16px"
-          />
-
-          <FormItem label="禁止并发构建">
-            <Switch v-model:checked="form.disableConcurrent" />
-          </FormItem>
-
-          <FormItem label="定时触发">
-            <Input
-              v-model:value="form.timerTrigger"
-              placeholder="H/15 * * * *"
-              style="max-width: 300px"
-            />
-          </FormItem>
+            <FormItem label="凭证">
+              <Select
+                v-model:value="form.credentialId"
+                style="width: 100%"
+                placeholder="请选择凭证（可选）"
+                allow-clear
+              >
+                <SelectOption
+                  v-for="cred in credentials"
+                  :key="cred.id"
+                  :value="cred.id"
+                >
+                  {{ cred.name }}
+                  <span
+                    v-if="cred.type"
+                    style="color: hsl(var(--muted-foreground))"
+                  >
+                    ({{ cred.type }})
+                  </span>
+                </SelectOption>
+              </Select>
+            </FormItem>
+          </template>
 
           <Divider />
-        </template>
 
-        <!-- Submit -->
-        <FormItem>
-          <Space>
-            <Button
-              type="primary"
-              :loading="submitting"
-              @click="handleSubmit"
-            >
-              {{ isEdit ? '更新' : '创建' }}
+          <!-- Jenkinsfile -->
+          <template v-if="showJenkinsfile">
+            <FormItem label="Jenkinsfile" required>
+              <PipelineEditor
+                v-model="form.jenkinsfile"
+                :initial-jenkinsfile="form.jenkinsfile"
+              />
+            </FormItem>
+
+            <Divider />
+          </template>
+
+          <!-- 高级设置 -->
+          <div style="margin-bottom: 16px">
+            <Button type="link" @click="advancedVisible = !advancedVisible">
+              {{ advancedVisible ? '收起' : '展开' }}高级设置
             </Button>
-            <Button @click="goBack">取消</Button>
-          </Space>
-        </FormItem>
-      </Form>
-    </Card>
-  </div>
+          </div>
+
+          <template v-if="advancedVisible">
+            <Alert
+              type="info"
+              message="高级设置为可选项，通常使用默认值即可"
+              show-icon
+              style="margin-bottom: 16px"
+            />
+
+            <FormItem label="禁止并发构建">
+              <Switch v-model:checked="form.disableConcurrent" />
+            </FormItem>
+
+            <FormItem label="定时触发">
+              <Input
+                v-model:value="form.timerTrigger"
+                placeholder="H/15 * * * *"
+                style="max-width: 300px"
+              />
+            </FormItem>
+
+            <Divider />
+          </template>
+
+          <!-- Submit -->
+          <FormItem>
+            <Space>
+              <Button
+                type="primary"
+                :loading="submitting"
+                @click="handleSubmit"
+              >
+                {{ isEdit ? '更新' : '创建' }}
+              </Button>
+              <Button @click="goBack">取消</Button>
+            </Space>
+          </FormItem>
+        </Form>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

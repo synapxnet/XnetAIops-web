@@ -118,7 +118,11 @@ function buildChartOption(
     xAxis: {
       type: 'time',
       axisLabel: {
-        formatter: (val: number) => new Date(val).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        formatter: (val: number) =>
+          new Date(val).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
       },
     },
     yAxis: {
@@ -133,10 +137,12 @@ function buildChartOption(
         smooth: true,
         showSymbol: false,
         lineStyle: { width: 2 },
-        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: color + '40' },
-          { offset: 1, color: color + '05' },
-        ]) },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: color + '40' },
+            { offset: 1, color: color + '05' },
+          ]),
+        },
         itemStyle: { color },
       },
     ],
@@ -210,236 +216,234 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card>
-      <template #extra>
-        <Space>
-          <Select
-            :value="selectedClusterId"
-            style="width: 150px"
-            @change="
-              (v: number) => {
-                selectedClusterId = v;
-                fetchData();
-              }
-            "
-          >
-            <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">{{
-              c.name
-            }}</SelectOption>
-          </Select>
-          <Select
-            v-model:value="timeRange"
-            size="small"
-            style="width: 100px"
-            @change="fetchData"
-          >
-            <SelectOption :value="1800">30分钟</SelectOption>
-            <SelectOption :value="3600">1小时</SelectOption>
-            <SelectOption :value="10800">3小时</SelectOption>
-            <SelectOption :value="86400">24小时</SelectOption>
-          </Select>
-          <Button @click="fetchData" :loading="loading">刷新</Button>
-          <Button
-            @click="router.push('/K8S/monitoring/prometheus-config')"
-            >Prometheus配置</Button
-          >
-        </Space>
-      </template>
-      <template #title>
-        <span>集群状态监控</span>
-      </template>
-
-      <Spin :spinning="loading">
-        <!-- Overview Stats -->
-        <Row :gutter="16" class="mb-4">
-          <Col :span="6">
-            <Card size="small">
-              <Statistic
-                title="节点"
-                :value="`${status?.nodeReady ?? '-'} / ${status?.nodeTotal ?? '-'}`"
-              />
-              <Tag
-                :color="
-                  status?.nodeReady === status?.nodeTotal ? 'green' : 'orange'
-                "
-                style="margin-top: 8px"
-              >
-                {{
-                  status?.nodeReady === status?.nodeTotal
-                    ? '全部就绪'
-                    : '部分异常'
-                }}
-              </Tag>
-            </Card>
-          </Col>
-          <Col :span="6">
-            <Card size="small">
-              <Statistic
-                title="Pod"
-                :value="`${Math.round(status?.podRunning ?? 0)} / ${Math.round(status?.podTotal ?? 0)}`"
-              />
-            </Card>
-          </Col>
-          <Col :span="6">
-            <Card size="small">
-              <Statistic
-                title="内存使用"
-                :value="formatBytes(status?.memoryUsed)"
-              />
-              <div style="color: #8c8c8c; font-size: 12px">
-                总量: {{ formatBytes(status?.memoryTotal) }}
-              </div>
-            </Card>
-          </Col>
-          <Col :span="6">
-            <Card size="small">
-              <Statistic
-                title="磁盘使用"
-                :value="formatBytes(status?.diskUsed)"
-              />
-              <div style="color: #8c8c8c; font-size: 12px">
-                总量: {{ formatBytes(status?.diskTotal) }}
-              </div>
-            </Card>
-          </Col>
-        </Row>
-
-        <!-- Resource Usage Gauges -->
-        <Row :gutter="16" class="mb-4">
-          <Col :span="6" style="text-align: center">
-            <Card size="small" title="CPU使用率">
-              <Progress
-                type="circle"
-                :percent="
-                  Math.round((status?.cpuUsage ?? 0) * 100)
-                "
-                :stroke-color="
-                  (status?.cpuUsage ?? 0) > 0.8 ? '#ff4d4f' : '#1890ff'
-                "
-              />
-            </Card>
-          </Col>
-          <Col :span="6" style="text-align: center">
-            <Card size="small" title="内存使用率">
-              <Progress
-                type="circle"
-                :percent="pct(status?.memoryUsed, status?.memoryTotal)"
-                :stroke-color="
-                  pct(status?.memoryUsed, status?.memoryTotal) > 80
-                    ? '#ff4d4f'
-                    : '#52c41a'
-                "
-              />
-            </Card>
-          </Col>
-          <Col :span="6" style="text-align: center">
-            <Card size="small" title="磁盘使用率">
-              <Progress
-                type="circle"
-                :percent="pct(status?.diskUsed, status?.diskTotal)"
-                :stroke-color="
-                  pct(status?.diskUsed, status?.diskTotal) > 80
-                    ? '#ff4d4f'
-                    : '#faad14'
-                "
-              />
-            </Card>
-          </Col>
-          <Col :span="6" style="text-align: center">
-            <Card size="small" title="Pod使用率">
-              <Progress
-                type="circle"
-                :percent="pct(status?.podRunning, status?.podTotal)"
-                stroke-color="#722ed1"
-              />
-            </Card>
-          </Col>
-        </Row>
-
-        <!-- Time-series Charts -->
-        <Row :gutter="16" class="mb-4">
-          <Col :span="12">
-            <Card size="small">
-              <div ref="cpuChartRef" style="height: 260px" />
-            </Card>
-          </Col>
-          <Col :span="12">
-            <Card size="small">
-              <div ref="memChartRef" style="height: 260px" />
-            </Card>
-          </Col>
-        </Row>
-
-        <!-- Node Ranking -->
-        <Card size="small" title="节点使用排名 Top 5">
-          <template #extra>
+  <BusinessPage
+    title="集群状态"
+    description="选择观测范围，核对实际采样与来源，识别需要处理的变化。"
+    family="监控"
+    route-key="/K8S/monitoring/cluster-status"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Space>
             <Select
-              v-model:value="rankMetric"
+              :value="selectedClusterId"
+              style="width: 150px"
+              @change="
+                (v: number) => {
+                  selectedClusterId = v;
+                  fetchData();
+                }
+              "
+            >
+              <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">{{
+                c.name
+              }}</SelectOption>
+            </Select>
+            <Select
+              v-model:value="timeRange"
               size="small"
               style="width: 100px"
               @change="fetchData"
             >
-              <SelectOption value="cpu">CPU</SelectOption>
-              <SelectOption value="memory">内存</SelectOption>
-              <SelectOption value="disk">磁盘</SelectOption>
-              <SelectOption value="load">负载</SelectOption>
-              <SelectOption value="pod">Pod</SelectOption>
+              <SelectOption :value="1800">30分钟</SelectOption>
+              <SelectOption :value="3600">1小时</SelectOption>
+              <SelectOption :value="10800">3小时</SelectOption>
+              <SelectOption :value="86400">24小时</SelectOption>
             </Select>
-          </template>
-          <div
-            v-for="(item, idx) in nodeRanking"
-            :key="idx"
-            style="
-              display: flex;
-              align-items: center;
-              margin-bottom: 12px;
-            "
-          >
-            <Tag
-              :color="
-                idx === 0
-                  ? 'red'
-                  : idx === 1
-                    ? 'orange'
-                    : idx === 2
-                      ? 'gold'
-                      : 'default'
-              "
-              style="min-width: 24px; text-align: center"
-              >{{ idx + 1 }}</Tag
+            <Button @click="fetchData" :loading="loading">刷新</Button>
+            <Button @click="router.push('/K8S/monitoring/prometheus-config')"
+              >Prometheus配置</Button
             >
-            <span
-              style="
-                width: 200px;
-                margin: 0 12px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              "
-              >{{ item.instance || item.node || '-' }}</span
+          </Space>
+        </template>
+        <template #title>
+          <span>集群状态监控</span>
+        </template>
+
+        <Spin :spinning="loading">
+          <!-- Overview Stats -->
+          <Row :gutter="16" class="mb-4">
+            <Col :span="6">
+              <Card size="small">
+                <Statistic
+                  title="节点"
+                  :value="`${status?.nodeReady ?? '-'} / ${status?.nodeTotal ?? '-'}`"
+                />
+                <Tag
+                  :color="
+                    status?.nodeReady === status?.nodeTotal ? 'green' : 'orange'
+                  "
+                  style="margin-top: 8px"
+                >
+                  {{
+                    status?.nodeReady === status?.nodeTotal
+                      ? '全部就绪'
+                      : '部分异常'
+                  }}
+                </Tag>
+              </Card>
+            </Col>
+            <Col :span="6">
+              <Card size="small">
+                <Statistic
+                  title="Pod"
+                  :value="`${Math.round(status?.podRunning ?? 0)} / ${Math.round(status?.podTotal ?? 0)}`"
+                />
+              </Card>
+            </Col>
+            <Col :span="6">
+              <Card size="small">
+                <Statistic
+                  title="内存使用"
+                  :value="formatBytes(status?.memoryUsed)"
+                />
+                <div style="color: #8c8c8c; font-size: 12px">
+                  总量: {{ formatBytes(status?.memoryTotal) }}
+                </div>
+              </Card>
+            </Col>
+            <Col :span="6">
+              <Card size="small">
+                <Statistic
+                  title="磁盘使用"
+                  :value="formatBytes(status?.diskUsed)"
+                />
+                <div style="color: #8c8c8c; font-size: 12px">
+                  总量: {{ formatBytes(status?.diskTotal) }}
+                </div>
+              </Card>
+            </Col>
+          </Row>
+
+          <!-- Resource Usage Gauges -->
+          <Row :gutter="16" class="mb-4">
+            <Col :span="6" style="text-align: center">
+              <Card size="small" title="CPU使用率">
+                <Progress
+                  type="circle"
+                  :percent="Math.round((status?.cpuUsage ?? 0) * 100)"
+                  :stroke-color="
+                    (status?.cpuUsage ?? 0) > 0.8 ? '#ff4d4f' : '#1890ff'
+                  "
+                />
+              </Card>
+            </Col>
+            <Col :span="6" style="text-align: center">
+              <Card size="small" title="内存使用率">
+                <Progress
+                  type="circle"
+                  :percent="pct(status?.memoryUsed, status?.memoryTotal)"
+                  :stroke-color="
+                    pct(status?.memoryUsed, status?.memoryTotal) > 80
+                      ? '#ff4d4f'
+                      : '#52c41a'
+                  "
+                />
+              </Card>
+            </Col>
+            <Col :span="6" style="text-align: center">
+              <Card size="small" title="磁盘使用率">
+                <Progress
+                  type="circle"
+                  :percent="pct(status?.diskUsed, status?.diskTotal)"
+                  :stroke-color="
+                    pct(status?.diskUsed, status?.diskTotal) > 80
+                      ? '#ff4d4f'
+                      : '#faad14'
+                  "
+                />
+              </Card>
+            </Col>
+            <Col :span="6" style="text-align: center">
+              <Card size="small" title="Pod使用率">
+                <Progress
+                  type="circle"
+                  :percent="pct(status?.podRunning, status?.podTotal)"
+                  stroke-color="#722ed1"
+                />
+              </Card>
+            </Col>
+          </Row>
+
+          <!-- Time-series Charts -->
+          <Row :gutter="16" class="mb-4">
+            <Col :span="12">
+              <Card size="small">
+                <div ref="cpuChartRef" style="height: 260px" />
+              </Card>
+            </Col>
+            <Col :span="12">
+              <Card size="small">
+                <div ref="memChartRef" style="height: 260px" />
+              </Card>
+            </Col>
+          </Row>
+
+          <!-- Node Ranking -->
+          <Card size="small" title="节点使用排名 Top 5">
+            <template #extra>
+              <Select
+                v-model:value="rankMetric"
+                size="small"
+                style="width: 100px"
+                @change="fetchData"
+              >
+                <SelectOption value="cpu">CPU</SelectOption>
+                <SelectOption value="memory">内存</SelectOption>
+                <SelectOption value="disk">磁盘</SelectOption>
+                <SelectOption value="load">负载</SelectOption>
+                <SelectOption value="pod">Pod</SelectOption>
+              </Select>
+            </template>
+            <div
+              v-for="(item, idx) in nodeRanking"
+              :key="idx"
+              style="display: flex; align-items: center; margin-bottom: 12px"
             >
-            <Progress
-              :percent="
-                rankMetric === 'load' || rankMetric === 'pod'
-                  ? Math.min(Math.round(item.value), 100)
-                  : Math.round((item.value || 0) * 100)
-              "
-              :show-info="true"
-              style="flex: 1"
-              :stroke-color="
-                (item.value || 0) > 0.8 ? '#ff4d4f' : '#1890ff'
-              "
-            />
-          </div>
-          <div
-            v-if="nodeRanking.length === 0"
-            style="color: #8c8c8c; text-align: center; padding: 20px"
-          >
-            暂无数据（请确认Prometheus已配置）
-          </div>
-        </Card>
-      </Spin>
-    </Card>
-  </div>
+              <Tag
+                :color="
+                  idx === 0
+                    ? 'red'
+                    : idx === 1
+                      ? 'orange'
+                      : idx === 2
+                        ? 'gold'
+                        : 'default'
+                "
+                style="min-width: 24px; text-align: center"
+                >{{ idx + 1 }}</Tag
+              >
+              <span
+                style="
+                  width: 200px;
+                  margin: 0 12px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                "
+                >{{ item.instance || item.node || '-' }}</span
+              >
+              <Progress
+                :percent="
+                  rankMetric === 'load' || rankMetric === 'pod'
+                    ? Math.min(Math.round(item.value), 100)
+                    : Math.round((item.value || 0) * 100)
+                "
+                :show-info="true"
+                style="flex: 1"
+                :stroke-color="(item.value || 0) > 0.8 ? '#ff4d4f' : '#1890ff'"
+              />
+            </div>
+            <div
+              v-if="nodeRanking.length === 0"
+              style="color: #8c8c8c; text-align: center; padding: 20px"
+            >
+              暂无数据（请确认Prometheus已配置）
+            </div>
+          </Card>
+        </Spin>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

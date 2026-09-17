@@ -35,6 +35,11 @@ import { LayoutTabbar } from './tabbar';
 
 defineOptions({ name: 'BasicLayout' });
 const props = defineProps({
+  // 组织改变时丢弃旧组织的缓存视图。Discard cached views from the old organization when scope changes.
+  contentScope: {
+    type: String,
+    default: '',
+  },
   contentEnabled: {
     type: Boolean,
     default: true,
@@ -446,7 +451,7 @@ const headerSlots = computed(() => {
 
     <!-- 主体内容 -->
     <template #content>
-      <LayoutContent v-if="props.contentEnabled" />
+      <LayoutContent v-if="props.contentEnabled" :key="props.contentScope" />
       <slot v-else name="content-placeholder"></slot>
     </template>
 

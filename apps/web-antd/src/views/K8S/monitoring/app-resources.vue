@@ -1,6 +1,18 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { Card, Select, SelectOption, Space, Button, Tag, Tabs, TabPane, Progress, Spin, message } from 'ant-design-vue';
+import {
+  Card,
+  Select,
+  SelectOption,
+  Space,
+  Button,
+  Tag,
+  Tabs,
+  TabPane,
+  Progress,
+  Spin,
+  message,
+} from 'ant-design-vue';
 import { getNodeRanking, getNamespaceRanking } from '../api/monitoring';
 import K8sSelector from '../components/K8sSelector.vue';
 
@@ -58,75 +70,156 @@ function getBarColor(pct: number): string {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="应用资源监控">
-      <template #extra>
-        <Space>
-          <K8sSelector v-model:clusterId="selectedClusterId" :show-namespace="false" @change="fetchData" />
-          <Button @click="fetchData" :loading="loading">刷新</Button>
-        </Space>
-      </template>
+  <BusinessPage
+    title="应用资源"
+    description="选择观测范围，核对实际采样与来源，识别需要处理的变化。"
+    family="监控"
+    route-key="/K8S/monitoring/app-resources"
+  >
+    <div class="p-4">
+      <Card title="应用资源监控">
+        <template #extra>
+          <Space>
+            <K8sSelector
+              v-model:clusterId="selectedClusterId"
+              :show-namespace="false"
+              @change="fetchData"
+            />
+            <Button @click="fetchData" :loading="loading">刷新</Button>
+          </Space>
+        </template>
 
-      <Spin :spinning="loading">
-        <Tabs v-model:activeKey="activeTab">
-          <TabPane key="namespace" tab="命名空间排名">
-            <div style="display: flex; align-items: center; margin-bottom: 16px; gap: 12px;">
-              <span class="text-muted-foreground">排序指标:</span>
-              <Select v-model:value="nsMetric" size="small" style="width: 100px" @change="fetchData">
-                <SelectOption value="cpu">CPU</SelectOption>
-                <SelectOption value="memory">内存</SelectOption>
-              </Select>
-            </div>
-            <div v-for="(item, idx) in nsRanking" :key="item.namespace || idx" class="ranking-item">
-              <Tag :color="idx === 0 ? 'red' : idx === 1 ? 'orange' : idx === 2 ? 'gold' : 'default'" class="ranking-tag">{{ idx + 1 }}</Tag>
-              <span class="ranking-name">{{ item.namespace || '-' }}</span>
-              <div class="ranking-bar">
-                <Progress
-                  :percent="toPercent(item.value, nsMetric)"
-                  :stroke-color="getBarColor(toPercent(item.value, nsMetric))"
-                  :show-info="false"
+        <Spin :spinning="loading">
+          <Tabs v-model:activeKey="activeTab">
+            <TabPane key="namespace" tab="命名空间排名">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 16px;
+                  gap: 12px;
+                "
+              >
+                <span class="text-muted-foreground">排序指标:</span>
+                <Select
+                  v-model:value="nsMetric"
                   size="small"
-                />
+                  style="width: 100px"
+                  @change="fetchData"
+                >
+                  <SelectOption value="cpu">CPU</SelectOption>
+                  <SelectOption value="memory">内存</SelectOption>
+                </Select>
               </div>
-              <span class="ranking-value">{{ formatValue(item.value, nsMetric) }}</span>
-            </div>
-            <div v-if="nsRanking.length === 0 && !loading" style="text-align: center; color: #8c8c8c; padding: 40px;">
-              暂无数据（请确认Prometheus已配置）
-            </div>
-          </TabPane>
+              <div
+                v-for="(item, idx) in nsRanking"
+                :key="item.namespace || idx"
+                class="ranking-item"
+              >
+                <Tag
+                  :color="
+                    idx === 0
+                      ? 'red'
+                      : idx === 1
+                        ? 'orange'
+                        : idx === 2
+                          ? 'gold'
+                          : 'default'
+                  "
+                  class="ranking-tag"
+                  >{{ idx + 1 }}</Tag
+                >
+                <span class="ranking-name">{{ item.namespace || '-' }}</span>
+                <div class="ranking-bar">
+                  <Progress
+                    :percent="toPercent(item.value, nsMetric)"
+                    :stroke-color="getBarColor(toPercent(item.value, nsMetric))"
+                    :show-info="false"
+                    size="small"
+                  />
+                </div>
+                <span class="ranking-value">{{
+                  formatValue(item.value, nsMetric)
+                }}</span>
+              </div>
+              <div
+                v-if="nsRanking.length === 0 && !loading"
+                style="text-align: center; color: #8c8c8c; padding: 40px"
+              >
+                暂无数据（请确认Prometheus已配置）
+              </div>
+            </TabPane>
 
-          <TabPane key="node" tab="节点排名">
-            <div style="display: flex; align-items: center; margin-bottom: 16px; gap: 12px;">
-              <span class="text-muted-foreground">排序指标:</span>
-              <Select v-model:value="nodeMetric" size="small" style="width: 100px" @change="fetchData">
-                <SelectOption value="cpu">CPU</SelectOption>
-                <SelectOption value="memory">内存</SelectOption>
-                <SelectOption value="disk">磁盘</SelectOption>
-                <SelectOption value="load">负载</SelectOption>
-                <SelectOption value="pod">Pod</SelectOption>
-              </Select>
-            </div>
-            <div v-for="(item, idx) in nodeRanking" :key="item.instance || idx" class="ranking-item">
-              <Tag :color="idx === 0 ? 'red' : idx === 1 ? 'orange' : idx === 2 ? 'gold' : 'default'" class="ranking-tag">{{ idx + 1 }}</Tag>
-              <span class="ranking-name">{{ item.instance || item.node || '-' }}</span>
-              <div class="ranking-bar">
-                <Progress
-                  :percent="toPercent(item.value, nodeMetric)"
-                  :stroke-color="getBarColor(toPercent(item.value, nodeMetric))"
-                  :show-info="false"
+            <TabPane key="node" tab="节点排名">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 16px;
+                  gap: 12px;
+                "
+              >
+                <span class="text-muted-foreground">排序指标:</span>
+                <Select
+                  v-model:value="nodeMetric"
                   size="small"
-                />
+                  style="width: 100px"
+                  @change="fetchData"
+                >
+                  <SelectOption value="cpu">CPU</SelectOption>
+                  <SelectOption value="memory">内存</SelectOption>
+                  <SelectOption value="disk">磁盘</SelectOption>
+                  <SelectOption value="load">负载</SelectOption>
+                  <SelectOption value="pod">Pod</SelectOption>
+                </Select>
               </div>
-              <span class="ranking-value">{{ formatValue(item.value, nodeMetric) }}</span>
-            </div>
-            <div v-if="nodeRanking.length === 0 && !loading" style="text-align: center; color: #8c8c8c; padding: 40px;">
-              暂无数据（请确认Prometheus已配置）
-            </div>
-          </TabPane>
-        </Tabs>
-      </Spin>
-    </Card>
-  </div>
+              <div
+                v-for="(item, idx) in nodeRanking"
+                :key="item.instance || idx"
+                class="ranking-item"
+              >
+                <Tag
+                  :color="
+                    idx === 0
+                      ? 'red'
+                      : idx === 1
+                        ? 'orange'
+                        : idx === 2
+                          ? 'gold'
+                          : 'default'
+                  "
+                  class="ranking-tag"
+                  >{{ idx + 1 }}</Tag
+                >
+                <span class="ranking-name">{{
+                  item.instance || item.node || '-'
+                }}</span>
+                <div class="ranking-bar">
+                  <Progress
+                    :percent="toPercent(item.value, nodeMetric)"
+                    :stroke-color="
+                      getBarColor(toPercent(item.value, nodeMetric))
+                    "
+                    :show-info="false"
+                    size="small"
+                  />
+                </div>
+                <span class="ranking-value">{{
+                  formatValue(item.value, nodeMetric)
+                }}</span>
+              </div>
+              <div
+                v-if="nodeRanking.length === 0 && !loading"
+                style="text-align: center; color: #8c8c8c; padding: 40px"
+              >
+                暂无数据（请确认Prometheus已配置）
+              </div>
+            </TabPane>
+          </Tabs>
+        </Spin>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>
 
 <style scoped>

@@ -2,12 +2,28 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
-  Card, Descriptions, DescriptionsItem, Table, Button, Tag, Space,
-  Tabs, TabPane, Modal, message, Progress,
+  Card,
+  Descriptions,
+  DescriptionsItem,
+  Table,
+  Button,
+  Tag,
+  Space,
+  Tabs,
+  TabPane,
+  Modal,
+  message,
+  Progress,
 } from 'ant-design-vue';
 import {
-  getServiceDetail, installService, startService, stopService,
-  restartService, pushConfig, getRoleInstances, removeRoleInstance,
+  getServiceDetail,
+  installService,
+  startService,
+  stopService,
+  restartService,
+  pushConfig,
+  getRoleInstances,
+  removeRoleInstance,
 } from '../api/service';
 import { getCommands } from '../api/command';
 import type { ServiceInstance, RoleInstance, Command } from '../api/types';
@@ -23,15 +39,27 @@ const activeTab = ref('overview');
 let refreshTimer: ReturnType<typeof setInterval> | null = null;
 
 const statusColorMap: Record<string, string> = {
-  running: 'green', stopped: 'orange', not_installed: 'default',
-  installing: 'blue', error: 'red',
-  pending: 'default', success: 'green', failed: 'red', cancelled: 'orange',
+  running: 'green',
+  stopped: 'orange',
+  not_installed: 'default',
+  installing: 'blue',
+  error: 'red',
+  pending: 'default',
+  success: 'green',
+  failed: 'red',
+  cancelled: 'orange',
 };
 
 const statusLabelMap: Record<string, string> = {
-  running: '运行中', stopped: '已停止', not_installed: '未安装',
-  installing: '安装中', error: '异常',
-  pending: '等待中', success: '成功', failed: '失败', cancelled: '已取消',
+  running: '运行中',
+  stopped: '已停止',
+  not_installed: '未安装',
+  installing: '安装中',
+  error: '异常',
+  pending: '等待中',
+  success: '成功',
+  failed: '失败',
+  cancelled: '已取消',
 };
 
 const roleColumns = [
@@ -39,7 +67,12 @@ const roleColumns = [
   { title: '角色类型', dataIndex: 'roleType', key: 'roleType', width: 100 },
   { title: '主机', dataIndex: 'hostname', key: 'hostname' },
   { title: '状态', dataIndex: 'status', key: 'status', width: 100 },
-  { title: '需要重启', dataIndex: 'needRestart', key: 'needRestart', width: 100 },
+  {
+    title: '需要重启',
+    dataIndex: 'needRestart',
+    key: 'needRestart',
+    width: 100,
+  },
   { title: '操作', key: 'action', width: 100 },
 ];
 
@@ -53,13 +86,19 @@ const commandColumns = [
 ];
 
 const typeColorMap: Record<string, string> = {
-  install: 'blue', start: 'green', stop: 'orange',
-  restart: 'cyan', config_update: 'purple',
+  install: 'blue',
+  start: 'green',
+  stop: 'orange',
+  restart: 'cyan',
+  config_update: 'purple',
 };
 
 const typeLabelMap: Record<string, string> = {
-  install: '安装', start: '启动', stop: '停止',
-  restart: '重启', config_update: '配置更新',
+  install: '安装',
+  start: '启动',
+  stop: '停止',
+  restart: '重启',
+  config_update: '配置更新',
 };
 
 async function fetchDetail() {
@@ -82,11 +121,16 @@ async function fetchRoles() {
   try {
     const res = await getRoleInstances(serviceId.value);
     roles.value = Array.isArray(res) ? res : [];
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 async function handleAction(action: string) {
-  const actionMap: Record<string, { fn: (id: number) => Promise<any>; label: string }> = {
+  const actionMap: Record<
+    string,
+    { fn: (id: number) => Promise<any>; label: string }
+  > = {
     install: { fn: installService, label: '安装' },
     start: { fn: startService, label: '启动' },
     stop: { fn: stopService, label: '停止' },
@@ -163,135 +207,196 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card :loading="loading">
-      <template #title>
-        <Space>
-          <Button size="small" @click="goBack">返回</Button>
-          <span>{{ service?.serviceName || '服务详情' }}</span>
-          <Tag v-if="service" :color="statusColorMap[service.status] || 'default'">
-            {{ statusLabelMap[service.status] || service.status }}
-          </Tag>
-        </Space>
-      </template>
-      <template #extra>
-        <Space v-if="service">
-          <Button @click="fetchDetail">刷新</Button>
-          <Button
-            v-if="service.status === 'not_installed'"
-            type="primary"
-            @click="handleAction('install')"
-          >安装</Button>
-          <Button
-            v-if="service.status === 'stopped'"
-            type="primary"
-            @click="handleAction('start')"
-          >启动</Button>
-          <Button
-            v-if="service.status === 'running'"
-            @click="handleAction('stop')"
-          >停止</Button>
-          <Button
-            v-if="service.status === 'running' || service.status === 'error'"
-            @click="handleAction('restart')"
-          >重启</Button>
-          <Button
-            v-if="service.status === 'running'"
-            @click="handleAction('config')"
-          >推送配置</Button>
-        </Space>
-      </template>
+  <BusinessPage
+    title="服务详情"
+    description="将状态、配置与关联资料放在一起，继续处理当前资源。"
+    family="详情"
+    route-key="/SVM/service/detail/:id"
+  >
+    <div class="p-4">
+      <Card :loading="loading">
+        <template #title>
+          <Space>
+            <Button size="small" @click="goBack">返回</Button>
+            <span>{{ service?.serviceName || '服务详情' }}</span>
+            <Tag
+              v-if="service"
+              :color="statusColorMap[service.status] || 'default'"
+            >
+              {{ statusLabelMap[service.status] || service.status }}
+            </Tag>
+          </Space>
+        </template>
+        <template #extra>
+          <Space v-if="service">
+            <Button @click="fetchDetail">刷新</Button>
+            <Button
+              v-if="service.status === 'not_installed'"
+              type="primary"
+              @click="handleAction('install')"
+              >安装</Button
+            >
+            <Button
+              v-if="service.status === 'stopped'"
+              type="primary"
+              @click="handleAction('start')"
+              >启动</Button
+            >
+            <Button
+              v-if="service.status === 'running'"
+              @click="handleAction('stop')"
+              >停止</Button
+            >
+            <Button
+              v-if="service.status === 'running' || service.status === 'error'"
+              @click="handleAction('restart')"
+              >重启</Button
+            >
+            <Button
+              v-if="service.status === 'running'"
+              @click="handleAction('config')"
+              >推送配置</Button
+            >
+          </Space>
+        </template>
 
-      <Tabs v-model:activeKey="activeTab">
-        <TabPane key="overview" tab="概览">
-          <Descriptions bordered :column="2" size="small" v-if="service">
-            <DescriptionsItem label="服务名称">{{ service.serviceName }}</DescriptionsItem>
-            <DescriptionsItem label="状态">
-              <Tag :color="statusColorMap[service.status] || 'default'">
-                {{ statusLabelMap[service.status] || service.status }}
-              </Tag>
-            </DescriptionsItem>
-            <DescriptionsItem label="服务ID">{{ service.id }}</DescriptionsItem>
-            <DescriptionsItem label="UID">{{ service.uid }}</DescriptionsItem>
-            <DescriptionsItem label="集群ID">{{ service.clusterId }}</DescriptionsItem>
-            <DescriptionsItem label="服务定义ID">{{ service.serviceDefId }}</DescriptionsItem>
-            <DescriptionsItem label="配置版本">{{ service.configVersion }}</DescriptionsItem>
-            <DescriptionsItem label="需要重启">
-              <Tag v-if="service.needRestart" color="orange">需要重启</Tag>
-              <Tag v-else color="green">正常</Tag>
-            </DescriptionsItem>
-            <DescriptionsItem label="创建时间">{{ service.createdAt }}</DescriptionsItem>
-            <DescriptionsItem label="更新时间">{{ service.updatedAt }}</DescriptionsItem>
-          </Descriptions>
-        </TabPane>
-
-        <TabPane key="roles" tab="角色实例">
-          <Table
-            :columns="roleColumns"
-            :data-source="roles"
-            row-key="id"
-            size="small"
-          >
-            <template #bodyCell="{ column, record: _record }">
-              <template v-if="column.key === 'status'">
-                <Tag :color="statusColorMap[(_record as any).status] || 'default'">
-                  {{ statusLabelMap[(_record as any).status] || (_record as any).status }}
+        <Tabs v-model:activeKey="activeTab">
+          <TabPane key="overview" tab="概览">
+            <Descriptions bordered :column="2" size="small" v-if="service">
+              <DescriptionsItem label="服务名称">{{
+                service.serviceName
+              }}</DescriptionsItem>
+              <DescriptionsItem label="状态">
+                <Tag :color="statusColorMap[service.status] || 'default'">
+                  {{ statusLabelMap[service.status] || service.status }}
                 </Tag>
-              </template>
-              <template v-if="column.key === 'needRestart'">
-                <Tag v-if="(_record as any).needRestart" color="orange">需要重启</Tag>
+              </DescriptionsItem>
+              <DescriptionsItem label="服务ID">{{
+                service.id
+              }}</DescriptionsItem>
+              <DescriptionsItem label="UID">{{ service.uid }}</DescriptionsItem>
+              <DescriptionsItem label="集群ID">{{
+                service.clusterId
+              }}</DescriptionsItem>
+              <DescriptionsItem label="服务定义ID">{{
+                service.serviceDefId
+              }}</DescriptionsItem>
+              <DescriptionsItem label="配置版本">{{
+                service.configVersion
+              }}</DescriptionsItem>
+              <DescriptionsItem label="需要重启">
+                <Tag v-if="service.needRestart" color="orange">需要重启</Tag>
                 <Tag v-else color="green">正常</Tag>
-              </template>
-              <template v-if="column.key === 'action'">
-                <Button
-                  type="link" size="small" danger
-                  @click="handleDeleteRole(_record as RoleInstance)"
-                >删除</Button>
-              </template>
-            </template>
-          </Table>
-        </TabPane>
+              </DescriptionsItem>
+              <DescriptionsItem label="创建时间">{{
+                service.createdAt
+              }}</DescriptionsItem>
+              <DescriptionsItem label="更新时间">{{
+                service.updatedAt
+              }}</DescriptionsItem>
+            </Descriptions>
+          </TabPane>
 
-        <TabPane key="config" tab="配置">
-          <pre v-if="service?.configJson" class="bg-muted max-h-[500px] overflow-auto rounded p-4">{{ service.configJson }}</pre>
-          <div v-else class="text-muted-foreground p-10 text-center">暂无配置</div>
-        </TabPane>
+          <TabPane key="roles" tab="角色实例">
+            <Table
+              :columns="roleColumns"
+              :data-source="roles"
+              row-key="id"
+              size="small"
+            >
+              <template #bodyCell="{ column, record: _record }">
+                <template v-if="column.key === 'status'">
+                  <Tag
+                    :color="
+                      statusColorMap[(_record as any).status] || 'default'
+                    "
+                  >
+                    {{
+                      statusLabelMap[(_record as any).status] ||
+                      (_record as any).status
+                    }}
+                  </Tag>
+                </template>
+                <template v-if="column.key === 'needRestart'">
+                  <Tag v-if="(_record as any).needRestart" color="orange"
+                    >需要重启</Tag
+                  >
+                  <Tag v-else color="green">正常</Tag>
+                </template>
+                <template v-if="column.key === 'action'">
+                  <Button
+                    type="link"
+                    size="small"
+                    danger
+                    @click="handleDeleteRole(_record as RoleInstance)"
+                    >删除</Button
+                  >
+                </template>
+              </template>
+            </Table>
+          </TabPane>
 
-        <TabPane key="commands" tab="命令历史">
-          <Table
-            :columns="commandColumns"
-            :data-source="commands"
-            row-key="id"
-            size="small"
-          >
-            <template #bodyCell="{ column, record: _record }">
-              <template v-if="column.key === 'commandType'">
-                <Tag :color="typeColorMap[(_record as any).commandType] || 'default'">
-                  {{ typeLabelMap[(_record as any).commandType] || (_record as any).commandType }}
-                </Tag>
+          <TabPane key="config" tab="配置">
+            <pre
+              v-if="service?.configJson"
+              class="bg-muted max-h-[500px] overflow-auto rounded p-4"
+              >{{ service.configJson }}</pre
+            >
+            <div v-else class="text-muted-foreground p-10 text-center">
+              暂无配置
+            </div>
+          </TabPane>
+
+          <TabPane key="commands" tab="命令历史">
+            <Table
+              :columns="commandColumns"
+              :data-source="commands"
+              row-key="id"
+              size="small"
+            >
+              <template #bodyCell="{ column, record: _record }">
+                <template v-if="column.key === 'commandType'">
+                  <Tag
+                    :color="
+                      typeColorMap[(_record as any).commandType] || 'default'
+                    "
+                  >
+                    {{
+                      typeLabelMap[(_record as any).commandType] ||
+                      (_record as any).commandType
+                    }}
+                  </Tag>
+                </template>
+                <template v-if="column.key === 'status'">
+                  <Tag
+                    :color="
+                      statusColorMap[(_record as any).status] || 'default'
+                    "
+                  >
+                    {{
+                      statusLabelMap[(_record as any).status] ||
+                      (_record as any).status
+                    }}
+                  </Tag>
+                </template>
+                <template v-if="column.key === 'progress'">
+                  <Progress
+                    :percent="(_record as any).progress || 0"
+                    size="small"
+                    :status="
+                      (_record as any).status === 'failed'
+                        ? 'exception'
+                        : (_record as any).status === 'success'
+                          ? 'success'
+                          : 'active'
+                    "
+                  />
+                </template>
               </template>
-              <template v-if="column.key === 'status'">
-                <Tag :color="statusColorMap[(_record as any).status] || 'default'">
-                  {{ statusLabelMap[(_record as any).status] || (_record as any).status }}
-                </Tag>
-              </template>
-              <template v-if="column.key === 'progress'">
-                <Progress
-                  :percent="(_record as any).progress || 0"
-                  size="small"
-                  :status="
-                    (_record as any).status === 'failed'
-                      ? 'exception'
-                      : (_record as any).status === 'success'
-                        ? 'success'
-                        : 'active'
-                  "
-                />
-              </template>
-            </template>
-          </Table>
-        </TabPane>
-      </Tabs>
-    </Card>
-  </div>
+            </Table>
+          </TabPane>
+        </Tabs>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

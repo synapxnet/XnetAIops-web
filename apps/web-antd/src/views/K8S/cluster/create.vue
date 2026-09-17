@@ -97,101 +97,141 @@ function goBack() {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="添加Kubernetes集群">
-      <template #extra>
-        <Button @click="goBack">返回</Button>
-      </template>
+  <BusinessPage
+    title="添加集群"
+    description="按步骤填写必要参数；提交状态以服务端实际回执为准。"
+    family="表单"
+    route-key="/K8S/cluster/create"
+  >
+    <div class="p-4">
+      <Card title="添加Kubernetes集群">
+        <template #extra>
+          <Button @click="goBack">返回</Button>
+        </template>
 
-      <Form layout="vertical" :model="form" style="max-width: 800px;">
-        <FormItem label="集群名称" required>
-          <Input v-model:value="form.name" placeholder="请输入集群名称" />
-        </FormItem>
+        <Form layout="vertical" :model="form" style="max-width: 800px">
+          <FormItem label="集群名称" required>
+            <Input v-model:value="form.name" placeholder="请输入集群名称" />
+          </FormItem>
 
-        <FormItem label="集群描述">
-          <Textarea v-model:value="form.description" placeholder="请输入集群描述" :rows="2" />
-        </FormItem>
+          <FormItem label="集群描述">
+            <Textarea
+              v-model:value="form.description"
+              placeholder="请输入集群描述"
+              :rows="2"
+            />
+          </FormItem>
 
-        <FormItem label="提供商">
-          <Select v-model:value="form.provider">
-            <SelectOption value="self-managed">自建集群</SelectOption>
-            <SelectOption value="aliyun">阿里云 ACK</SelectOption>
-            <SelectOption value="aws">AWS EKS</SelectOption>
-            <SelectOption value="gcp">GCP GKE</SelectOption>
-            <SelectOption value="huawei">华为云 CCE</SelectOption>
-            <SelectOption value="tencent">腾讯云 TKE</SelectOption>
-          </Select>
-        </FormItem>
+          <FormItem label="提供商">
+            <Select v-model:value="form.provider">
+              <SelectOption value="self-managed">自建集群</SelectOption>
+              <SelectOption value="aliyun">阿里云 ACK</SelectOption>
+              <SelectOption value="aws">AWS EKS</SelectOption>
+              <SelectOption value="gcp">GCP GKE</SelectOption>
+              <SelectOption value="huawei">华为云 CCE</SelectOption>
+              <SelectOption value="tencent">腾讯云 TKE</SelectOption>
+            </Select>
+          </FormItem>
 
-        <FormItem label="Kubeconfig" required>
-          <Textarea
-            v-model:value="form.kubeconfig"
-            placeholder="请粘贴kubeconfig文件内容（YAML格式）"
-            :rows="12"
-            style="font-family: monospace; font-size: 12px;"
+          <FormItem label="Kubeconfig" required>
+            <Textarea
+              v-model:value="form.kubeconfig"
+              placeholder="请粘贴kubeconfig文件内容（YAML格式）"
+              :rows="12"
+              style="font-family: monospace; font-size: 12px"
+            />
+          </FormItem>
+
+          <!-- SSH Connection -->
+          <Divider orientation="left">SSH 连接配置（Helm 部署需要）</Divider>
+          <Alert type="info" showIcon style="margin-bottom: 16px">
+            <template #message>
+              SSH 连接用于在集群 Master 节点上执行 Helm CLI
+              命令。如果需要使用应用商店的一键部署功能，请配置 SSH 信息。
+            </template>
+          </Alert>
+
+          <FormItem label="SSH 主机地址">
+            <Input
+              v-model:value="form.sshHost"
+              placeholder="集群Master节点IP或域名，如 192.168.1.100"
+            />
+          </FormItem>
+
+          <FormItem label="SSH 端口">
+            <InputNumber
+              v-model:value="form.sshPort"
+              :min="1"
+              :max="65535"
+              style="width: 150px"
+            />
+          </FormItem>
+
+          <FormItem label="SSH 用户名">
+            <Input
+              v-model:value="form.sshUser"
+              placeholder="SSH登录用户名，如 root"
+            />
+          </FormItem>
+
+          <FormItem label="SSH 密码">
+            <Input.Password
+              v-model:value="form.sshPassword"
+              placeholder="SSH登录密码（与密钥二选一）"
+            />
+          </FormItem>
+
+          <FormItem label="SSH 私钥">
+            <Textarea
+              v-model:value="form.sshKey"
+              placeholder="SSH私钥内容（与密码二选一，粘贴PEM格式私钥）"
+              :rows="4"
+              style="font-family: monospace; font-size: 12px"
+            />
+          </FormItem>
+
+          <FormItem>
+            <Space>
+              <Button :loading="testing" @click="handleTest">测试连接</Button>
+              <Button type="primary" :loading="submitting" @click="handleSubmit"
+                >添加集群</Button
+              >
+            </Space>
+          </FormItem>
+        </Form>
+
+        <!-- 连接测试结果 -->
+        <div v-if="testResult" style="margin-top: 16px; max-width: 800px">
+          <Alert
+            :type="testResult.connected ? 'success' : 'error'"
+            :message="testResult.connected ? '连接成功' : '连接失败'"
+            show-icon
           />
-        </FormItem>
-
-        <!-- SSH Connection -->
-        <Divider orientation="left">SSH 连接配置（Helm 部署需要）</Divider>
-        <Alert type="info" showIcon style="margin-bottom:16px">
-          <template #message>
-            SSH 连接用于在集群 Master 节点上执行 Helm CLI 命令。如果需要使用应用商店的一键部署功能，请配置 SSH 信息。
-          </template>
-        </Alert>
-
-        <FormItem label="SSH 主机地址">
-          <Input v-model:value="form.sshHost" placeholder="集群Master节点IP或域名，如 192.168.1.100" />
-        </FormItem>
-
-        <FormItem label="SSH 端口">
-          <InputNumber v-model:value="form.sshPort" :min="1" :max="65535" style="width:150px" />
-        </FormItem>
-
-        <FormItem label="SSH 用户名">
-          <Input v-model:value="form.sshUser" placeholder="SSH登录用户名，如 root" />
-        </FormItem>
-
-        <FormItem label="SSH 密码">
-          <Input.Password v-model:value="form.sshPassword" placeholder="SSH登录密码（与密钥二选一）" />
-        </FormItem>
-
-        <FormItem label="SSH 私钥">
-          <Textarea
-            v-model:value="form.sshKey"
-            placeholder="SSH私钥内容（与密码二选一，粘贴PEM格式私钥）"
-            :rows="4"
-            style="font-family: monospace; font-size: 12px;"
-          />
-        </FormItem>
-
-        <FormItem>
-          <Space>
-            <Button :loading="testing" @click="handleTest">测试连接</Button>
-            <Button type="primary" :loading="submitting" @click="handleSubmit">添加集群</Button>
-          </Space>
-        </FormItem>
-      </Form>
-
-      <!-- 连接测试结果 -->
-      <div v-if="testResult" style="margin-top: 16px; max-width: 800px;">
-        <Alert
-          :type="testResult.connected ? 'success' : 'error'"
-          :message="testResult.connected ? '连接成功' : '连接失败'"
-          show-icon
-        />
-        <Descriptions v-if="testResult.connected" bordered size="small" class="mt-3" :column="2">
-          <DescriptionsItem label="Kubernetes版本">
-            <Tag color="blue">{{ testResult.version }}</Tag>
-          </DescriptionsItem>
-          <DescriptionsItem label="节点数量">{{ testResult.nodeCount }}</DescriptionsItem>
-          <DescriptionsItem label="平台">{{ testResult.platform }}</DescriptionsItem>
-          <DescriptionsItem label="API Server">{{ testResult.apiServerUrl }}</DescriptionsItem>
-        </Descriptions>
-        <div v-if="!testResult.connected" class="mt-2" style="color: #ff4d4f;">
-          {{ testResult.error }}
+          <Descriptions
+            v-if="testResult.connected"
+            bordered
+            size="small"
+            class="mt-3"
+            :column="2"
+          >
+            <DescriptionsItem label="Kubernetes版本">
+              <Tag color="blue">{{ testResult.version }}</Tag>
+            </DescriptionsItem>
+            <DescriptionsItem label="节点数量">{{
+              testResult.nodeCount
+            }}</DescriptionsItem>
+            <DescriptionsItem label="平台">{{
+              testResult.platform
+            }}</DescriptionsItem>
+            <DescriptionsItem label="API Server">{{
+              testResult.apiServerUrl
+            }}</DescriptionsItem>
+          </Descriptions>
+          <div v-if="!testResult.connected" class="mt-2" style="color: #ff4d4f">
+            {{ testResult.error }}
+          </div>
         </div>
-      </div>
-    </Card>
-  </div>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

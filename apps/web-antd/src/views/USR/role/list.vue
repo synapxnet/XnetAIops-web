@@ -142,79 +142,97 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="角色管理">
-      <template #extra>
-        <Button type="primary" @click="showCreate">创建角色</Button>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="roles"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 800 }"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showUsers(_record as Role)">
-                关联用户
-              </Button>
-              <Button type="link" size="small" @click="showEdit(_record as Role)">
-                编辑
-              </Button>
-              <Button
-                type="link"
-                size="small"
-                danger
-                @click="handleDelete(_record as Role)"
-              >
-                删除
-              </Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="角色管理"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/USR/role/list"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Button type="primary" @click="showCreate">创建角色</Button>
         </template>
-      </Table>
-    </Card>
+        <Table
+          :columns="columns"
+          :data-source="roles"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 800 }"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showUsers(_record as Role)"
+                >
+                  关联用户
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showEdit(_record as Role)"
+                >
+                  编辑
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(_record as Role)"
+                >
+                  删除
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
 
-    <!-- Create/Edit Role Modal -->
-    <Modal
-      v-model:open="modalVisible"
-      :title="modalTitle"
-      @ok="handleSubmit"
-      :destroy-on-close="true"
-    >
-      <Form layout="vertical">
-        <FormItem label="角色名称" required>
-          <Input v-model:value="formState.roleName" placeholder="如: 管理员" />
-        </FormItem>
-        <FormItem label="角色编码" required>
-          <Input
-            v-model:value="formState.roleCode"
-            placeholder="如: ADMIN"
-            :disabled="!!editingId"
-          />
-        </FormItem>
-        <FormItem label="描述">
-          <Textarea v-model:value="formState.description" :rows="3" />
-        </FormItem>
-      </Form>
-    </Modal>
+      <!-- Create/Edit Role Modal -->
+      <Modal
+        v-model:open="modalVisible"
+        :title="modalTitle"
+        @ok="handleSubmit"
+        :destroy-on-close="true"
+      >
+        <Form layout="vertical">
+          <FormItem label="角色名称" required>
+            <Input
+              v-model:value="formState.roleName"
+              placeholder="如: 管理员"
+            />
+          </FormItem>
+          <FormItem label="角色编码" required>
+            <Input
+              v-model:value="formState.roleCode"
+              placeholder="如: ADMIN"
+              :disabled="!!editingId"
+            />
+          </FormItem>
+          <FormItem label="描述">
+            <Textarea v-model:value="formState.description" :rows="3" />
+          </FormItem>
+        </Form>
+      </Modal>
 
-    <!-- Role Users Modal -->
-    <Modal
-      v-model:open="usersModalVisible"
-      :title="usersModalTitle"
-      :footer="null"
-      width="400px"
-    >
-      <Table
-        :columns="userColumns"
-        :data-source="roleUsers"
-        :loading="usersLoading"
-        row-key="id"
-        size="small"
-      />
-    </Modal>
-  </div>
+      <!-- Role Users Modal -->
+      <Modal
+        v-model:open="usersModalVisible"
+        :title="usersModalTitle"
+        :footer="null"
+        width="400px"
+      >
+        <Table
+          :columns="userColumns"
+          :data-source="roleUsers"
+          :loading="usersLoading"
+          row-key="id"
+          size="small"
+        />
+      </Modal>
+    </div>
+  </BusinessPage>
 </template>
