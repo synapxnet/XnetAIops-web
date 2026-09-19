@@ -7,6 +7,7 @@ Author: maoyo | Department: 研发部 | Date: 2026-09-13 | Version: 1.0.0
 Security Level: INTERNAL | Maintainer: maoyo | Email: synapxnet@gmail.com
 -->
 <script setup lang="ts">
+import FeatureDriftEntry from '#/components/feature-drift/FeatureDriftEntry.vue';
 import type {
   OperationsCatalog,
   OperationsEvidence,
@@ -316,6 +317,7 @@ onBeforeUnmount(() => {
     route-key="/AGENT/operations"
   >
     <main class="operations-workspace">
+      <FeatureDriftEntry label="跨域恢复 · 独立运行采样" />
       <header class="workspace-header">
         <div class="workspace-intro">
           <p class="eyebrow">XNET AIOPS <span>运行保障</span></p>
