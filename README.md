@@ -4,31 +4,25 @@
 
 **XnetAIops 智能运维平台的 Web 控制台**
 
-[![GOAI release](https://img.shields.io/badge/version-1.3.0-1677ff.svg)](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) [![Vue](https://img.shields.io/badge/Vue-3-42b883.svg)](https://vuejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/) [![License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](./LICENSE)
+[![Version](https://img.shields.io/badge/version-1.3.0-1677ff.svg)](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) [![Vue](https://img.shields.io/badge/Vue-3-42b883.svg)](https://vuejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/) [![License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](./LICENSE)
 
-[在线体验](https://goai.xnetaiops.synapxnet.online) · [后端仓库 XnetAIops](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) · [OpenXnet 开源社区](https://openxnet.synapxnet.com) · [查看许可](./LICENSE)
+[后端仓库 XnetAIops](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) · [OpenXnet 开源社区](https://openxnet.synapxnet.com) · [查看许可](./LICENSE)
 
 </div>
 
-## GOAI 决赛版 · v1.3.0
+## 主线开发
 
-[发布页与校验文件](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) · [下载源码 ZIP](https://github.com/synapxnet/XnetAIops-web/releases/download/v1.3.0/XnetAIops-web-v1.3.0-source.zip) · [查看 v1.3.0 源码](https://github.com/synapxnet/XnetAIops-web/tree/v1.3.0) · [配套后端 XnetAIops](https://github.com/synapxnet/XnetAIops/releases/tag/v1.3.0) · [OpenXnet 桌面安装包](https://github.com/synapxnet/OpenXnet/releases/tag/v1.3.0)
+基于 v1.3.0 的平台功能继续演进，保留驻场 Agent、知识与 Skill 工作台、跨域取证、受控执行、独立验证、审计与恢复。主线默认不加载比赛账号、组织、固定场景或竞赛服务地址。
 
-> GOAI 产品版本为 **v1.3.0**。上方标签与对应源码 ZIP 提供本版源码和使用说明；程序构建与验收基线见交付文档。
-
-包含统一登录与皮肤、驻场 Agent 聊天和配置入口、运行保障工作台及受控终端交互。跨平台协作和审批通过 OpenXnet 与 AgentTeams 组织，页面状态本身不代表已经取得执行授权。
-
-部署依赖、实测结果和能力边界见[程序验证基线、构建与交付说明](./docs/GOAI-FINALS-V1.3.0-SOURCE-DELIVERY.md)。发布源码不代表线上服务已重新部署。本轮生产构建通过，全量类型检查仍有 135 处问题。
-
-> 下方为历史界面截图，仅用于了解原有功能与布局，不作为 v1.3.0 新界面的验收证据。
+[主线迁移范围](./docs/MAINLINE-TRANSITION.md) · [历史发布](https://github.com/synapxnet/XnetAIops-web/releases)
 
 ![XnetAIops 集群 3D 概览](./docs/images/xnetaiops-overview.jpg)
 
 ## 页面预览
 
-| 演示登录 | 关于项目 |
+| 账号登录 | 关于项目 |
 | --- | --- |
-| ![XnetAIops 演示登录](https://raw.githubusercontent.com/synapxnet/XnetAIops-web/64bd4dc3cabda236d717696f54ffadea5541c462/docs/images/xnetaiops-login.png) | ![XnetAIops 关于项目](https://raw.githubusercontent.com/synapxnet/XnetAIops-web/64bd4dc3cabda236d717696f54ffadea5541c462/docs/images/xnetaiops-about.png) |
+| ![XnetAIops 账号登录](https://raw.githubusercontent.com/synapxnet/XnetAIops-web/64bd4dc3cabda236d717696f54ffadea5541c462/docs/images/xnetaiops-login.png) | ![XnetAIops 关于项目](https://raw.githubusercontent.com/synapxnet/XnetAIops-web/64bd4dc3cabda236d717696f54ffadea5541c462/docs/images/xnetaiops-about.png) |
 
 ## 项目简介
 
@@ -76,12 +70,11 @@ flowchart LR
 - Pinia + Vue Router
 - pnpm 9.15.7
 
-## v1.3.0 获取与构建
+## 主线构建
 
 使用 **Node.js 20.10.0 或更高版本**、固定的 **pnpm 9.15.7**。前端基于 Vue 3、TypeScript 5、Vite、Ant Design Vue 与 Vben 工作区：
 
 ```bash
-git clone --branch v1.3.0 --depth 1 https://github.com/synapxnet/XnetAIops-web.git
 cd XnetAIops-web
 corepack enable
 corepack prepare pnpm@9.15.7 --activate
@@ -93,23 +86,20 @@ pnpm exec turbo build --filter=@vben/web-antd --env-mode=loose
 
 ### 本地开发与接口
 
-开发命令为 `pnpm dev:antd`，默认端口 `5777`。先修改 `apps/web-antd/vite.config.mts` 中的旧内网代理目标，为自己的后端配置 `/usr`、`/clm`、`/hom`、`/svm`、`/mon`、`/k8s`、`/reg`；K8s 可用 `AIOPS_K8S_DEV_URL` 指定目标。开发代理不会自动发现服务器，也没有完整的驻场代理配置。
+开发命令为 `pnpm dev:antd`，默认端口 `5777`。代理默认使用本机后端，可通过 AIOPS_USR_DEV_URL、AIOPS_CLM_DEV_URL、AIOPS_HOM_DEV_URL、AIOPS_SVM_DEV_URL、AIOPS_MON_DEV_URL、AIOPS_K8S_DEV_URL、AIOPS_REG_DEV_URL 配置各服务目标。开发代理不会自动发现服务器，也没有完整的驻场代理配置。
 
 生产 `.env.production` 使用同源 `/api/usr`、`/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg`。驻场 `/api/resident/v1/` 要由网关另行接到独立 Node 服务。后端、驻场、模型凭据和登录授权须分别配置；浏览器中不存放模型 API Key。
 
-本轮生产构建与 45 项前端回归通过；全量类型检查仍有 135 处已知问题，详见源码交付说明。构建成功不代表类型检查通过。
+主线验证记录见 docs/MAINLINE-TRANSITION.md；历史交付说明保留历史基线。
 
-## 在线体验与登录
+## 部署与登录
 
-- 当前 GOAI 演示入口：<https://goai.xnetaiops.synapxnet.online/#/auth/login>。
-- 演示手机号：`17870171303`；演示验证码：`000000`（6 位，仅用于本演示环境）。
-- 登录方式为“手机号 + 验证码”，不使用 OpenXnet 桌面端的密码登录。当前页面不发送短信，演示验证码由项目方约定。
-- 2026-09-18 已核验：登录成功，身份为 `goai_operator` / `OPERATOR`；页面标题为 `XnetAIops`，驻场状态返回 `platform=aiops`、`agentVersion=1.3.0`、`ONLINE`。
-- 此验证码只用于平台登录。AgentTeams 演示访问码、Live 执行授权和模型 API Key 是独立凭据，不可互换；后者不在公开 README 提供。
+使用当前部署环境提供的访问地址，网页 API 默认同源。登录调用 POST /api/usr/sms-code 发送一次性验证码，再使用 POST /api/usr/login 登录；身份、驻场状态接口分别为 /api/usr/user/info、/api/resident/v1/status。
 
-API 网关与网页同源，基址为 `https://goai.xnetaiops.synapxnet.online`。登录为 `POST /api/usr/login`；身份读取为 `GET /api/usr/user/info`；驻场状态为 `GET /api/resident/v1/status`，后两项使用平台登录返回的 Bearer 令牌。业务模块前缀为 `/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg`。
+管理员需创建真实账号与组织成员关系，并配置 Redis、JWT_SECRET、XNET_SMS_GATEWAY_URL 和 XNET_SMS_GATEWAY_TOKEN。主线不预置任何通用验证码或公共登录账号。验证码 5 分钟有效、60 秒发送间隔、最多 5 次错误、成功后立即销毁。短信网关接收 POST JSON {phone, code, purpose: "login", expiresInSeconds: 300}，通过 Bearer token 鉴权，必须返回 HTTP 2xx 与 {"accepted": true}。未配置或发送失败时明确报错。
 
-本轮仅执行登录及身份/驻场状态读取，未执行业务变更或模型调用。`modelConfigured=true` 表示存在服务端配置，不等于本轮已验证模型推理。公共演示账号不应用作生产认证方案。
+驻场 Agent、审批、模型服务沿用各自配置与权限边界。前端跨平台导航使用 VITE_XNET_AIOPS_URL、VITE_XNET_DATAOPS_URL、VITE_XNET_MLOPS_URL；未配置则不显示对应外链。
+
 
 ## SynapXnet 开源生态
 

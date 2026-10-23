@@ -4,7 +4,7 @@
 # Copyright (C) 2026 Synapxnet. All rights reserved.
 # This file is Synapxnet Proprietary and Confidential. It is strictly
 # forbidden to copy, distribute, or use without explicit authorization.
-# 复赛认证视觉与决赛入口 / Semifinal authentication visuals and finals navigation
+# 平台认证视觉与可配置导航 / Platform authentication visuals and configurable navigation
 # Author: maoyo | Department: 研发部 | Date: 2026-09-17
 # Version: 1.3.0 | Security Level: INTERNAL
 # Maintainer: maoyo | Email: synapxnet@gmail.com
@@ -58,11 +58,19 @@ const shellStyle = computed(() => ({
   '--auth-accent': props.accentColor,
   '--auth-brand-surface': props.brandSurface,
 }));
+/** 仅显示部署环境明确配置的网页地址。 Show only explicitly configured platform web addresses. */
+function platformLink(value: unknown) {
+  if (typeof value !== 'string' || !value.trim()) return '';
+  try {
+    const url = new URL(value);
+    return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password ? url.href : '';
+  } catch { return ''; }
+}
 const platforms = [
-  { name: 'AIOps', match: 'aiops', url: 'https://goai.xnetaiops.synapxnet.online/' },
-  { name: 'DataOps', match: 'dataops', url: 'https://goai.xnetdataops.synapxnet.online/' },
-  { name: 'MLOps', match: 'mlops', url: 'https://goai.xnetmlops.synapxnet.online/' },
-];
+  { name: 'AIOps', match: 'aiops', url: platformLink(import.meta.env.VITE_XNET_AIOPS_URL) },
+  { name: 'DataOps', match: 'dataops', url: platformLink(import.meta.env.VITE_XNET_DATAOPS_URL) },
+  { name: 'MLOps', match: 'mlops', url: platformLink(import.meta.env.VITE_XNET_MLOPS_URL) },
+].filter((platform) => platform.url);
 </script>
 
 <template>
@@ -106,7 +114,7 @@ const platforms = [
     </aside>
 
     <AuthenticationFormView class="auth-form-panel">
-      <nav class="auth-platforms" aria-label="Xnet platforms">
+      <nav v-if="platforms.length" class="auth-platforms" aria-label="Xnet platforms">
         <a v-for="platform in platforms" :key="platform.match" :href="platform.url"
           :aria-current="appName.toLowerCase().includes(platform.match) ? 'page' : undefined"
         >{{ platform.name }}</a>

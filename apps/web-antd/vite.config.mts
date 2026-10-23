@@ -16,31 +16,31 @@ export default defineConfig(async () => {
           '/usr': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/usr/, '/api/usr'),
-            target: 'http://192.168.1.156:9185',
+            target: process.env.AIOPS_USR_DEV_URL || 'http://127.0.0.1:9185',
             ws: true,
           },
           '/clm': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/clm/, '/api/clm'),
-            target: 'http://192.168.1.156:9181',
+            target: process.env.AIOPS_CLM_DEV_URL || 'http://127.0.0.1:9181',
             ws: true,
           },
           '/hom': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/hom/, '/api/hom'),
-            target: 'http://192.168.1.156:9182',
+            target: process.env.AIOPS_HOM_DEV_URL || 'http://127.0.0.1:9182',
             ws: true,
           },
           '/svm': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/svm/, '/api/svm'),
-            target: 'http://192.168.1.156:9183',
+            target: process.env.AIOPS_SVM_DEV_URL || 'http://127.0.0.1:9183',
             ws: true,
           },
           '/mon': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/mon/, '/api/mon'),
-            target: 'http://192.168.1.156:9184',
+            target: process.env.AIOPS_MON_DEV_URL || 'http://127.0.0.1:9184',
             ws: true,
           },
           '/k8s': {
@@ -52,7 +52,7 @@ export default defineConfig(async () => {
           '/reg': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/reg/, '/api/reg'),
-            target: 'http://192.168.1.156:9187',
+            target: process.env.AIOPS_REG_DEV_URL || 'http://127.0.0.1:9187',
             ws: true,
           },
         },

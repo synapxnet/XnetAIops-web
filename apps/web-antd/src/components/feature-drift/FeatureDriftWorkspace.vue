@@ -38,6 +38,7 @@ import {
   percent,
   records,
   short,
+  sourceLabel,
   status,
   time,
 } from './model';
@@ -307,8 +308,8 @@ onBeforeUnmount(pause);
       </div>
     </header>
     <div class="source-strip">
-      <span class="source-dot" /><strong>合成 Staging 数据 · 隔离环境</strong
-      ><span>实际 CSV 回填、CPU 训练、推理与采样；不代表生产收益。</span
+      <span class="source-dot" /><strong>{{ sourceLabel(selected) }}</strong
+      ><span>{{ selected?.synthetic ? '隔离环境中的执行与采样，不代表生产收益。' : '按授权范围读取执行记录、产物与独立采样。' }}</span
       ><label><input v-model="autoRefresh" type="checkbox" />每 5 秒更新</label>
     </div>
     <p v-if="error" class="error-note" role="alert">
@@ -377,7 +378,7 @@ onBeforeUnmount(pause);
               <p>任务结论以 OpenXnet 的独立验证与治理记录为准。</p>
               <p>来源更新 {{ time(selected.updatedAt) }}</p>
             </div>
-            <span class="source-badge">真实执行 / 合成数据</span>
+            <span class="source-badge">{{ sourceLabel(selected) }}</span>
           </header>
           <p
             v-if="selected.failureMode === 'post_release_contract'"
@@ -585,7 +586,7 @@ onBeforeUnmount(pause);
               <h3>独立预测采样</h3>
               <span>缺失指标保留「未采集」</span>
             </div>
-            <p class="section-note">
+            <p v-if="selected.synthetic" class="section-note">
               业务通过率为合成风控样本代理指标。延迟仅为模型预测计算时延，不含网络链路，不是生产端到端
               SLO。 请求可能重复使用持出样本；请求次数与唯一样本数分别列出。
             </p>

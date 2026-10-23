@@ -16,6 +16,7 @@ import {
   parseRun,
   parseRuns,
   percent,
+  sourceLabel,
 } from './model.ts';
 
 /** 建立无测量的隔离记录。 Create an isolated record without measurements. */
@@ -42,6 +43,21 @@ test('legacy simulation cannot appear as real execution evidence', () => {
     assert.throws(() => parseRun(run(overrides)));
   assert.throws(() => parseRuns({}));
   assert.deepEqual(parseRuns({ items: [] }), []);
+});
+/** 仅接受完整匹配的两种来源；生产记录不再被比赛来源锁死。 Accept the two exact source pairs without locking production records to staging. */
+test('production and isolated staging retain distinct validated provenance', () => {
+  const production = parseRun(run({ sourceMode: 'PRODUCTION', synthetic: false }));
+  assert.equal(production.synthetic, false);
+  assert.equal(sourceLabel(production), '生产运行证据');
+  assert.match(sourceLabel(parseRun(run())), /Staging/);
+  assert.equal(sourceLabel(null), '等待选择执行记录');
+  for (const invalid of [
+    { sourceMode: 'PRODUCTION', synthetic: true },
+    { sourceMode: 'PRODUCTION', synthetic: null },
+    { sourceMode: 'PRODUCTION', synthetic: 'false' },
+    { sourceMode: 'OTHER', synthetic: false },
+  ]) assert.throws(() => parseRun(run(invalid)));
+  assert.throws(() => parseRun(production, 'other-event', production.workspaceId));
 });
 /** 确保不同事件与工作空间的回包无法覆盖当前详情。 Reject responses for another event or workspace. */
 test('detail matching rejects cross-event and cross-workspace responses', () => {
