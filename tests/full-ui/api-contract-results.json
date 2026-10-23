@@ -1,0 +1,4195 @@
+{
+  "metadata": {
+    "copyright": "Copyright (C) 2026 Synapxnet. All rights reserved.",
+    "confidentiality": "Proprietary and Confidential",
+    "author": "maoyo",
+    "department": "研发部",
+    "date": "2026-10-23",
+    "version": "1.3.0",
+    "securityLevel": "INTERNAL"
+  },
+  "scope": "Static native RequestClient method/path correspondence; resident service is separately deployed. The default frontend menu mode does not call the optional Vben backend-menu template.",
+  "total": 417,
+  "matched": 416,
+  "optionalTemplates": [
+    {
+      "file": "apps/web-antd/src/api/core/menu.ts",
+      "function": "getAllMenusApi",
+      "method": "GET",
+      "path": "/api/usr/menu/all",
+      "backend": [],
+      "matched": false
+    }
+  ],
+  "unexpected": [],
+  "calls": [
+    {
+      "file": "apps/web-antd/src/api/core/auth.ts",
+      "function": "getCodeData",
+      "method": "POST",
+      "path": "/api/usr/sms-code",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/AuthController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/api/core/auth.ts",
+      "function": "loginApi",
+      "method": "POST",
+      "path": "/api/usr/login",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/AuthController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/api/core/auth.ts",
+      "function": "refreshTokenApi",
+      "method": "POST",
+      "path": "/api/usr/login",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/AuthController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/api/core/auth.ts",
+      "function": "logoutApi",
+      "method": "POST",
+      "path": "/api/usr/logout",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/AuthController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/api/core/auth.ts",
+      "function": "getAccessCodesApi",
+      "method": "GET",
+      "path": "/api/usr/auth/codes",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/AuthController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/api/core/menu.ts",
+      "function": "getAllMenusApi",
+      "method": "GET",
+      "path": "/api/usr/menu/all",
+      "backend": [],
+      "matched": false
+    },
+    {
+      "file": "apps/web-antd/src/api/core/organization.ts",
+      "function": "getOrganizationTreeApi",
+      "method": "GET",
+      "path": "/api/usr/organization-tree",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/OrganizationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/api/core/user.ts",
+      "function": "getUserInfoApi",
+      "method": "GET",
+      "path": "/api/usr/user/info",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/AuthController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "getClusters",
+      "method": "GET",
+      "path": "/api/clm/clusters",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "getCluster",
+      "method": "GET",
+      "path": "/api/clm/clusters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "createCluster",
+      "method": "POST",
+      "path": "/api/clm/clusters",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "updateCluster",
+      "method": "PUT",
+      "path": "/api/clm/clusters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "deleteCluster",
+      "method": "DELETE",
+      "path": "/api/clm/clusters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "getClusterOverview",
+      "method": "GET",
+      "path": "/api/clm/clusters/{id}/overview",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "getClusterVariables",
+      "method": "GET",
+      "path": "/api/clm/clusters/{id}/variables",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "saveClusterVariable",
+      "method": "POST",
+      "path": "/api/clm/clusters/{clusterId}/variables",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/cluster.ts",
+      "function": "deleteClusterVariable",
+      "method": "DELETE",
+      "path": "/api/clm/clusters/variables/{variableId}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/ClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "getHadoopClusters",
+      "method": "GET",
+      "path": "/api/clm/hadoop-clusters",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "getHadoopCluster",
+      "method": "GET",
+      "path": "/api/clm/hadoop-clusters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "createHadoopCluster",
+      "method": "POST",
+      "path": "/api/clm/hadoop-clusters",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "updateHadoopCluster",
+      "method": "PUT",
+      "path": "/api/clm/hadoop-clusters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "deleteHadoopCluster",
+      "method": "DELETE",
+      "path": "/api/clm/hadoop-clusters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "testHadoopConnection",
+      "method": "POST",
+      "path": "/api/clm/hadoop-clusters/test-connection",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "deployHadoopCluster",
+      "method": "POST",
+      "path": "/api/clm/hadoop-clusters/{id}/deploy",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "checkHadoopStatus",
+      "method": "GET",
+      "path": "/api/clm/hadoop-clusters/{id}/status",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "previewHadoopScript",
+      "method": "POST",
+      "path": "/api/clm/hadoop-clusters/preview-script",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "getHadoopMasters",
+      "method": "GET",
+      "path": "/api/clm/hadoop-clusters/masters",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+      "function": "getHadoopClustersByStatus",
+      "method": "GET",
+      "path": "/api/clm/hadoop-clusters/status/{status}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/HadoopClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "getJenkinsMasters",
+      "method": "GET",
+      "path": "/api/clm/jenkins-masters",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "getJenkinsMaster",
+      "method": "GET",
+      "path": "/api/clm/jenkins-masters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "createJenkinsMaster",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "updateJenkinsMaster",
+      "method": "PUT",
+      "path": "/api/clm/jenkins-masters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "deleteJenkinsMaster",
+      "method": "DELETE",
+      "path": "/api/clm/jenkins-masters/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "testJenkinsMasterConnection",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/test-connection",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "deployJenkinsMaster",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/{id}/deploy",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "checkJenkinsMasterStatus",
+      "method": "GET",
+      "path": "/api/clm/jenkins-masters/{id}/status",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "startJenkins",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/{id}/start",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "stopJenkins",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/{id}/stop",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "restartJenkins",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/{id}/restart",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "getInitialPassword",
+      "method": "GET",
+      "path": "/api/clm/jenkins-masters/{id}/initial-password",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "configureCredentials",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/{id}/credentials",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "uninstallJenkins",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/{id}/uninstall",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "getDeployedMasters",
+      "method": "GET",
+      "path": "/api/clm/jenkins-masters/deployed",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "getHomHosts",
+      "method": "GET",
+      "path": "/api/clm/jenkins-masters/hom-hosts",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "previewMasterDeployScript",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/preview-script?osType={osType}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "createNodeOnMaster",
+      "method": "POST",
+      "path": "/api/clm/jenkins-masters/{masterId}/nodes?{params.toString()}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "getNodeSecret",
+      "method": "GET",
+      "path": "/api/clm/jenkins-masters/{masterId}/nodes/{encodeURIComponent(nodeName)}/secret",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsMasterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "fetchJenkinsLtsVersions",
+      "method": "GET",
+      "path": "/api/clm/jenkins-versions/lts",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsVersionController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "fetchJenkinsStableVersions",
+      "method": "GET",
+      "path": "/api/clm/jenkins-versions",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsVersionController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "refreshJenkinsVersions",
+      "method": "POST",
+      "path": "/api/clm/jenkins-versions/refresh",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsVersionController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+      "function": "fetchJenkinsVersionStats",
+      "method": "GET",
+      "path": "/api/clm/jenkins-versions/stats",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsVersionController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "getJenkinsNodes",
+      "method": "GET",
+      "path": "/api/clm/jenkins-nodes",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "getJenkinsNode",
+      "method": "GET",
+      "path": "/api/clm/jenkins-nodes/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "createJenkinsNode",
+      "method": "POST",
+      "path": "/api/clm/jenkins-nodes",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "updateJenkinsNode",
+      "method": "PUT",
+      "path": "/api/clm/jenkins-nodes/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "deleteJenkinsNode",
+      "method": "DELETE",
+      "path": "/api/clm/jenkins-nodes/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "testJenkinsNodeConnection",
+      "method": "POST",
+      "path": "/api/clm/jenkins-nodes/test-connection",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "deployJenkinsNode",
+      "method": "POST",
+      "path": "/api/clm/jenkins-nodes/{id}/deploy",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "checkJenkinsNodeStatus",
+      "method": "GET",
+      "path": "/api/clm/jenkins-nodes/{id}/status",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "startAgent",
+      "method": "POST",
+      "path": "/api/clm/jenkins-nodes/{id}/start",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "stopAgent",
+      "method": "POST",
+      "path": "/api/clm/jenkins-nodes/{id}/stop",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+      "function": "uninstallAgent",
+      "method": "POST",
+      "path": "/api/clm/jenkins-nodes/{id}/uninstall",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/JenkinsNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "getMySQLInstances",
+      "method": "GET",
+      "path": "/api/clm/mysql-instances",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "getMySQLInstance",
+      "method": "GET",
+      "path": "/api/clm/mysql-instances/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "createMySQLInstance",
+      "method": "POST",
+      "path": "/api/clm/mysql-instances",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "updateMySQLInstance",
+      "method": "PUT",
+      "path": "/api/clm/mysql-instances/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "deleteMySQLInstance",
+      "method": "DELETE",
+      "path": "/api/clm/mysql-instances/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "testMySQLConnection",
+      "method": "POST",
+      "path": "/api/clm/mysql-instances/test-connection",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "deployMySQLInstance",
+      "method": "POST",
+      "path": "/api/clm/mysql-instances/{id}/deploy",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "previewMySQLScript",
+      "method": "POST",
+      "path": "/api/clm/mysql-instances/preview-script",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "checkMySQLStatus",
+      "method": "GET",
+      "path": "/api/clm/mysql-instances/{id}/status",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "startMySQL",
+      "method": "POST",
+      "path": "/api/clm/mysql-instances/{id}/start",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "stopMySQL",
+      "method": "POST",
+      "path": "/api/clm/mysql-instances/{id}/stop",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+      "function": "restartMySQL",
+      "method": "POST",
+      "path": "/api/clm/mysql-instances/{id}/restart",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/MySQLInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "getRedisInstances",
+      "method": "GET",
+      "path": "/api/clm/redis-instances",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "getRedisInstance",
+      "method": "GET",
+      "path": "/api/clm/redis-instances/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "createRedisInstance",
+      "method": "POST",
+      "path": "/api/clm/redis-instances",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "updateRedisInstance",
+      "method": "PUT",
+      "path": "/api/clm/redis-instances/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "deleteRedisInstance",
+      "method": "DELETE",
+      "path": "/api/clm/redis-instances/{id}",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "testRedisConnection",
+      "method": "POST",
+      "path": "/api/clm/redis-instances/test-connection",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "deployRedisInstance",
+      "method": "POST",
+      "path": "/api/clm/redis-instances/{id}/deploy",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "previewRedisScript",
+      "method": "POST",
+      "path": "/api/clm/redis-instances/preview-script",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "checkRedisStatus",
+      "method": "GET",
+      "path": "/api/clm/redis-instances/{id}/status",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "startRedis",
+      "method": "POST",
+      "path": "/api/clm/redis-instances/{id}/start",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "stopRedis",
+      "method": "POST",
+      "path": "/api/clm/redis-instances/{id}/stop",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+      "function": "restartRedis",
+      "method": "POST",
+      "path": "/api/clm/redis-instances/{id}/restart",
+      "backend": [
+        "aiops-clm-service/src/main/java/com/synapxnet/aiopsclmservice/controller/RedisInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "getHosts",
+      "method": "GET",
+      "path": "/api/hom/hosts",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/HostController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "getHost",
+      "method": "GET",
+      "path": "/api/hom/hosts/{id}",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/HostController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "createHost",
+      "method": "POST",
+      "path": "/api/hom/hosts",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/HostController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "updateHost",
+      "method": "PUT",
+      "path": "/api/hom/hosts/{id}",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/HostController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "deleteHost",
+      "method": "DELETE",
+      "path": "/api/hom/hosts/{id}",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/HostController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "testSshConnection",
+      "method": "POST",
+      "path": "/api/hom/hosts/test-connection",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/HostController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "getRacks",
+      "method": "GET",
+      "path": "/api/hom/racks",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/RackController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "createRack",
+      "method": "POST",
+      "path": "/api/hom/racks",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/RackController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/HOM/api/host.ts",
+      "function": "deleteRack",
+      "method": "DELETE",
+      "path": "/api/hom/racks/{id}",
+      "backend": [
+        "aiops-hom-service/src/main/java/com/synapxnet/aiopshomservice/controller/RackController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "getClusters",
+      "method": "GET",
+      "path": "/api/k8s/clusters",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "getCluster",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "createCluster",
+      "method": "POST",
+      "path": "/api/k8s/clusters",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "updateCluster",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "updateClusterSsh",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{id}/ssh",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "deleteCluster",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "testClusterConnection",
+      "method": "POST",
+      "path": "/api/k8s/clusters/test-connection",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "getClusterOverview",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{id}/overview",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "getClusterComponents",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{id}/components",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "getClusterMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{id}/metrics",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "getClusterEvents",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{id}/events",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "getClusterKubeconfig",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{id}/kubeconfig",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/cluster.ts",
+      "function": "getNodeRanking",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{id}/node-ranking",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sClusterController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "getConfigMaps",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/configmaps",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "getConfigMap",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/configmaps/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "createConfigMap",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/configmaps",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "updateConfigMap",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/configmaps/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "deleteConfigMap",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/configmaps/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "getSecrets",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/secrets",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "getSecret",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/secrets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "createSecret",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/secrets",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "updateSecret",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/secrets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/config.ts",
+      "function": "deleteSecret",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/configs/secrets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sConfigController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/crd.ts",
+      "function": "getCrds",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/crds",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCrdController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/crd.ts",
+      "function": "getCrd",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/crds/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCrdController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/crd.ts",
+      "function": "getCustomResources",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/crds/{crdName}/resources?{params.toString()}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCrdController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/crd.ts",
+      "function": "getCustomResource",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/crds/{crdName}/resources/{resourceName}?{params.toString()}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCrdController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/crd.ts",
+      "function": "deleteCustomResource",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/crds/{crdName}/resources/{resourceName}?{params.toString()}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCrdController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "getDeployPlans",
+      "method": "GET",
+      "path": "/api/k8s/deploy/plans",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "getDeployPlan",
+      "method": "GET",
+      "path": "/api/k8s/deploy/plans/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "createDeployPlan",
+      "method": "POST",
+      "path": "/api/k8s/deploy/plans",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "deleteDeployPlan",
+      "method": "DELETE",
+      "path": "/api/k8s/deploy/plans/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "validateDeployPlan",
+      "method": "POST",
+      "path": "/api/k8s/deploy/plans/{id}/validate",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "executeDeployPlan",
+      "method": "POST",
+      "path": "/api/k8s/deploy/plans/{id}/execute",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "getDeployLogs",
+      "method": "GET",
+      "path": "/api/k8s/deploy/plans/{id}/logs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "addDeployNode",
+      "method": "POST",
+      "path": "/api/k8s/deploy/plans/{planId}/add-node",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "removeDeployNode",
+      "method": "DELETE",
+      "path": "/api/k8s/deploy/plans/{planId}/nodes/{nodeId}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "getSupportedVersions",
+      "method": "GET",
+      "path": "/api/k8s/deploy/supported-versions",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "getSupportedCni",
+      "method": "GET",
+      "path": "/api/k8s/deploy/supported-cni",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "getSupportedCri",
+      "method": "GET",
+      "path": "/api/k8s/deploy/supported-cri",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/deploy.ts",
+      "function": "getSupportedStorage",
+      "method": "GET",
+      "path": "/api/k8s/deploy/supported-storage",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getDevopsProjects",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDevopsProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getDevopsProject",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDevopsProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "createDevopsProject",
+      "method": "POST",
+      "path": "/api/k8s/devops/projects",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDevopsProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "updateDevopsProject",
+      "method": "PUT",
+      "path": "/api/k8s/devops/projects/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDevopsProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "deleteDevopsProject",
+      "method": "DELETE",
+      "path": "/api/k8s/devops/projects/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDevopsProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "testJenkinsConnection",
+      "method": "POST",
+      "path": "/api/k8s/devops/projects/{id}/test-connection",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sDevopsProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getPipelines",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getPipeline",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "createPipeline",
+      "method": "POST",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "updatePipeline",
+      "method": "PUT",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "deletePipeline",
+      "method": "DELETE",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getJenkinsfile",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{id}/jenkinsfile",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "updateJenkinsfile",
+      "method": "PUT",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{id}/jenkinsfile",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "triggerPipelineRun",
+      "method": "POST",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{pipelineId}/runs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineRunController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getPipelineRuns",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{pipelineId}/runs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineRunController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getPipelineRun",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{pipelineId}/runs/{runId}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineRunController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getPipelineRunStages",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{pipelineId}/runs/{runId}/stages",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineRunController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getPipelineRunLog",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{pipelineId}/runs/{runId}/log",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineRunController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getStageLog",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{pipelineId}/runs/{runId}/stages/{nodeId}/log",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineRunController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "stopPipelineRun",
+      "method": "POST",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{pipelineId}/runs/{runId}/stop",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineRunController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "replayPipelineRun",
+      "method": "POST",
+      "path": "/api/k8s/devops/projects/{projectId}/pipelines/{pipelineId}/runs/{runId}/replay",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPipelineRunController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getCredentials",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/credentials",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCredentialController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "getCredential",
+      "method": "GET",
+      "path": "/api/k8s/devops/projects/{projectId}/credentials/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCredentialController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "createCredential",
+      "method": "POST",
+      "path": "/api/k8s/devops/projects/{projectId}/credentials",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCredentialController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "updateCredential",
+      "method": "PUT",
+      "path": "/api/k8s/devops/projects/{projectId}/credentials/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCredentialController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/devops.ts",
+      "function": "deleteCredential",
+      "method": "DELETE",
+      "path": "/api/k8s/devops/projects/{projectId}/credentials/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sCredentialController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getHelmRepos",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/helm/repos",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getHelmRepo",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/helm/repos/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "addHelmRepo",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/helm/repos",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "updateHelmRepo",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/helm/repos/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "deleteHelmRepo",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/helm/repos/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "syncHelmRepo",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/helm/repos/{id}/sync",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "searchHelmApps",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/helm/apps",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getHelmAppDetail",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/helm/apps/{chartName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getHelmAppVersion",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/helm/apps/{chartName}/versions/{version}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getHelmReleases",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/helm/releases",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getHelmRelease",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/helm/releases/{releaseName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "installHelmRelease",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/helm/releases",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "upgradeHelmRelease",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/helm/releases/{releaseName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "uninstallHelmRelease",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/helm/releases/{releaseName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "rollbackHelmRelease",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/helm/releases/{releaseName}/rollback",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "syncHelmReleases",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/helm/releases/sync",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHelmController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getAppTemplates",
+      "method": "GET",
+      "path": "/api/k8s/app-templates",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAppTemplateController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getAppCategories",
+      "method": "GET",
+      "path": "/api/k8s/app-templates/categories",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAppTemplateController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getAppFeatured",
+      "method": "GET",
+      "path": "/api/k8s/app-templates/featured",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAppTemplateController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "getAppTemplate",
+      "method": "GET",
+      "path": "/api/k8s/app-templates/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAppTemplateController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/helm.ts",
+      "function": "installAppTemplate",
+      "method": "POST",
+      "path": "/api/k8s/app-templates/{id}/install",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAppTemplateController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/hpa.ts",
+      "function": "getHpas",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/hpa",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHpaController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/hpa.ts",
+      "function": "getHpa",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/hpa/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHpaController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/hpa.ts",
+      "function": "createHpa",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/hpa",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHpaController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/hpa.ts",
+      "function": "updateHpa",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/hpa/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHpaController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/hpa.ts",
+      "function": "deleteHpa",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/hpa/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sHpaController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/ingress.ts",
+      "function": "getIngresses",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/ingresses",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sIngressController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/ingress.ts",
+      "function": "getIngress",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/ingresses/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sIngressController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/ingress.ts",
+      "function": "createIngress",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/ingresses",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sIngressController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/ingress.ts",
+      "function": "updateIngress",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/ingresses/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sIngressController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/ingress.ts",
+      "function": "deleteIngress",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/ingresses/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sIngressController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "getJobs",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "getJob",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "createJob",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "deleteJob",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "rerunJob",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/{name}/rerun",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "getCronJobs",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/cronjobs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "getCronJob",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/cronjobs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "createCronJob",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/cronjobs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "updateCronJob",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/cronjobs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "deleteCronJob",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/cronjobs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/job.ts",
+      "function": "triggerCronJob",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/jobs/cronjobs/{name}/trigger",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sJobController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getClusterMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/cluster",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getClusterStatus",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/cluster/status",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getNodeMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/nodes/{nodeName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getNodeRanking",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/node-ranking",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getNamespaceMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/namespaces/{namespace}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getNamespaceRanking",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/namespace-ranking",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getWorkloadMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/namespaces/{namespace}/workloads/{workload}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getPodMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/namespaces/{namespace}/pods/{podName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getApiServerMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/api-server",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getEtcdMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/etcd",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getSchedulerMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/scheduler",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "customQuery",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/query",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "customQueryRange",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/query-range",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getPrometheusConfig",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/monitoring/config",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "savePrometheusConfig",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/monitoring/config",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "testPrometheusConnection",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/monitoring/config/test",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sMonitoringController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getAlertRules",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/alerts/rules",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAlertController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getAlertRule",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/alerts/rules/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAlertController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "createAlertRule",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/alerts/rules",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAlertController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "updateAlertRule",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/alerts/rules/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAlertController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "deleteAlertRule",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/alerts/rules/{id}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAlertController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "toggleAlertRule",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/alerts/rules/{id}/toggle",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAlertController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getAlertHistory",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/alerts/history",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAlertController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/monitoring.ts",
+      "function": "getAlertHistoryByRule",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/alerts/rules/{ruleId}/history",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sAlertController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "function": "getNamespaces",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/namespaces",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNamespaceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "function": "getNamespace",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/namespaces/{namespace}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNamespaceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "function": "createNamespace",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{clusterId}/namespaces",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNamespaceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "function": "deleteNamespace",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{clusterId}/namespaces/{namespace}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNamespaceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "function": "getNamespaceOverview",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/namespaces/{namespace}/overview",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNamespaceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "function": "getNamespaceEvents",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/namespaces/{namespace}/events",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNamespaceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "function": "getResourceQuotas",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/namespaces/{namespace}/resource-quotas",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNamespaceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/namespace.ts",
+      "function": "setResourceQuota",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{clusterId}/namespaces/{namespace}/resource-quotas",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNamespaceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/network.ts",
+      "function": "getNetworkPolicies",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/networkpolicies",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNetworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/network.ts",
+      "function": "getNetworkPolicy",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/networkpolicies/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNetworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/network.ts",
+      "function": "createNetworkPolicy",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/networkpolicies",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNetworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/network.ts",
+      "function": "deleteNetworkPolicy",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/networkpolicies/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNetworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "getNodes",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/nodes",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "getNode",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/nodes/{nodeName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "getNodePods",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/nodes/{nodeName}/pods",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "cordonNode",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{clusterId}/nodes/{nodeName}/cordon",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "uncordonNode",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{clusterId}/nodes/{nodeName}/uncordon",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "drainNode",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{clusterId}/nodes/{nodeName}/drain",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "updateNodeLabels",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{clusterId}/nodes/{nodeName}/labels",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "updateNodeTaints",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{clusterId}/nodes/{nodeName}/taints",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/node.ts",
+      "function": "getNodeMetrics",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{clusterId}/nodes/{nodeName}/metrics",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sNodeController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/pod.ts",
+      "function": "getPods",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/pods",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPodController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/pod.ts",
+      "function": "getPod",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/pods/{podName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPodController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/pod.ts",
+      "function": "deletePod",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/pods/{podName}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPodController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/pod.ts",
+      "function": "getPodLogs",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/pods/{podName}/logs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPodController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/pod.ts",
+      "function": "getPodEvents",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/pods/{podName}/events",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPodController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/pod.ts",
+      "function": "getPodContainers",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/pods/{podName}/containers",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sPodController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "getClusterRoles",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/rbac/clusterroles",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "getClusterRole",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/rbac/clusterroles/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "deleteClusterRole",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/rbac/clusterroles/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "getClusterRoleBindings",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/rbac/clusterrolebindings",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "deleteClusterRoleBinding",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/rbac/clusterrolebindings/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "getRoles",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/rbac/namespaces/{namespace}/roles",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "deleteRole",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/rbac/namespaces/{namespace}/roles/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "getRoleBindings",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/rbac/namespaces/{namespace}/rolebindings",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "deleteRoleBinding",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/rbac/namespaces/{namespace}/rolebindings/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "getServiceAccounts",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/rbac/namespaces/{namespace}/serviceaccounts",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "getServiceAccount",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/rbac/namespaces/{namespace}/serviceaccounts/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/rbac.ts",
+      "function": "deleteServiceAccount",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/rbac/namespaces/{namespace}/serviceaccounts/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sRbacController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/service.ts",
+      "function": "getServices",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/services",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sServiceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/service.ts",
+      "function": "getService",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/services/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sServiceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/service.ts",
+      "function": "createService",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/services",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sServiceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/service.ts",
+      "function": "updateService",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/services/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sServiceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/service.ts",
+      "function": "deleteService",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/services/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sServiceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/service.ts",
+      "function": "getServiceEndpoints",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/services/{name}/endpoints",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sServiceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "getStorageClasses",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/storage/storageclasses",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "getStorageClass",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/storage/storageclasses/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "getPVCs",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/storage/namespaces/{namespace}/pvcs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "getPVC",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/storage/namespaces/{namespace}/pvcs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "createPVC",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/storage/namespaces/{namespace}/pvcs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "deletePVC",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/storage/namespaces/{namespace}/pvcs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "getPVs",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/storage/pvs",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "getPV",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/storage/pvs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/storage.ts",
+      "function": "deletePV",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/storage/pvs/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sStorageController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/terminal.ts",
+      "function": "requestTerminalTicket",
+      "method": "POST",
+      "path": "/api/k8s/terminal/tickets",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/TerminalTicketController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "getDeployments",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "getDeployment",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "createDeployment",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "updateDeployment",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "deleteDeployment",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "scaleDeployment",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments/{name}/scale",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "restartDeployment",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments/{name}/restart",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "getDeploymentRevisions",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments/{name}/revisions",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "rollbackDeployment",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/deployments/{name}/rollback",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "getStatefulSets",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/statefulsets",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "getStatefulSet",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/statefulsets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "createStatefulSet",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/statefulsets",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "updateStatefulSet",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/statefulsets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "deleteStatefulSet",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/statefulsets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "scaleStatefulSet",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/statefulsets/{name}/scale",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "restartStatefulSet",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/statefulsets/{name}/restart",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "getDaemonSets",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/daemonsets",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "getDaemonSet",
+      "method": "GET",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/daemonsets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "createDaemonSet",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/daemonsets",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "updateDaemonSet",
+      "method": "PUT",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/daemonsets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "deleteDaemonSet",
+      "method": "DELETE",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/daemonsets/{name}",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/K8S/api/workload.ts",
+      "function": "restartDaemonSet",
+      "method": "POST",
+      "path": "/api/k8s/clusters/{cid}/namespaces/{ns}/workloads/daemonsets/{name}/restart",
+      "backend": [
+        "aiops-k8s-service/src/main/java/com/synapxnet/aiopsk8sservice/controller/K8sWorkloadController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "getAlertRules",
+      "method": "GET",
+      "path": "/api/mon/rules",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertRuleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "getAlertRule",
+      "method": "GET",
+      "path": "/api/mon/rules/{id}",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertRuleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "createAlertRule",
+      "method": "POST",
+      "path": "/api/mon/rules",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertRuleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "updateAlertRule",
+      "method": "PUT",
+      "path": "/api/mon/rules/{id}",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertRuleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "deleteAlertRule",
+      "method": "DELETE",
+      "path": "/api/mon/rules/{id}",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertRuleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "toggleAlertRule",
+      "method": "PUT",
+      "path": "/api/mon/rules/{id}/toggle",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertRuleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "getAlertHistory",
+      "method": "GET",
+      "path": "/api/mon/alerts",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertHistoryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "getAlertDetail",
+      "method": "GET",
+      "path": "/api/mon/alerts/{id}",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertHistoryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "acknowledgeAlert",
+      "method": "PUT",
+      "path": "/api/mon/alerts/{id}/acknowledge",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertHistoryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "resolveAlert",
+      "method": "PUT",
+      "path": "/api/mon/alerts/{id}/resolve",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertHistoryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/alert.ts",
+      "function": "getAlertSummary",
+      "method": "GET",
+      "path": "/api/mon/alerts/summary",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/AlertHistoryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/notify.ts",
+      "function": "getNotifyGroups",
+      "method": "GET",
+      "path": "/api/mon/notify-groups",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/NotifyGroupController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/notify.ts",
+      "function": "createNotifyGroup",
+      "method": "POST",
+      "path": "/api/mon/notify-groups",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/NotifyGroupController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/notify.ts",
+      "function": "updateNotifyGroup",
+      "method": "PUT",
+      "path": "/api/mon/notify-groups/{id}",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/NotifyGroupController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/MON/api/notify.ts",
+      "function": "deleteNotifyGroup",
+      "method": "DELETE",
+      "path": "/api/mon/notify-groups/{id}",
+      "backend": [
+        "aiops-mon-service/src/main/java/com/synapxnet/aiopsmonservice/controller/NotifyGroupController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "function": "deployRegistry",
+      "method": "POST",
+      "path": "/api/reg/registries/{id}/deploy",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "function": "undeployRegistry",
+      "method": "POST",
+      "path": "/api/reg/registries/{id}/deploy/undeploy",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "function": "startRegistry",
+      "method": "POST",
+      "path": "/api/reg/registries/{id}/deploy/start",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "function": "stopRegistry",
+      "method": "POST",
+      "path": "/api/reg/registries/{id}/deploy/stop",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "function": "restartRegistry",
+      "method": "POST",
+      "path": "/api/reg/registries/{id}/deploy/restart",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "function": "upgradeRegistry",
+      "method": "POST",
+      "path": "/api/reg/registries/{id}/deploy/upgrade",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "function": "cancelDeploy",
+      "method": "POST",
+      "path": "/api/reg/registries/{id}/deploy/cancel",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/deploy.ts",
+      "function": "getDeployLogs",
+      "method": "GET",
+      "path": "/api/reg/registries/{id}/deploy/logs",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryDeployController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/project.ts",
+      "function": "getProjects",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/projects",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/project.ts",
+      "function": "createProject",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/projects",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/project.ts",
+      "function": "deleteProject",
+      "method": "DELETE",
+      "path": "/api/reg/registries/{registryId}/projects/{projectId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryProjectController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/registry.ts",
+      "function": "getRegistries",
+      "method": "GET",
+      "path": "/api/reg/registries",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/registry.ts",
+      "function": "getRegistry",
+      "method": "GET",
+      "path": "/api/reg/registries/{id}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/registry.ts",
+      "function": "createRegistry",
+      "method": "POST",
+      "path": "/api/reg/registries",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/registry.ts",
+      "function": "updateRegistry",
+      "method": "PUT",
+      "path": "/api/reg/registries/{id}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/registry.ts",
+      "function": "deleteRegistry",
+      "method": "DELETE",
+      "path": "/api/reg/registries/{id}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/registry.ts",
+      "function": "getRegistryStatus",
+      "method": "GET",
+      "path": "/api/reg/registries/{id}/status",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/registry.ts",
+      "function": "checkPort",
+      "method": "GET",
+      "path": "/api/reg/registries/check-port",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "getEndpoints",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/endpoints",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryEndpointController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "createEndpoint",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/endpoints",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryEndpointController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "updateEndpoint",
+      "method": "PUT",
+      "path": "/api/reg/registries/{registryId}/endpoints/{endpointId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryEndpointController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "deleteEndpoint",
+      "method": "DELETE",
+      "path": "/api/reg/registries/{registryId}/endpoints/{endpointId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryEndpointController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "pingEndpoint",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/endpoints/ping",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryEndpointController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "getReplicationPolicies",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/replications/policies",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "createReplicationPolicy",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/replications/policies",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "getReplicationPolicy",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/replications/policies/{policyId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "updateReplicationPolicy",
+      "method": "PUT",
+      "path": "/api/reg/registries/{registryId}/replications/policies/{policyId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "deleteReplicationPolicy",
+      "method": "DELETE",
+      "path": "/api/reg/registries/{registryId}/replications/policies/{policyId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "triggerReplication",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/replications/executions",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "getReplicationExecutions",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/replications/executions",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "getReplicationTasks",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/replications/executions/{executionId}/tasks",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/replication.ts",
+      "function": "quickSync",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/replications/quick-sync",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryReplicationController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "getRepositories",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/repositories",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryRepoController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "getTags",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/tags",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryTagController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "deleteTag",
+      "method": "DELETE",
+      "path": "/api/reg/registries/{registryId}/tags",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryTagController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "getManifest",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/tags/manifest",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryTagController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "getArtifacts",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/repositories/{projectName}/{repoName}/artifacts",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryRepoController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "getArtifactDetail",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/repositories/{repoName}/artifacts/{reference}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryRepoController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "getUsers",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/users",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryUserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "createUser",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/users",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryUserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "updateUser",
+      "method": "PUT",
+      "path": "/api/reg/registries/{registryId}/users/{userId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryUserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/repository.ts",
+      "function": "deleteUser",
+      "method": "DELETE",
+      "path": "/api/reg/registries/{registryId}/users/{userId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/RegistryUserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "function": "createSyncTask",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/sync",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/ImageSyncController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "function": "getSyncTasks",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/sync/tasks",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/ImageSyncController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "function": "getSyncTask",
+      "method": "GET",
+      "path": "/api/reg/registries/{registryId}/sync/tasks/{taskId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/ImageSyncController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "function": "deleteSyncTask",
+      "method": "DELETE",
+      "path": "/api/reg/registries/{registryId}/sync/tasks/{taskId}",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/ImageSyncController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "function": "retrySyncTask",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/sync/tasks/{taskId}/retry",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/ImageSyncController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "function": "refreshSyncTasks",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/sync/refresh",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/ImageSyncController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "function": "batchSyncImages",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/sync/batch",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/ImageSyncController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/REG/api/sync.ts",
+      "function": "extractImagesFromYaml",
+      "method": "POST",
+      "path": "/api/reg/registries/{registryId}/sync/extract-images",
+      "backend": [
+        "aiops-reg-service/src/main/java/com/synapxnet/aiopsregservice/controller/ImageSyncController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/command.ts",
+      "function": "getCommands",
+      "method": "GET",
+      "path": "/api/svm/commands",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/CommandController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/command.ts",
+      "function": "getCommandDetail",
+      "method": "GET",
+      "path": "/api/svm/commands/{id}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/CommandController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/command.ts",
+      "function": "createCommand",
+      "method": "POST",
+      "path": "/api/svm/commands",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/CommandController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/command.ts",
+      "function": "updateCommandStatus",
+      "method": "PUT",
+      "path": "/api/svm/commands/{id}/status",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/CommandController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/command.ts",
+      "function": "cancelCommand",
+      "method": "POST",
+      "path": "/api/svm/commands/{id}/cancel",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/CommandController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "getFrameworks",
+      "method": "GET",
+      "path": "/api/svm/frameworks",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "getFramework",
+      "method": "GET",
+      "path": "/api/svm/frameworks/{id}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "createFramework",
+      "method": "POST",
+      "path": "/api/svm/frameworks",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "updateFramework",
+      "method": "PUT",
+      "path": "/api/svm/frameworks/{id}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "deleteFramework",
+      "method": "DELETE",
+      "path": "/api/svm/frameworks/{id}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "getServiceDefs",
+      "method": "GET",
+      "path": "/api/svm/frameworks/{frameworkId}/services",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "createServiceDef",
+      "method": "POST",
+      "path": "/api/svm/frameworks/{frameworkId}/services",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "deleteServiceDef",
+      "method": "DELETE",
+      "path": "/api/svm/frameworks/services/{serviceId}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "getRoleDefs",
+      "method": "GET",
+      "path": "/api/svm/frameworks/{frameworkId}/services/{serviceId}/roles",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "updateServiceDef",
+      "method": "PUT",
+      "path": "/api/svm/frameworks/services/{serviceId}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "createRoleDef",
+      "method": "POST",
+      "path": "/api/svm/frameworks/{frameworkId}/services/{serviceId}/roles",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "updateRoleDef",
+      "method": "PUT",
+      "path": "/api/svm/frameworks/roles/{roleId}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/framework.ts",
+      "function": "deleteRoleDef",
+      "method": "DELETE",
+      "path": "/api/svm/frameworks/roles/{roleId}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/FrameworkController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "getServiceInstances",
+      "method": "GET",
+      "path": "/api/svm/services",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "getServiceInstance",
+      "method": "GET",
+      "path": "/api/svm/services/{id}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "createServiceInstance",
+      "method": "POST",
+      "path": "/api/svm/services",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "updateServiceInstance",
+      "method": "PUT",
+      "path": "/api/svm/services/{id}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "deleteServiceInstance",
+      "method": "DELETE",
+      "path": "/api/svm/services/{id}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "getRoleInstances",
+      "method": "GET",
+      "path": "/api/svm/services/{serviceInstanceId}/roles",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "addRoleInstance",
+      "method": "POST",
+      "path": "/api/svm/services/{serviceInstanceId}/roles",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "removeRoleInstance",
+      "method": "DELETE",
+      "path": "/api/svm/services/roles/{roleId}",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "installService",
+      "method": "POST",
+      "path": "/api/svm/services/{id}/install",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "startService",
+      "method": "POST",
+      "path": "/api/svm/services/{id}/start",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "stopService",
+      "method": "POST",
+      "path": "/api/svm/services/{id}/stop",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "restartService",
+      "method": "POST",
+      "path": "/api/svm/services/{id}/restart",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "pushConfig",
+      "method": "POST",
+      "path": "/api/svm/services/{id}/config",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/SVM/api/service.ts",
+      "function": "getServiceDetail",
+      "method": "GET",
+      "path": "/api/svm/services/{id}/detail",
+      "backend": [
+        "aiops-svm-service/src/main/java/com/synapxnet/aiopssvmservice/controller/ServiceInstanceController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "function": "getRoles",
+      "method": "GET",
+      "path": "/api/usr/roles",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "function": "getRole",
+      "method": "GET",
+      "path": "/api/usr/roles/{id}",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "function": "createRole",
+      "method": "POST",
+      "path": "/api/usr/roles",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "function": "updateRole",
+      "method": "PUT",
+      "path": "/api/usr/roles/{id}",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "function": "deleteRole",
+      "method": "DELETE",
+      "path": "/api/usr/roles/{id}",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "function": "getRoleUsers",
+      "method": "GET",
+      "path": "/api/usr/roles/{roleId}/users",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "function": "assignRole",
+      "method": "POST",
+      "path": "/api/usr/user-roles",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/role.ts",
+      "function": "removeRoleMapping",
+      "method": "DELETE",
+      "path": "/api/usr/user-roles/{id}",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "function": "getUsers",
+      "method": "GET",
+      "path": "/api/usr/users",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/UserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "function": "getUser",
+      "method": "GET",
+      "path": "/api/usr/users/{id}",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/UserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "function": "createUser",
+      "method": "POST",
+      "path": "/api/usr/users",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/UserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "function": "updateUser",
+      "method": "PUT",
+      "path": "/api/usr/users/{id}",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/UserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "function": "deleteUser",
+      "method": "DELETE",
+      "path": "/api/usr/users/{id}",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/UserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "function": "changePassword",
+      "method": "POST",
+      "path": "/api/usr/users/{id}/change-password",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/UserController.java"
+      ],
+      "matched": true
+    },
+    {
+      "file": "apps/web-antd/src/views/USR/api/user.ts",
+      "function": "getUserRoles",
+      "method": "GET",
+      "path": "/api/usr/users/{userId}/roles",
+      "backend": [
+        "aiops-usr-service/src/main/java/com/synapxnet/aiopsusrservice/controller/RoleController.java"
+      ],
+      "matched": true
+    }
+  ]
+}

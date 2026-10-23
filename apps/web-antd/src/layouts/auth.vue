@@ -8,9 +8,9 @@ const appName = 'XnetAIops';
 
 <template>
   <AuthPageLayout
-    accent-color="#16859a"
+    accent-color="#2f78b7"
     :app-name="appName"
-    brand-surface="#071b22"
+    brand-surface="#0a1c2b"
     :logo="logo"
     :page-description="$t('authentication.pageDesc')"
     :page-title="$t('authentication.pageTitle')"

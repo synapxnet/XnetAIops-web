@@ -222,7 +222,7 @@ const showcaseStatusPattern: NodeStatus[] = [
 ];
 
 const dashboardNodes = computed<DashboardNode[]>(() => {
-  if (hosts.value.length === 0) return demoNodes;
+  if (hosts.value.length === 0) return isDemoMode.value ? demoNodes : [];
   return hosts.value.slice(0, 10).map((host, index) => ({
     cpuUsage: Number(host.cpuUsage || 0),
     hostname: host.hostname || `node-${index + 1}`,
@@ -235,9 +235,10 @@ const dashboardNodes = computed<DashboardNode[]>(() => {
   }));
 });
 
-const isDemoMode = computed(() => hosts.value.length === 0);
+// 仅显式演练显示样例机房，空安装不伪造资源。 Sample racks require explicit rehearsal; empty installs never fabricate assets.
+const isDemoMode = computed(() => import.meta.env.VITE_XNET_REHEARSAL_ENABLED === 'true' && hosts.value.length === 0);
 const isTopologyEnhanced = computed(
-  () => rackGroups.value.length > 0 && rackGroups.value.length < 4,
+  () => import.meta.env.VITE_XNET_REHEARSAL_ENABLED === 'true' && rackGroups.value.length > 0 && rackGroups.value.length < 4,
 );
 const nodeStatusCounts = computed(() => {
   if (isDemoMode.value) {
@@ -254,7 +255,7 @@ const nodeStatusCounts = computed(() => {
 const nodeTotal = computed(() =>
   isDemoMode.value ? 48 : dashboardNodes.value.length,
 );
-const cpuAverage = computed(() => averageValue('cpuUsage', 57.6));
+const cpuAverage = computed(() => averageValue('cpuUsage', isDemoMode.value ? 57.6 : 0));
 const memoryAverage = computed(() => {
   if (isDemoMode.value) return 68.4;
   const ratios = dashboardNodes.value
@@ -276,7 +277,7 @@ const metricCards = computed(() => [
     note: '全部连接',
     tone: 'primary',
     unit: '个',
-    value: clusters.value.length || 3,
+    value: clusters.value.length || (isDemoMode.value ? 3 : 0),
   },
   {
     icon: CloudServerOutlined,
@@ -289,7 +290,7 @@ const metricCards = computed(() => [
   {
     icon: DashboardOutlined,
     label: 'CPU 平均负载',
-    note: '较上小时 -2.4%',
+    note: isDemoMode.value ? '演练趋势' : '当前采样',
     tone: 'primary',
     unit: '%',
     value: cpuAverage.value,
@@ -297,7 +298,7 @@ const metricCards = computed(() => [
   {
     icon: DatabaseOutlined,
     label: '内存使用',
-    note: '容量余量充足',
+    note: dashboardNodes.value.length ? '当前采样' : '等待接入',
     tone: 'primary',
     unit: '%',
     value: memoryAverage.value,
@@ -313,10 +314,10 @@ const metricCards = computed(() => [
   {
     icon: ClockCircleOutlined,
     label: '连续运行',
-    note: '核心服务稳定',
+    note: isDemoMode.value ? '演练数据' : '等待运行时采样',
     tone: 'primary',
     unit: '天',
-    value: 186,
+    value: isDemoMode.value ? 186 : '—',
   },
 ]);
 
@@ -390,7 +391,7 @@ const trendOption = computed(() => ({
     axisLine: { lineStyle: { color: chartColors.value.border } },
     axisTick: { show: false },
     boundaryGap: false,
-    data: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00'],
+    data: isDemoMode.value ? ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00'] : ['当前'],
     type: 'category',
   },
   yAxis: {
@@ -408,7 +409,7 @@ const trendOption = computed(() => ({
       areaStyle: {
         color: isDark.value ? 'rgba(55,168,255,.12)' : 'rgba(22,119,200,.1)',
       },
-      data: [45, 58, 52, 66, 61, cpuAverage.value],
+      data: isDemoMode.value ? [45, 58, 52, 66, 61, cpuAverage.value] : dashboardNodes.value.length ? [cpuAverage.value] : [],
       lineStyle: { color: chartColors.value.primary, width: 2 },
       name: 'CPU',
       showSymbol: false,
@@ -416,7 +417,7 @@ const trendOption = computed(() => ({
       type: 'line',
     },
     {
-      data: [62, 64, 71, 67, 70, memoryAverage.value],
+      data: isDemoMode.value ? [62, 64, 71, 67, 70, memoryAverage.value] : dashboardNodes.value.length ? [memoryAverage.value] : [],
       lineStyle: { color: chartColors.value.green, width: 2 },
       name: '内存',
       showSymbol: false,
@@ -436,11 +437,11 @@ const capacityOption = computed(() => ({
   },
   series: [
     {
-      data: [
+      data: isDemoMode.value ? [
         { name: '计算', value: 46 },
         { name: '存储', value: 32 },
         { name: '网络', value: 22 },
-      ],
+      ] : [],
       emphasis: { scale: false },
       itemStyle: {
         borderColor: isDark.value ? '#091928' : '#ffffff',
@@ -656,7 +657,7 @@ function buildScene() {
   const rackPositions: THREE.Vector3[] = [];
 
   if (rackGroups.value.length === 0) {
-    buildDemoScene(rackPositions);
+    if (isDemoMode.value) buildDemoScene(rackPositions);
   } else if (isTopologyEnhanced.value) {
     buildEnhancedScene(rackPositions);
   } else {
@@ -805,19 +806,19 @@ onMounted(async () => {
           <dl class="health-facts">
             <div>
               <dt>服务可用率</dt>
-              <dd>99.86%</dd>
+              <dd>{{ isDemoMode ? '99.86%' : '—' }}</dd>
             </div>
             <div>
               <dt>平均延迟</dt>
-              <dd>18 ms</dd>
+              <dd>{{ isDemoMode ? '18 ms' : '—' }}</dd>
             </div>
             <div>
               <dt>网络吞吐</dt>
-              <dd>8.4 Gb/s</dd>
+              <dd>{{ isDemoMode ? '8.4 Gb/s' : '—' }}</dd>
             </div>
             <div>
               <dt>任务队列</dt>
-              <dd>12</dd>
+              <dd>{{ isDemoMode ? '12' : '—' }}</dd>
             </div>
           </dl>
         </section>
@@ -838,7 +839,7 @@ onMounted(async () => {
             </div>
             <div>
               <CheckCircleFilled class="status-online" /><span>已恢复</span
-              ><strong>8</strong>
+              ><strong>{{ isDemoMode ? 8 : '—' }}</strong>
             </div>
           </div>
         </section>
@@ -864,7 +865,7 @@ onMounted(async () => {
             <select
               v-if="clusters.length > 0"
               class="cluster-select"
-              :value="selectedClusterId"
+              :value="selectedClusterId ?? undefined"
               aria-label="选择集群"
               @change="handleClusterChange"
             >
@@ -876,7 +877,7 @@ onMounted(async () => {
                 {{ cluster.clusterName }}
               </option>
             </select>
-            <span v-else class="demo-cluster-name">默认演示集群</span>
+            <span v-else class="demo-cluster-name">{{ isDemoMode ? '演练集群' : '尚未接入集群' }}</span>
 
             <div class="view-switch" aria-label="视角切换">
               <button

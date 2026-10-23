@@ -34,7 +34,12 @@ const columns = [
   { title: '手机', dataIndex: 'phone', key: 'phone', width: 130 },
   { title: '类型', dataIndex: 'userType', key: 'userType', width: 100 },
   { title: '状态', dataIndex: 'status', key: 'status', width: 100 },
-  { title: '最后登录', dataIndex: 'lastLoginAt', key: 'lastLoginAt', width: 180 },
+  {
+    title: '最后登录',
+    dataIndex: 'lastLoginAt',
+    key: 'lastLoginAt',
+    width: 180,
+  },
   { title: '操作', key: 'action', width: 280, fixed: 'right' as const },
 ];
 
@@ -171,7 +176,11 @@ async function handleChangePwd() {
     return;
   }
   try {
-    await changePassword(pwdUserId.value, pwdState.oldPassword, pwdState.newPassword);
+    await changePassword(
+      pwdUserId.value,
+      pwdState.oldPassword,
+      pwdState.newPassword,
+    );
     message.success('密码修改成功');
     pwdModalVisible.value = false;
   } catch (e: any) {
@@ -199,124 +208,156 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="用户管理">
-      <template #extra>
-        <Button type="primary" @click="showCreate">创建用户</Button>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="users"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 1100 }"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'userType'">
-            <Tag :color="typeColorMap[(_record as any).userType] || 'default'">
-              {{ (_record as any).userType }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[(_record as any).status] || 'default'">
-              {{ (_record as any).status }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showRoles(_record as User)">
-                角色
-              </Button>
-              <Button type="link" size="small" @click="showEdit(_record as User)">
-                编辑
-              </Button>
-              <Button type="link" size="small" @click="showChangePwd(_record as User)">
-                改密
-              </Button>
-              <Button
-                type="link"
-                size="small"
-                danger
-                @click="handleDelete(_record as User)"
-              >
-                删除
-              </Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="用户管理"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/USR/user/list"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Button type="primary" @click="showCreate">创建用户</Button>
         </template>
-      </Table>
-    </Card>
+        <Table
+          :columns="columns"
+          :data-source="users"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 1100 }"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'userType'">
+              <Tag
+                :color="typeColorMap[(_record as any).userType] || 'default'"
+              >
+                {{ (_record as any).userType }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'status'">
+              <Tag
+                :color="statusColorMap[(_record as any).status] || 'default'"
+              >
+                {{ (_record as any).status }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showRoles(_record as User)"
+                >
+                  角色
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showEdit(_record as User)"
+                >
+                  编辑
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showChangePwd(_record as User)"
+                >
+                  改密
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(_record as User)"
+                >
+                  删除
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
 
-    <!-- Create/Edit User Modal -->
-    <Modal
-      v-model:open="modalVisible"
-      :title="modalTitle"
-      @ok="handleSubmit"
-      :destroy-on-close="true"
-    >
-      <Form layout="vertical">
-        <FormItem label="用户名" required>
-          <Input
-            v-model:value="formState.username"
-            :disabled="!!editingId"
-            placeholder="用户名"
-          />
-        </FormItem>
-        <FormItem v-if="!editingId" label="密码" required>
-          <InputPassword v-model:value="formState.password" placeholder="密码" />
-        </FormItem>
-        <FormItem label="邮箱">
-          <Input v-model:value="formState.email" placeholder="邮箱" />
-        </FormItem>
-        <FormItem label="手机">
-          <Input v-model:value="formState.phone" placeholder="手机号" />
-        </FormItem>
-        <FormItem label="用户类型">
-          <Select v-model:value="formState.userType">
-            <SelectOption value="admin">管理员</SelectOption>
-            <SelectOption value="user">普通用户</SelectOption>
-          </Select>
-        </FormItem>
-        <FormItem label="状态">
-          <Select v-model:value="formState.status">
-            <SelectOption value="active">启用</SelectOption>
-            <SelectOption value="disabled">禁用</SelectOption>
-          </Select>
-        </FormItem>
-      </Form>
-    </Modal>
+      <!-- Create/Edit User Modal -->
+      <Modal
+        v-model:open="modalVisible"
+        :title="modalTitle"
+        @ok="handleSubmit"
+        :destroy-on-close="true"
+      >
+        <Form layout="vertical">
+          <FormItem label="用户名" required>
+            <Input
+              v-model:value="formState.username"
+              :disabled="!!editingId"
+              placeholder="用户名"
+            />
+          </FormItem>
+          <FormItem v-if="!editingId" label="密码" required>
+            <InputPassword
+              v-model:value="formState.password"
+              placeholder="密码"
+            />
+          </FormItem>
+          <FormItem label="邮箱">
+            <Input v-model:value="formState.email" placeholder="邮箱" />
+          </FormItem>
+          <FormItem label="手机">
+            <Input v-model:value="formState.phone" placeholder="手机号" />
+          </FormItem>
+          <FormItem label="用户类型">
+            <Select v-model:value="formState.userType">
+              <SelectOption value="admin">管理员</SelectOption>
+              <SelectOption value="user">普通用户</SelectOption>
+            </Select>
+          </FormItem>
+          <FormItem label="状态">
+            <Select v-model:value="formState.status">
+              <SelectOption value="active">启用</SelectOption>
+              <SelectOption value="disabled">禁用</SelectOption>
+            </Select>
+          </FormItem>
+        </Form>
+      </Modal>
 
-    <!-- Change Password Modal -->
-    <Modal
-      v-model:open="pwdModalVisible"
-      title="修改密码"
-      @ok="handleChangePwd"
-      :destroy-on-close="true"
-    >
-      <Form layout="vertical">
-        <FormItem label="旧密码" required>
-          <InputPassword v-model:value="pwdState.oldPassword" placeholder="旧密码" />
-        </FormItem>
-        <FormItem label="新密码" required>
-          <InputPassword v-model:value="pwdState.newPassword" placeholder="新密码" />
-        </FormItem>
-      </Form>
-    </Modal>
+      <!-- Change Password Modal -->
+      <Modal
+        v-model:open="pwdModalVisible"
+        title="修改密码"
+        @ok="handleChangePwd"
+        :destroy-on-close="true"
+      >
+        <Form layout="vertical">
+          <FormItem label="旧密码" required>
+            <InputPassword
+              v-model:value="pwdState.oldPassword"
+              placeholder="旧密码"
+            />
+          </FormItem>
+          <FormItem label="新密码" required>
+            <InputPassword
+              v-model:value="pwdState.newPassword"
+              placeholder="新密码"
+            />
+          </FormItem>
+        </Form>
+      </Modal>
 
-    <!-- User Roles Modal -->
-    <Modal
-      v-model:open="roleModalVisible"
-      :title="roleModalTitle"
-      :footer="null"
-      width="500px"
-    >
-      <Table
-        :columns="roleColumns"
-        :data-source="userRoles"
-        :loading="roleLoading"
-        row-key="id"
-        size="small"
-      />
-    </Modal>
-  </div>
+      <!-- User Roles Modal -->
+      <Modal
+        v-model:open="roleModalVisible"
+        :title="roleModalTitle"
+        :footer="null"
+        width="500px"
+      >
+        <Table
+          :columns="roleColumns"
+          :data-source="userRoles"
+          :loading="roleLoading"
+          row-key="id"
+          size="small"
+        />
+      </Modal>
+    </div>
+  </BusinessPage>
 </template>

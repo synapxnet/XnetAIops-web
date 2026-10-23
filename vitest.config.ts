@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [Vue(), VueJsx()],
   test: {
     environment: 'happy-dom',
-    exclude: [...configDefaults.exclude, '**/e2e/**'],
+    // Node原生用例由test:unit第二阶段执行。 Native Node tests run in the second test:unit phase.
+    exclude: [...configDefaults.exclude, '**/e2e/**', '**/*.test.mjs'],
   },
 });

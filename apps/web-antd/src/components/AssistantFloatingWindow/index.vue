@@ -4,7 +4,7 @@
  * 可拖拽的悬浮窗口，点击展开聊天界面
  * 通过后端 SSE 代理与 Gateway 通信（避免 CORS 问题）
  */
-import type { Assistant, AssistantConversation, AssistantMessage } from '#/views/XAA/api/types';
+import type { Assistant, AssistantAdapter, AssistantConversation, AssistantMessage } from './assistant-adapter';
 
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue';
 
@@ -20,16 +20,11 @@ import {
 } from '@ant-design/icons-vue';
 import { Avatar, Badge, Button, Input, Spin, Tooltip } from 'ant-design-vue';
 
-import {
-  addMessage,
-  createConversation,
-  fetchDefaultAssistant,
-} from '#/views/XAA/api/assistant';
-
 const { TextArea } = Input;
 
 // Props
 interface Props {
+  adapter?: AssistantAdapter;
   assistantId?: number;
   visible?: boolean;
   position?: { right: number; bottom: number };
@@ -64,6 +59,13 @@ const messages = ref<AssistantMessage[]>([]);
 const inputMessage = ref('');
 const sending = ref(false);
 const streamingContent = ref('');
+const requestController = new AbortController();
+
+/** 缺少宿主适配器时拒绝操作，不请求不存在的旧接口。 Refuse operations without an adapter instead of calling absent legacy endpoints. */
+function requireAdapter(): AssistantAdapter {
+  if (!props.adapter) throw new Error('浮窗尚未连接助手服务，请配置服务适配器');
+  return props.adapter;
+}
 
 // Gateway 连接状态（基于助手是否配置了 gatewayUrl）
 const connected = ref(false);
@@ -151,14 +153,8 @@ const primaryColor = computed(() => {
 const initialize = async () => {
   loading.value = true;
   try {
-    if (props.assistantId) {
-      // 指定了 ID，直接获取助手详情
-      const { fetchAssistant } = await import('#/views/XAA/api/assistant');
-      assistant.value = await fetchAssistant(props.assistantId);
-    } else {
-      // 获取默认助手
-      assistant.value = await fetchDefaultAssistant();
-    }
+    if (!props.adapter) return;
+    assistant.value = await props.adapter.fetchAssistant(props.assistantId);
 
     if (assistant.value) {
       connected.value = !!assistant.value.gatewayUrl;
@@ -198,7 +194,7 @@ const createNewConversation = async () => {
   if (!assistant.value) return;
 
   try {
-    const conv = await createConversation(assistant.value.id, 'floating-user', 'User');
+    const conv = await requireAdapter().createConversation(assistant.value.id);
     currentConversation.value = conv;
     messages.value = [];
   } catch (error) {
@@ -213,6 +209,7 @@ const sendMessage = async () => {
   if (!currentConversation.value) {
     await createNewConversation();
   }
+  if (!currentConversation.value) return;
 
   const content = inputMessage.value.trim();
   inputMessage.value = '';
@@ -232,34 +229,28 @@ const sendMessage = async () => {
 
   // 保存用户消息到后端
   try {
-    await addMessage(currentConversation.value!.id, 'user', content);
+    await requireAdapter().addMessage(currentConversation.value.id, 'user', content);
   } catch (error) {
     console.error('保存消息失败:', error);
   }
 
   // 通过后端 SSE 代理发送到 Gateway
-  await sendToGateway(content);
+  await sendToGateway();
 };
 
 // SSE 流式请求（复用 chat.vue 的模式）
-const sendToGateway = async (userContent: string) => {
+const sendToGateway = async () => {
   const chatMessages = messages.value.slice(-20).map((msg) => ({
     role: msg.role as 'user' | 'assistant' | 'system',
     content: msg.content,
   }));
 
   try {
-    const response = await fetch(`/xaa/assistants/${assistant.value!.id}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'openclaw',
-        messages: chatMessages,
-        stream: true,
-        user: currentConversation.value?.uid || 'default',
-      }),
+    const response = await requireAdapter().streamReply({
+      assistantId: assistant.value!.id,
+      conversationId: currentConversation.value!.id,
+      messages: chatMessages,
+      signal: requestController.signal,
     });
 
     if (!response.ok) {
@@ -342,7 +333,7 @@ const saveAssistantMessage = async (content: string) => {
   scrollToBottom();
 
   try {
-    await addMessage(currentConversation.value.id, 'assistant', content);
+    await requireAdapter().addMessage(currentConversation.value.id, 'assistant', content);
   } catch (error) {
     console.error('保存助手消息失败:', error);
   }
@@ -437,6 +428,12 @@ const close = () => {
 onMounted(() => {
   initialize();
 });
+
+/** 卸载时释放拖拽监听并取消流式请求。 Release drag listeners and cancel streaming when unmounted. */
+onUnmounted(() => {
+  stopDrag();
+  requestController.abort();
+});
 </script>
 
 <template>
@@ -508,7 +505,7 @@ onMounted(() => {
               </Button>
             </Tooltip>
             <Tooltip title="收起">
-              <Button type="text" size="small" class="text-white" @click="toggleExpand">
+              <Button type="text" size="small" class="text-white" @click="close">
                 <CloseOutlined />
               </Button>
             </Tooltip>
@@ -520,7 +517,7 @@ onMounted(() => {
           <!-- 欢迎消息 -->
           <div v-if="messages.length === 0 && !assistant" class="welcome-message">
             <RobotOutlined class="empty-assistant-icon" />
-            <p class="text-muted-foreground mt-2">未找到默认助手，请先在智能助手页面设置一个默认助手</p>
+            <p class="text-muted-foreground mt-2">{{ props.adapter ? '未找到可用助手，请检查助手配置' : '助手服务未连接' }}</p>
           </div>
           <div v-else-if="messages.length === 0" class="welcome-message">
             <Avatar :size="48" class="mb-2" :style="{ backgroundColor: primaryColor }">

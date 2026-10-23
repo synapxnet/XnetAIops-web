@@ -1,16 +1,13 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { Select, SelectOption, Space } from 'ant-design-vue';
 import { getClusters } from '../api/cluster';
 import { getNamespaces } from '../api/namespace';
 import type { K8sCluster } from '../api/types';
-import { demoK8sNamespaces, isDemoK8sCluster } from '../demo-data';
 
 const props = withDefaults(defineProps<{
   showNamespace?: boolean;
-}>(), {
-  showNamespace: true,
-});
+}>(), { showNamespace: true });
 
 const clusterId = defineModel<number | null>('clusterId', { default: null });
 const namespace = defineModel<string>('namespace', { default: '' });
@@ -22,42 +19,39 @@ const emit = defineEmits<{
   change: [];
 }>();
 
+/** 默认读取当前集群及命名空间，启动依赖数据查询。 / Load the default cluster and namespace before dependent queries. */
 async function fetchClusters() {
   try {
     const res = await getClusters();
     clusters.value = Array.isArray(res) ? res : [];
-    let targetClusterId = clusterId.value;
-    if (!targetClusterId) {
+    if (!clusterId.value) {
       const active = clusters.value.filter((c) => c.status === 'active');
       if (active.length > 0) {
-        targetClusterId = active[0]!.id;
-        clusterId.value = targetClusterId;
+        clusterId.value = active[0]!.id;
+        // 等待父级 v-model 回传，再读取关联范围。 / Wait for the parent model before reading its dependent scope.
+        await nextTick();
       }
     }
-    if (targetClusterId && props.showNamespace !== false) {
-      await fetchNamespaces(targetClusterId);
+    if (clusterId.value && props.showNamespace !== false) {
+      await fetchNamespaces();
     } else {
       emit('change');
     }
   } catch {
-    // The cluster list has no safe local fallback.
+    // silent
   }
 }
 
-async function fetchNamespaces(targetClusterId = clusterId.value) {
-  if (!targetClusterId) return;
-  if (isDemoSelection(targetClusterId)) {
-    applyDemoNamespaces();
-    return;
-  }
+/** 只在已选集群内选择有效的命名空间。 / Select a namespace that exists within the chosen cluster. */
+async function fetchNamespaces() {
+  if (!clusterId.value) return;
+  const requestedClusterId = clusterId.value;
   try {
-    const res = await getNamespaces(targetClusterId);
-    const namespaceList = (Array.isArray(res) ? res : []).map(
+    const res = await getNamespaces(requestedClusterId);
+    if (clusterId.value !== requestedClusterId) return;
+    namespaces.value = (Array.isArray(res) ? res : []).map(
       (n: any) => n.name,
     );
-    namespaces.value = namespaceList.length === 0 && isDemoSelection(targetClusterId)
-      ? demoK8sNamespaces.map((item) => item.name)
-      : namespaceList;
     if (
       !namespace.value ||
       !namespaces.value.includes(namespace.value)
@@ -66,47 +60,44 @@ async function fetchNamespaces(targetClusterId = clusterId.value) {
         ? 'default'
         : namespaces.value[0] || '';
     }
+    await nextTick();
+    if (clusterId.value !== requestedClusterId) return;
     emit('change');
   } catch {
-    // Real cluster namespace errors remain non-blocking in the shared selector.
+    // silent
   }
 }
 
-function applyDemoNamespaces() {
-  namespaces.value = demoK8sNamespaces.map((item) => item.name);
-  namespace.value = namespaces.value.includes('default')
-    ? 'default'
-    : namespaces.value[0] || '';
-  emit('change');
-}
-
-function onClusterChange(v: number) {
+/** 切换集群后刷新其命名空间。 / Refresh namespace options after a cluster change. */
+async function onClusterChange(v: unknown) {
+  if (typeof v !== 'number') return;
   clusterId.value = v;
+  namespace.value = '';
+  namespaces.value = [];
+  await nextTick();
   if (props.showNamespace !== false) {
-    fetchNamespaces(v);
+    await fetchNamespaces();
   } else {
     emit('change');
   }
 }
 
-function onNamespaceChange(v: string) {
+/** 通知业务页重新读取选定命名空间。 / Notify the business page to reload the selected namespace. */
+function onNamespaceChange(v: unknown) {
+  if (typeof v !== 'string') return;
   namespace.value = v;
   emit('change');
 }
 
-function isDemoSelection(targetClusterId = clusterId.value) {
-  return isDemoK8sCluster(clusters.value, targetClusterId);
-}
-
 onMounted(fetchClusters);
 
-defineExpose({ fetchClusters, fetchNamespaces, isDemoSelection });
+defineExpose({ fetchClusters, fetchNamespaces });
 </script>
 
 <template>
   <Space>
     <Select
-      :value="clusterId"
+      :value="clusterId ?? undefined"
       style="width: 160px"
       placeholder="选择集群"
       @change="onClusterChange"

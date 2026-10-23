@@ -1,9 +1,10 @@
-name: Build display web
+# Copyright (C) 2026 Synapxnet. All rights reserved.
+# Synapxnet Proprietary and Confidential. INTERNAL.
+# Author: maoyo | Department: 研发部 | Date: 2026-10-23 | Version: 1.3.0
+# 手动检查，不部署或发布。 Manual validation without deployment or publication.
+name: Validate mainline web
 
 on:
-  push:
-    branches:
-      - display
   workflow_dispatch:
 
 permissions:
@@ -11,12 +12,15 @@ permissions:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
@@ -35,10 +39,8 @@ jobs:
       - name: Build web application
         run: pnpm build:antd
 
-      - name: Upload web artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: xnetaiops-web-dist
-          path: apps/web-antd/dist
-          if-no-files-found: error
-          retention-days: 3
+      - name: Check all workspace types
+        run: pnpm check:type
+
+      - name: Run unit and evidence contract tests
+        run: pnpm test:unit

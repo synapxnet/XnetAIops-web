@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "copyright": "Copyright (C) 2026 Synapxnet. All rights reserved.",
+    "confidentiality": "Proprietary and Confidential. No copying, distribution or use without authorization.",
+    "author": "maoyo",
+    "department": "研发部",
+    "date": "2026-09-13",
+    "version": "1.0.0",
+    "securityLevel": "INTERNAL",
+    "maintainer": "maoyo",
+    "email": "synapxnet@gmail.com"
+  },
+  "checks": [
+    {
+      "module": "usr",
+      "request": "/api/usr/resource",
+      "preservesNativeControllerPrefix": true
+    },
+    {
+      "module": "clm",
+      "request": "/api/clm/resource",
+      "preservesNativeControllerPrefix": true
+    },
+    {
+      "module": "hom",
+      "request": "/api/hom/resource",
+      "preservesNativeControllerPrefix": true
+    },
+    {
+      "module": "svm",
+      "request": "/api/svm/resource",
+      "preservesNativeControllerPrefix": true
+    },
+    {
+      "module": "mon",
+      "request": "/api/mon/resource",
+      "preservesNativeControllerPrefix": true
+    },
+    {
+      "module": "k8s",
+      "request": "/api/k8s/resource",
+      "preservesNativeControllerPrefix": true
+    },
+    {
+      "module": "reg",
+      "request": "/api/reg/resource",
+      "preservesNativeControllerPrefix": true
+    }
+  ],
+  "webSocketMapping": "/api/k8s/ws/ -> /ws/; protocol+Origin forwarded",
+  "verification": "static Controller/proxy contract; no live upstream started"
+}

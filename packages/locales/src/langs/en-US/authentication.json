@@ -38,7 +38,7 @@
   "qrcodeSubtitle": "Scan the QR code with your phone to login",
   "qrcodePrompt": "Click 'Confirm' after scanning to complete login",
   "qrcodeLogin": "QR Code Login",
-  "codeSubtitle": "Use the demo phone and verification code to enter the intelligent operations workspace",
+  "codeSubtitle": "Sign in to your intelligent operations workspace",
   "code": "Security code",
   "codeTip": "Security code required {0} characters",
   "mobile": "Mobile",

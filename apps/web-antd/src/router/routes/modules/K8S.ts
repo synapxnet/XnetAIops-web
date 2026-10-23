@@ -129,6 +129,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/K8S/pod/detail.vue'),
         meta: {
           hideInMenu: true,
+          // 保留详情实例，返回时可呈现上次成功资料。Keep the detail instance so returning can show the last successful read.
+          keepAlive: true,
           title: 'Pod详情',
         },
       },

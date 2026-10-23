@@ -15,10 +15,14 @@ import { $t, setupI18n } from '#/locales';
 
 import { initComponentAdapter } from './adapter/component';
 import App from './app.vue';
+import BusinessPage from './components/BusinessPage.vue';
+import { initializeSkin } from './design/skin';
 import { router } from './router';
 
 import 'element-plus/dist/index.css';
+import 'element-plus/theme-chalk/dark/css-vars.css';
 
+/** 初始化真实应用组件、授权与全局皮肤。Initialize real app components, authorization and global skin. */
 async function bootstrap(namespace: string) {
   // 初始化组件适配器
   await initComponentAdapter();
@@ -33,6 +37,8 @@ async function bootstrap(namespace: string) {
   // });
 
   const app = createApp(App);
+  app.component('BusinessPage', BusinessPage);
+  initializeSkin();
 
   // 注册v-loading指令
   registerLoadingDirective(app, {

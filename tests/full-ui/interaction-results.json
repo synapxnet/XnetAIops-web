@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "copyright": "Copyright (C) 2026 Synapxnet. All rights reserved.",
+    "author": "maoyo",
+    "date": "2026-10-23",
+    "version": "1.3.0",
+    "securityLevel": "INTERNAL"
+  },
+  "environment": "Local explicit UI fixture, not live deployment",
+  "checks": [
+    "空表单提交被阻止",
+    "服务失败保留表单并可重试",
+    "创建回执后列表显示新记录",
+    "删除取消保留记录",
+    "确认删除后记录从列表移除",
+    "驻场面板仍可从全局入口打开"
+  ],
+  "pageErrors": []
+}

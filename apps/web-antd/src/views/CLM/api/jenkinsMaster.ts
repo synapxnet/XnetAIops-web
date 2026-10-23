@@ -116,14 +116,14 @@ export function createNodeOnMaster(masterId: number, nodeName: string, workDir: 
     const params = new URLSearchParams({ nodeName, workDir });
     if (labels) params.append('labels', labels);
     return clmRequestClient.post<{ success: boolean; nodeName: string; secret?: string }>(
-        `/jenkins-masters/${masterId}/create-node?${params.toString()}`,
+        `/jenkins-masters/${masterId}/nodes?${params.toString()}`,
     );
 }
 
 /** 获取Node的Secret */
 export function getNodeSecret(masterId: number, nodeName: string) {
-    return clmRequestClient.get<{ secret: string }>(
-        `/jenkins-masters/${masterId}/node-secret/${nodeName}`,
+    return clmRequestClient.get<string>(
+        `/jenkins-masters/${masterId}/nodes/${encodeURIComponent(nodeName)}/secret`,
     );
 }
 

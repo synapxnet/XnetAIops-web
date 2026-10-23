@@ -133,27 +133,29 @@ export function getPipelineRunStages(
   );
 }
 
-/** 获取构建日志 */
-export function getPipelineRunLog(
+/** 读取后端日志包络，保留旧字符串响应兼容。 Read the native log envelope while accepting legacy strings. */
+export async function getPipelineRunLog(
   projectId: number,
   pipelineId: number,
   runId: number,
 ) {
-  return k8sRequestClient.get<string>(
+  const result = await k8sRequestClient.get<{ log: string } | string>(
     `/devops/projects/${projectId}/pipelines/${pipelineId}/runs/${runId}/log`,
   );
+  return typeof result === 'string' ? result : result.log;
 }
 
-/** 获取阶段日志 */
-export function getStageLog(
+/** 阶段日志同样解包原生log字段。 Unwrap the native log field for stage logs as well. */
+export async function getStageLog(
   projectId: number,
   pipelineId: number,
   runId: number,
   nodeId: string,
 ) {
-  return k8sRequestClient.get<string>(
+  const result = await k8sRequestClient.get<{ log: string } | string>(
     `/devops/projects/${projectId}/pipelines/${pipelineId}/runs/${runId}/stages/${nodeId}/log`,
   );
+  return typeof result === 'string' ? result : result.log;
 }
 
 /** 停止运行 */

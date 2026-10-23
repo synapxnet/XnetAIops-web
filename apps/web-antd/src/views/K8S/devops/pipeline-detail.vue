@@ -91,9 +91,7 @@ const runColumns = [
 // ---------- Computed ----------
 
 const hasActiveRun = computed(() =>
-  runs.value.some((r) =>
-    ['running', 'queued', 'pending'].includes(r.status),
-  ),
+  runs.value.some((r) => ['running', 'queued', 'pending'].includes(r.status)),
 );
 
 // ---------- Helpers ----------
@@ -146,7 +144,8 @@ async function fetchLatestRunStages() {
 async function fetchJenkinsfile() {
   try {
     const res = await getJenkinsfile(projectId, pipelineId);
-    jenkinsfile.value = typeof res === 'string' ? res : (res as any)?.jenkinsfile || '';
+    jenkinsfile.value =
+      typeof res === 'string' ? res : (res as any)?.jenkinsfile || '';
   } catch {
     jenkinsfile.value = '';
   }
@@ -253,136 +252,259 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Spin :spinning="loading">
-      <!-- Page Header -->
-      <Card class="mb-4">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 12px">
-            <Button size="small" @click="goBack">返回</Button>
-            <h2 style="margin: 0; font-size: 20px">
-              {{ pipeline?.name || '加载中...' }}
-            </h2>
-            <Tag
-              v-if="pipeline?.status"
-              :color="pipelineStatusColorMap[pipeline.status] || 'default'"
-            >
-              {{ pipeline.status === 'active' ? '运行中' : pipeline.status === 'disabled' ? '已禁用' : pipeline.status === 'error' ? '异常' : pipeline.status }}
-            </Tag>
+  <BusinessPage
+    title="流水线详情"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/K8S/devops/projects/:projectId/pipelines/:pipelineId"
+  >
+    <div class="p-4">
+      <Spin :spinning="loading">
+        <!-- Page Header -->
+        <Card class="mb-4">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 12px">
+              <Button size="small" @click="goBack">返回</Button>
+              <h2 style="margin: 0; font-size: 20px">
+                {{ pipeline?.name || '加载中...' }}
+              </h2>
+              <Tag
+                v-if="pipeline?.status"
+                :color="pipelineStatusColorMap[pipeline.status] || 'default'"
+              >
+                {{
+                  pipeline.status === 'active'
+                    ? '运行中'
+                    : pipeline.status === 'disabled'
+                      ? '已禁用'
+                      : pipeline.status === 'error'
+                        ? '异常'
+                        : pipeline.status
+                }}
+              </Tag>
+            </div>
+            <Space>
+              <Button
+                type="primary"
+                :loading="triggering"
+                @click="handleTriggerRun"
+                >运行</Button
+              >
+              <Button @click="handleEdit">编辑</Button>
+              <Button danger @click="handleDelete">删除</Button>
+            </Space>
           </div>
-          <Space>
-            <Button type="primary" :loading="triggering" @click="handleTriggerRun">运行</Button>
-            <Button @click="handleEdit">编辑</Button>
-            <Button danger @click="handleDelete">删除</Button>
-          </Space>
-        </div>
-      </Card>
+        </Card>
 
-      <!-- Latest Run Stage Visualization -->
-      <Card v-if="latestRun" size="small" class="mb-4">
-        <template #title>
-          <div style="display: flex; align-items: center; gap: 12px">
-            <span>最新运行</span>
-            <a style="font-weight: 500" @click="handleViewRun(latestRun.id)">#{{ latestRun.runNumber }}</a>
-            <Tag :color="statusColorMap[latestRun.status] || 'default'" style="margin: 0">
-              {{ latestRun.status === 'success' ? '成功' : latestRun.status === 'failed' ? '失败' : latestRun.status === 'running' ? '运行中' : latestRun.status === 'aborted' ? '已中止' : latestRun.status }}
-            </Tag>
-            <span v-if="latestRun.durationMs" style="color: #8c8c8c; font-size: 12px">
-              {{ formatDuration(latestRun.durationMs) }}
-            </span>
-          </div>
-        </template>
-        <StagePipeline
-          :stages="latestRunStages"
-          clickable
-          @stage-click="() => handleViewRun(latestRun.id)"
-        />
-      </Card>
+        <!-- Latest Run Stage Visualization -->
+        <Card v-if="latestRun" size="small" class="mb-4">
+          <template #title>
+            <div style="display: flex; align-items: center; gap: 12px">
+              <span>最新运行</span>
+              <a style="font-weight: 500" @click="handleViewRun(latestRun.id)"
+                >#{{ latestRun.runNumber }}</a
+              >
+              <Tag
+                :color="statusColorMap[latestRun.status] || 'default'"
+                style="margin: 0"
+              >
+                {{
+                  latestRun.status === 'success'
+                    ? '成功'
+                    : latestRun.status === 'failed'
+                      ? '失败'
+                      : latestRun.status === 'running'
+                        ? '运行中'
+                        : latestRun.status === 'aborted'
+                          ? '已中止'
+                          : latestRun.status
+                }}
+              </Tag>
+              <span
+                v-if="latestRun.durationMs"
+                style="color: #8c8c8c; font-size: 12px"
+              >
+                {{ formatDuration(latestRun.durationMs) }}
+              </span>
+            </div>
+          </template>
+          <StagePipeline
+            :stages="latestRunStages"
+            clickable
+            @stage-click="() => handleViewRun(latestRun.id)"
+          />
+        </Card>
 
-      <!-- Tabs -->
-      <Card>
-        <Tabs v-model:activeKey="activeTab">
-          <!-- Tab 1: Run History -->
-          <TabPane key="runs" tab="运行记录">
-            <Table
-              :columns="runColumns"
-              :data-source="runs"
-              :pagination="{ pageSize: 20 }"
-              row-key="id"
-              size="small"
-            >
-              <template #bodyCell="{ column, record }">
-                <template v-if="column.key === 'runNumber'">
-                  <a style="font-weight: 500" @click="handleViewRun(record.id)">
-                    #{{ record.runNumber }}
-                  </a>
-                </template>
-                <template v-if="column.key === 'status'">
-                  <Tag :color="statusColorMap[record.status] || 'default'">
-                    <template v-if="record.status === 'running'">
-                      <span style="display: inline-flex; align-items: center; gap: 4px;">
-                        <span class="ant-spin-dot ant-spin-dot-spin" style="font-size: 10px">
-                          <i class="ant-spin-dot-item" v-for="i in 4" :key="i" />
+        <!-- Tabs -->
+        <Card>
+          <Tabs v-model:activeKey="activeTab">
+            <!-- Tab 1: Run History -->
+            <TabPane key="runs" tab="运行记录">
+              <Table
+                :columns="runColumns"
+                :data-source="runs"
+                :pagination="{ pageSize: 20 }"
+                row-key="id"
+                size="small"
+              >
+                <template #bodyCell="{ column, record }">
+                  <template v-if="column.key === 'runNumber'">
+                    <a
+                      style="font-weight: 500"
+                      @click="handleViewRun(record.id)"
+                    >
+                      #{{ record.runNumber }}
+                    </a>
+                  </template>
+                  <template v-if="column.key === 'status'">
+                    <Tag :color="statusColorMap[record.status] || 'default'">
+                      <template v-if="record.status === 'running'">
+                        <span
+                          style="
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 4px;
+                          "
+                        >
+                          <span
+                            class="ant-spin-dot ant-spin-dot-spin"
+                            style="font-size: 10px"
+                          >
+                            <i
+                              class="ant-spin-dot-item"
+                              v-for="i in 4"
+                              :key="i"
+                            />
+                          </span>
+                          运行中
                         </span>
-                        运行中
-                      </span>
-                    </template>
-                    <template v-else>
-                      {{ record.status === 'success' ? '成功' : record.status === 'failed' ? '失败' : record.status === 'aborted' ? '已中止' : record.status === 'pending' ? '等待中' : record.status === 'queued' ? '排队中' : record.status }}
-                    </template>
-                  </Tag>
+                      </template>
+                      <template v-else>
+                        {{
+                          record.status === 'success'
+                            ? '成功'
+                            : record.status === 'failed'
+                              ? '失败'
+                              : record.status === 'aborted'
+                                ? '已中止'
+                                : record.status === 'pending'
+                                  ? '等待中'
+                                  : record.status === 'queued'
+                                    ? '排队中'
+                                    : record.status
+                        }}
+                      </template>
+                    </Tag>
+                  </template>
+                  <template v-if="column.key === 'triggerType'">
+                    {{
+                      triggerTypeLabels[record.triggerType] ||
+                      record.triggerType
+                    }}
+                  </template>
+                  <template v-if="column.key === 'durationMs'">
+                    {{ formatDuration(record.durationMs) }}
+                  </template>
+                  <template v-if="column.key === 'action'">
+                    <Space>
+                      <Tooltip title="查看详情">
+                        <Button
+                          type="link"
+                          size="small"
+                          @click="handleViewRun(record.id)"
+                          >查看</Button
+                        >
+                      </Tooltip>
+                      <Tooltip
+                        v-if="
+                          record.status === 'running' ||
+                          record.status === 'queued'
+                        "
+                        title="停止运行"
+                      >
+                        <Button
+                          type="link"
+                          danger
+                          size="small"
+                          @click="handleStopRun(record.id)"
+                          >停止</Button
+                        >
+                      </Tooltip>
+                    </Space>
+                  </template>
                 </template>
-                <template v-if="column.key === 'triggerType'">
-                  {{ triggerTypeLabels[record.triggerType] || record.triggerType }}
-                </template>
-                <template v-if="column.key === 'durationMs'">
-                  {{ formatDuration(record.durationMs) }}
-                </template>
-                <template v-if="column.key === 'action'">
-                  <Space>
-                    <Tooltip title="查看详情">
-                      <Button type="link" size="small" @click="handleViewRun(record.id)">查看</Button>
-                    </Tooltip>
-                    <Tooltip v-if="record.status === 'running' || record.status === 'queued'" title="停止运行">
-                      <Button type="link" danger size="small" @click="handleStopRun(record.id)">停止</Button>
-                    </Tooltip>
-                  </Space>
-                </template>
-              </template>
-            </Table>
-          </TabPane>
+              </Table>
+            </TabPane>
 
-          <!-- Tab 2: Configuration -->
-          <TabPane key="config" tab="配置">
-            <Descriptions bordered :column="2" size="small">
-              <DescriptionsItem label="名称">{{ pipeline?.name }}</DescriptionsItem>
-              <DescriptionsItem label="类型">{{ pipeline?.type }}</DescriptionsItem>
-              <DescriptionsItem label="代码源类型">
-                {{ sourceTypeLabels[pipeline?.sourceType] || pipeline?.sourceType }}
-              </DescriptionsItem>
-              <DescriptionsItem label="代码仓库地址">{{ pipeline?.sourceUrl || '-' }}</DescriptionsItem>
-              <DescriptionsItem label="分支">{{ pipeline?.sourceBranch || '-' }}</DescriptionsItem>
-              <DescriptionsItem label="禁止并发运行">{{ pipeline?.disableConcurrent ? '是' : '否' }}</DescriptionsItem>
-              <DescriptionsItem label="定时触发">{{ pipeline?.timerTrigger || '-' }}</DescriptionsItem>
-              <DescriptionsItem label="Jenkins Job">{{ pipeline?.jenkinsJobName || '-' }}</DescriptionsItem>
-              <DescriptionsItem label="状态">
-                <Tag :color="pipelineStatusColorMap[pipeline?.status] || 'default'">{{ pipeline?.status }}</Tag>
-              </DescriptionsItem>
-              <DescriptionsItem label="创建时间">{{ pipeline?.createdAt || '-' }}</DescriptionsItem>
-            </Descriptions>
-          </TabPane>
+            <!-- Tab 2: Configuration -->
+            <TabPane key="config" tab="配置">
+              <Descriptions bordered :column="2" size="small">
+                <DescriptionsItem label="名称">{{
+                  pipeline?.name
+                }}</DescriptionsItem>
+                <DescriptionsItem label="类型">{{
+                  pipeline?.type
+                }}</DescriptionsItem>
+                <DescriptionsItem label="代码源类型">
+                  {{
+                    sourceTypeLabels[pipeline?.sourceType] ||
+                    pipeline?.sourceType
+                  }}
+                </DescriptionsItem>
+                <DescriptionsItem label="代码仓库地址">{{
+                  pipeline?.sourceUrl || '-'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="分支">{{
+                  pipeline?.sourceBranch || '-'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="禁止并发运行">{{
+                  pipeline?.disableConcurrent ? '是' : '否'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="定时触发">{{
+                  pipeline?.timerTrigger || '-'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="Jenkins Job">{{
+                  pipeline?.jenkinsJobName || '-'
+                }}</DescriptionsItem>
+                <DescriptionsItem label="状态">
+                  <Tag
+                    :color="
+                      pipelineStatusColorMap[pipeline?.status] || 'default'
+                    "
+                    >{{ pipeline?.status }}</Tag
+                  >
+                </DescriptionsItem>
+                <DescriptionsItem label="创建时间">{{
+                  pipeline?.createdAt || '-'
+                }}</DescriptionsItem>
+              </Descriptions>
+            </TabPane>
 
-          <!-- Tab 3: Jenkinsfile -->
-          <TabPane key="jenkinsfile" tab="Jenkinsfile">
-            <div v-if="jenkinsfile">
-              <JenkinsfileEditor v-model="jenkinsfile" height="500px" read-only />
-            </div>
-            <div v-else style="color: #8c8c8c; padding: 40px; text-align: center">
-              暂无 Jenkinsfile 内容
-            </div>
-          </TabPane>
-        </Tabs>
-      </Card>
-    </Spin>
-  </div>
+            <!-- Tab 3: Jenkinsfile -->
+            <TabPane key="jenkinsfile" tab="Jenkinsfile">
+              <div v-if="jenkinsfile">
+                <JenkinsfileEditor
+                  v-model="jenkinsfile"
+                  height="500px"
+                  read-only
+                />
+              </div>
+              <div
+                v-else
+                style="color: #8c8c8c; padding: 40px; text-align: center"
+              >
+                暂无 Jenkinsfile 内容
+              </div>
+            </TabPane>
+          </Tabs>
+        </Card>
+      </Spin>
+    </div>
+  </BusinessPage>
 </template>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
-import { Card, Button, Input, Select, Space, Divider, Alert, Tabs, Tooltip } from 'ant-design-vue';
+import { Button, Input, Select, Space, Divider, Alert, Tooltip } from 'ant-design-vue';
 import { PlusOutlined, DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons-vue';
 import JenkinsfileEditor from './JenkinsfileEditor.vue';
 

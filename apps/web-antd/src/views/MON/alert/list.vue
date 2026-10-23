@@ -23,8 +23,18 @@ const columns = [
   { title: '主机', dataIndex: 'hostname', key: 'hostname', width: 150 },
   { title: '级别', dataIndex: 'alertLevel', key: 'alertLevel', width: 100 },
   { title: '状态', dataIndex: 'status', key: 'status', width: 120 },
-  { title: '告警信息', dataIndex: 'alertInfo', key: 'alertInfo', ellipsis: true },
-  { title: '触发时间', dataIndex: 'triggeredAt', key: 'triggeredAt', width: 180 },
+  {
+    title: '告警信息',
+    dataIndex: 'alertInfo',
+    key: 'alertInfo',
+    ellipsis: true,
+  },
+  {
+    title: '触发时间',
+    dataIndex: 'triggeredAt',
+    key: 'triggeredAt',
+    width: 180,
+  },
   { title: '操作', key: 'action', width: 180, fixed: 'right' as const },
 ];
 
@@ -102,64 +112,79 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="告警历史">
-      <template #extra>
-        <Select
-          v-model:value="statusFilter"
-          placeholder="状态筛选"
-          style="width: 150px"
-          allow-clear
-          @change="onStatusChange"
-        >
-          <SelectOption value="open">未处理</SelectOption>
-          <SelectOption value="acknowledged">已确认</SelectOption>
-          <SelectOption value="resolved">已解决</SelectOption>
-        </Select>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="alerts"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 1100 }"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'alertLevel'">
-            <Tag :color="levelColorMap[(_record as any).alertLevel] || 'default'">
-              {{ (_record as any).alertLevel }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[(_record as any).status] || 'default'">
-              {{ (_record as any).status }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showDetail(_record as AlertHistory)">
-                详情
-              </Button>
-              <Button
-                v-if="(_record as any).status === 'open'"
-                type="link"
-                size="small"
-                @click="handleAcknowledge(_record as AlertHistory)"
-              >
-                确认
-              </Button>
-              <Button
-                v-if="(_record as any).status !== 'resolved'"
-                type="link"
-                size="small"
-                @click="handleResolve(_record as AlertHistory)"
-              >
-                解决
-              </Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="告警历史"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/MON/alert/list"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Select
+            v-model:value="statusFilter"
+            placeholder="状态筛选"
+            style="width: 150px"
+            allow-clear
+            @change="onStatusChange"
+          >
+            <SelectOption value="open">未处理</SelectOption>
+            <SelectOption value="acknowledged">已确认</SelectOption>
+            <SelectOption value="resolved">已解决</SelectOption>
+          </Select>
         </template>
-      </Table>
-    </Card>
-  </div>
+        <Table
+          :columns="columns"
+          :data-source="alerts"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 1100 }"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'alertLevel'">
+              <Tag
+                :color="levelColorMap[(_record as any).alertLevel] || 'default'"
+              >
+                {{ (_record as any).alertLevel }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'status'">
+              <Tag
+                :color="statusColorMap[(_record as any).status] || 'default'"
+              >
+                {{ (_record as any).status }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showDetail(_record as AlertHistory)"
+                >
+                  详情
+                </Button>
+                <Button
+                  v-if="(_record as any).status === 'open'"
+                  type="link"
+                  size="small"
+                  @click="handleAcknowledge(_record as AlertHistory)"
+                >
+                  确认
+                </Button>
+                <Button
+                  v-if="(_record as any).status !== 'resolved'"
+                  type="link"
+                  size="small"
+                  @click="handleResolve(_record as AlertHistory)"
+                >
+                  解决
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

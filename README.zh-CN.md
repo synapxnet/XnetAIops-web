@@ -1,33 +1,44 @@
-# XnetAIops Web 中文说明
+<!-- Copyright (C) 2026 Synapxnet. All rights reserved.
+Synapxnet Proprietary and Confidential. No copying, distribution or use without authorization.
+Author: maoyo | Department: 研发部 | Date: 2026-10-23 | Version: 1.3.0 | Security Level: INTERNAL -->
+# XnetAIOps Web
 
-[![GOAI release](https://img.shields.io/badge/GOAI%20release-1.3.0-1677ff.svg)](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0)
+[English](README.en-US.md) · [日本語](README.ja-JP.md)
 
-## GOAI 决赛版 · v1.3.0
+XnetAIOps 的企业运维工作台，使用 Vue 3、TypeScript、Vite 和 Ant Design Vue。支持 3D 总览、集群/主机/服务管理、监控告警、Kubernetes、制品仓库、组织权限，以及驻场 Agent 聊天、任务、模型配置、知识与 Skill 工作台、运行保障和跨平台执行证据。
 
-[发布页与校验文件](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) · [下载源码 ZIP](https://github.com/synapxnet/XnetAIops-web/releases/download/v1.3.0/XnetAIops-web-v1.3.0-source.zip) · [查看 v1.3.0 源码](https://github.com/synapxnet/XnetAIops-web/tree/v1.3.0) · [配套后端 XnetAIops](https://github.com/synapxnet/XnetAIops/releases/tag/v1.3.0) · [OpenXnet 桌面安装包](https://github.com/synapxnet/OpenXnet/releases/tag/v1.3.0)
+主线开发分支为 `main`；历史发布版本继续保留独立分支和标签。
 
-> 当前默认 `display` 分支保留历史代码。徽章表示已公开的 GOAI 版本；复现 v1.3.0 请使用上方固定标签或发布附件，不以此分支代码代替。
+## 本地开发
 
-包含统一登录与皮肤、驻场 Agent 聊天和配置入口、运行保障工作台及受控终端交互。跨平台协作和审批通过 OpenXnet 与 AgentTeams 组织，页面状态本身不代表已经取得执行授权。
+使用 Node.js 22 与仓库锁定的 pnpm 9.15.7。
 
-部署依赖、实测结果和能力边界见[程序验证基线、构建与交付说明](https://github.com/synapxnet/XnetAIops-web/blob/a5e9c2c057ba29d94ee90d7e3acd645e89475f1c/docs/GOAI-FINALS-V1.3.0-SOURCE-DELIVERY.md)。发布源码不代表线上服务已重新部署。本轮生产构建通过，全量类型检查仍有 135 处问题。
+```bash
+pnpm install --frozen-lockfile
+pnpm dev:antd
+pnpm test:unit
+pnpm --filter @vben/web-antd typecheck
+pnpm build:antd
+```
 
-> 主 README 中的图片为历史界面截图，仅用于了解原有功能与布局，不作为 v1.3.0 新界面的验收证据。
+应用位于 `apps/web-antd`，构建产物位于 `apps/web-antd/dist`。开发 API 代理使用 `vite.config.mts` 中的 `AIOPS_*_DEV_URL`；未配置时连接对应的本机服务端口。
 
-完整功能、构建命令和部署条件见[本仓 README](./README.md)。
+## 服务与登录
 
-## 在线体验与登录
+生产 API 默认同源，由网关转发到 [XnetAIOps 后端](https://github.com/synapxnet/XnetAIops)。驻场 Agent 由 `/api/resident/v1/` 接入，需要部署时单独配置网关及权限。
 
-- 当前 GOAI 演示入口：<https://goai.xnetaiops.synapxnet.online/#/auth/login>。
-- 演示手机号：`17870171303`；演示验证码：`000000`（6 位，仅用于本演示环境）。
-- 登录方式为“手机号 + 验证码”，不使用 OpenXnet 桌面端的密码登录。当前页面不发送短信，演示验证码由项目方约定。
-- 2026-09-18 已核验：登录成功，身份为 `goai_operator` / `OPERATOR`；页面标题为 `XnetAIops`，驻场状态返回 `platform=aiops`、`agentVersion=1.3.0`、`ONLINE`。
-- 此验证码只用于平台登录。AgentTeams 演示访问码、Live 执行授权和模型 API Key 是独立凭据，不可互换；后者不在公开 README 提供。
+登录使用管理员开通的账号和短信一次性验证码，不预填比赛账号或通用验证码。短信服务、身份与权限由后端负责；没有真实资源时页面保留空态，不制造成功记录或监控指标。
 
-API 网关与网页同源，基址为 `https://goai.xnetaiops.synapxnet.online`。登录为 `POST /api/usr/login`；身份读取为 `GET /api/usr/user/info`；驻场状态为 `GET /api/resident/v1/status`，后两项使用平台登录返回的 Bearer 令牌。业务模块前缀为 `/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg`。
+按需配置 `VITE_XNET_AIOPS_URL`、`VITE_XNET_DATAOPS_URL`、`VITE_XNET_MLOPS_URL` 为完整 HTTP(S) 地址，未配置的平台不显示登录页外链。`VITE_XNET_REHEARSAL_ENABLED` 默认关闭；只有隔离演练环境才应显式开启。
 
-本轮仅执行登录及身份/驻场状态读取，未执行业务变更或模型调用。`modelConfigured=true` 表示存在服务端配置，不等于本轮已验证模型推理。公共演示账号不应用作生产认证方案。
+## 功能与证据
 
-## 上游来源与许可
+驻场 Agent、组织权限、可复用 Skill、知识管理、皮肤与 3D 能力继续保留。跨平台工作台分别展示生产与演练证据；缺失数据保持未采集，不以工具执行成功代替业务恢复结论。
 
-本平台前端使用 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin)，原维护者 [Vben](https://github.com/anncwb)。保留 [MIT © Vben-2020](./LICENSE) 及 SynapXnet 许可说明；上游框架文档不等同于 XnetAIops 产品版本或部署流程。
+CI 仅支持手动触发检查和构建，使用只读仓库权限，不部署、不发布，也不上传制品。
+
+[主线说明](docs/MAINLINE-TRANSITION.md) · [OpenXnet](https://openxnet.synapxnet.com)
+
+## 许可
+
+参见 [LICENSE](LICENSE) 和各文件中的版权与授权声明。

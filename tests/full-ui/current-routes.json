@@ -1,0 +1,3598 @@
+{
+  "metadata": {
+    "copyright": "Copyright (C) 2026 Synapxnet. All rights reserved.",
+    "confidentiality": "Proprietary and Confidential",
+    "author": "maoyo",
+    "department": "研发部",
+    "date": "2026-10-23",
+    "version": "1.3.0",
+    "securityLevel": "INTERNAL",
+    "source": "Current TypeScript route AST",
+    "scope": "Product route components; auth and global assistant are validated separately."
+  },
+  "routes": [
+    {
+      "group": "synapxnet",
+      "path": "/about",
+      "name": "SynapXnetAbout",
+      "title": "关于 XnetAIops",
+      "hidden": false,
+      "component": "#/views/_core/about/index.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/synapxnet.ts",
+      "operations": [],
+      "fieldsAndPanels": [
+        "关于 XnetAIops"
+      ],
+      "apiFiles": [],
+      "sourceFiles": [
+        "apps/web-antd/src/views/_core/about/index.vue"
+      ],
+      "url": "/#/about",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "resident-capabilities",
+      "path": "/AGENT/capabilities",
+      "name": "ResidentCapabilities",
+      "title": "驻场能力工作台",
+      "hidden": false,
+      "component": "#/views/AGENT/capabilities.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/resident-capabilities.ts",
+      "operations": [
+        "reload",
+        "openChat",
+        "tab = 'knowledge'",
+        "tab = 'skills'",
+        "tab = 'tools'",
+        "resetQuery",
+        "searchExample(example)",
+        "detail = entry",
+        "selectedSkill = skill"
+      ],
+      "fieldsAndPanels": [
+        "驻场能力",
+        "输入问题、术语或能力名称…"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/components/resident/resident-api.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/AGENT/capabilities.vue",
+        "apps/web-antd/src/components/resident/ResidentCapabilities.vue"
+      ],
+      "url": "/#/AGENT/capabilities",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "feature-drift",
+      "path": "/AGENT/feature-drift",
+      "name": "FeatureDriftExecutionEvidence",
+      "title": "跨域恢复证据",
+      "hidden": true,
+      "component": "#/views/AGENT/feature-drift.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/feature-drift.ts",
+      "operations": [
+        "refresh",
+        "loadRun(run)"
+      ],
+      "fieldsAndPanels": [
+        "搜索事件 / 工作空间 / Trace",
+        "搜索跨域恢复事件",
+        "run.incidentId"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/components/resident/resident-api.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/AGENT/feature-drift.vue",
+        "apps/web-antd/src/components/feature-drift/FeatureDriftWorkspace.vue"
+      ],
+      "url": "/#/AGENT/feature-drift",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "AGENT",
+      "path": "/AGENT/operations",
+      "name": "OperationsWorkspace",
+      "title": "运行保障",
+      "hidden": false,
+      "component": "#/views/AGENT/operations.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/AGENT.ts",
+      "operations": [
+        "refresh",
+        "chooseKind(kind.key)",
+        "selectResource(resource)",
+        "selectResource(selected)"
+      ],
+      "fieldsAndPanels": [
+        "运行保障",
+        "跨域恢复 · 独立运行采样",
+        "运行资源",
+        "证据来源",
+        "搜索资源名称",
+        "运行证据详情"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/api/operations-workspace.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/AGENT/operations.vue",
+        "apps/web-antd/src/components/feature-drift/FeatureDriftEntry.vue"
+      ],
+      "url": "/#/AGENT/operations",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/cluster/create",
+      "name": "ClusterCreate",
+      "title": "创建集群",
+      "hidden": true,
+      "component": "#/views/CLM/cluster/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "handleSubmit",
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "创建集群",
+        "集群名称",
+        "请输入集群名称",
+        "集群编码",
+        "请输入集群编码（唯一标识）",
+        "集群类型",
+        "描述",
+        "请输入集群描述"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/cluster.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/cluster/create.vue"
+      ],
+      "url": "/#/CLM/cluster/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/cluster/detail/:id",
+      "name": "ClusterDetail",
+      "title": "集群详情",
+      "hidden": true,
+      "component": "#/views/CLM/cluster/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "集群详情",
+        "集群名称",
+        "集群编码",
+        "集群类型",
+        "状态",
+        "主机数",
+        "运行服务数",
+        "创建者",
+        "创建时间",
+        "描述"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/cluster.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/cluster/detail.vue"
+      ],
+      "url": "/#/CLM/cluster/detail/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/cluster/list",
+      "name": "ClusterList",
+      "title": "集群列表",
+      "hidden": false,
+      "component": "#/views/CLM/cluster/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "fetchClusters",
+        "goCreate",
+        "goDetail(record as Cluster)",
+        "handleDelete(record as Cluster)"
+      ],
+      "fieldsAndPanels": [
+        "集群列表"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/cluster.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/cluster/list.vue"
+      ],
+      "url": "/#/CLM/cluster/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/hadoop/deploy",
+      "name": "HadoopDeploy",
+      "title": "部署Hadoop节点",
+      "hidden": true,
+      "component": "#/views/CLM/hadoop/deploy.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "goBack",
+        "handleTestConnection",
+        "handleCreateAndNext",
+        "currentStep = 0",
+        "handleDeploy"
+      ],
+      "fieldsAndPanels": [
+        "部署Hadoop节点",
+        "部署 Hadoop 集群",
+        "服务器配置",
+        "Hadoop配置",
+        "完成",
+        "节点名称",
+        "如: hadoop-master-01",
+        "节点类型",
+        "主机地址",
+        "IP或域名",
+        "SSH端口",
+        "操作系统",
+        "SSH用户名",
+        "SSH密码",
+        "SSH登录密码",
+        "描述",
+        "Hadoop版本",
+        "如: 3.3.6",
+        "Java版本",
+        "部署模式",
+        "安装组件",
+        "副本因子",
+        "YARN内存(MB)",
+        "YARN CPU核数"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/hadoop/deploy.vue"
+      ],
+      "url": "/#/CLM/hadoop/deploy",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/hadoop/list",
+      "name": "HadoopList",
+      "title": "Hadoop 部署",
+      "hidden": false,
+      "component": "#/views/CLM/hadoop/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "fetchList",
+        "goDeploy",
+        "handleCheckStatus(record as HadoopCluster)",
+        "handleShowLog(record as HadoopCluster)",
+        "handleDelete(record as HadoopCluster)"
+      ],
+      "fieldsAndPanels": [
+        "Hadoop 部署",
+        "节点总数",
+        "Master",
+        "Node",
+        "运行中",
+        "Hadoop 集群管理",
+        "搜索名称 / 主机",
+        "状态筛选",
+        "刷新状态",
+        "部署日志"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/hadoopCluster.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/hadoop/list.vue"
+      ],
+      "url": "/#/CLM/hadoop/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/jenkins/deploy",
+      "name": "JenkinsDeploy",
+      "title": "部署Jenkins",
+      "hidden": true,
+      "component": "#/views/CLM/jenkins/deploy.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "goBack",
+        "testConnection",
+        "handleRefreshVersions",
+        "removeGitCredential(index)",
+        "addGitCredential",
+        "removeHarborCredential(index)",
+        "addHarborCredential",
+        "removeSshCredential(index)",
+        "addSshCredential",
+        "executeDeploy",
+        "previewScript",
+        "copyPassword",
+        "openJenkins",
+        "prevStep",
+        "nextStep"
+      ],
+      "fieldsAndPanels": [
+        "部署Jenkins",
+        "step.title",
+        "SSH连接配置",
+        "Master名称",
+        "如: jenkins-master-01",
+        "连接方式",
+        "选择主机",
+        "请选择主机管理中的主机",
+        "`${h.hostname} (${h.ipAddress})`",
+        "主机地址",
+        "SSH端口",
+        "用户名",
+        "操作系统",
+        "IP地址或域名",
+        "SSH用户名",
+        "密码",
+        "SSH密码",
+        "地域",
+        "描述",
+        "可选的描述信息",
+        "SSH连接测试",
+        "端口",
+        "系统信息",
+        "主机名",
+        "可用磁盘",
+        "总内存",
+        "Jenkins配置",
+        "Jenkins版本",
+        "选择Jenkins版本",
+        "HTTP端口",
+        "Jenkins Home",
+        "/var/jenkins_home",
+        "Java版本",
+        "JVM参数",
+        "-Xmx2g -Xms1g",
+        "时区",
+        "选择时区",
+        "管理员用户名",
+        "admin",
+        "管理员密码",
+        "设置管理员密码",
+        "管理员邮箱",
+        "admin@localhost",
+        "安装推荐插件",
+        "凭证配置 (可选)",
+        "凭证ID",
+        "如：gitee-synap-xnet",
+        "凭证描述",
+        "Git用户名",
+        "密码/Token",
+        "Git密码或Token",
+        "如：harbor-registry",
+        "Harbor URL",
+        "如：https://harbor.example.com",
+        "Harbor用户名",
+        "Harbor密码",
+        "如：ssh-deploy-key",
+        "私钥",
+        "粘贴SSH私钥内容",
+        "私钥密码",
+        "私钥密码（可选）",
+        "执行部署",
+        "目标主机",
+        "Jenkins端口",
+        "管理员用户",
+        "部署成功！",
+        "`Jenkins Master 已成功部署到 ${masterForm.host}:${deployConfig.jenkinsPort}`",
+        "Jenkins 登录信息",
+        "访问地址",
+        "部署脚本预览"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/jenkins/deploy.vue"
+      ],
+      "url": "/#/CLM/jenkins/deploy",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/jenkins/list",
+      "name": "JenkinsList",
+      "title": "Jenkins 部署",
+      "hidden": false,
+      "component": "#/views/CLM/jenkins/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "handleTabChange",
+        "loadMasters",
+        "goDeployMaster",
+        "handleRefreshMasterStatus(record as JenkinsMaster)",
+        "\n                          record.status === 'running'\n                            ? handleMasterStop(record as JenkinsMaster)\n                            : handleMasterStart(record as JenkinsMaster)\n                        ",
+        "handleMasterRestart(record as JenkinsMaster)",
+        "handleGetPassword(record as JenkinsMaster)",
+        "handleViewMasterLog(record as JenkinsMaster)",
+        "handleMasterUninstall(record as JenkinsMaster)",
+        "handleDeleteMaster(record.id)",
+        "loadNodes",
+        "goDeployNode",
+        "handleRefreshNodeStatus(record as JenkinsNode)",
+        "\n                          record.status === 'running'\n                            ? handleNodeStop(record as JenkinsNode)\n                            : handleNodeStart(record as JenkinsNode)\n                        ",
+        "handleViewNodeLog(record as JenkinsNode)",
+        "handleDeleteNode(record.id)"
+      ],
+      "fieldsAndPanels": [
+        "Jenkins 部署",
+        "Master总数",
+        "Master运行中",
+        "Node总数",
+        "Node运行中",
+        "搜索名称或地址",
+        "状态筛选",
+        "刷新状态",
+        "record.status === 'running' ? '停止' : '启动'",
+        "重启",
+        "初始密码",
+        "查看日志",
+        "卸载",
+        "确定要删除这个Master吗？",
+        "确定要删除这个Node吗？",
+        "currentLogTitle",
+        "Jenkins 初始密码"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/jenkinsMaster.ts",
+        "apps/web-antd/src/views/CLM/api/jenkinsNode.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/jenkins/list.vue"
+      ],
+      "url": "/#/CLM/jenkins/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/mysql/deploy",
+      "name": "MySQLDeploy",
+      "title": "部署MySQL实例",
+      "hidden": true,
+      "component": "#/views/CLM/mysql/deploy.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "goBack",
+        "handleTestConnection",
+        "nextStep",
+        "prevStep",
+        "handleDeploy"
+      ],
+      "fieldsAndPanels": [
+        "部署MySQL实例",
+        "部署 MySQL 实例",
+        "SSH 连接",
+        "MySQL 配置",
+        "确认部署",
+        "实例名称",
+        "例如: mysql-prod-01",
+        "主机地址",
+        "192.168.1.100",
+        "SSH端口",
+        "SSH用户名",
+        "SSH密码",
+        "描述",
+        "MySQL 版本",
+        "MySQL 端口",
+        "Root 密码",
+        "设置root密码",
+        "数据目录",
+        "字符集",
+        "InnoDB缓冲池(MB)",
+        "最大连接数",
+        "角色",
+        "Server ID",
+        "主节点地址",
+        "主节点端口",
+        "复制用户名",
+        "复制密码"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/mysql/deploy.vue"
+      ],
+      "url": "/#/CLM/mysql/deploy",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/mysql/list",
+      "name": "MySQLList",
+      "title": "MySQL 部署",
+      "hidden": false,
+      "component": "#/views/CLM/mysql/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "fetchList",
+        "goDeploy",
+        "handleCheckStatus(record as MySQLInstance)",
+        "handleStart(record as MySQLInstance)",
+        "handleStop(record as MySQLInstance)",
+        "handleRestart(record as MySQLInstance)",
+        "handleShowLog(record as MySQLInstance)",
+        "handleDelete(record as MySQLInstance)"
+      ],
+      "fieldsAndPanels": [
+        "MySQL 部署",
+        "实例总数",
+        "运行中",
+        "已停止",
+        "失败",
+        "MySQL 实例管理",
+        "搜索实例名 / 主机",
+        "状态筛选",
+        "刷新状态",
+        "部署日志"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/mysqlInstance.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/mysql/list.vue"
+      ],
+      "url": "/#/CLM/mysql/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/redis/deploy",
+      "name": "RedisDeploy",
+      "title": "部署Redis实例",
+      "hidden": true,
+      "component": "#/views/CLM/redis/deploy.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "goBack",
+        "handleTestConnection",
+        "nextStep",
+        "prevStep",
+        "handleDeploy"
+      ],
+      "fieldsAndPanels": [
+        "部署Redis实例",
+        "部署 Redis 实例",
+        "SSH 连接",
+        "Redis 配置",
+        "确认部署",
+        "实例名称",
+        "例如: redis-cache-01",
+        "主机地址",
+        "192.168.1.100",
+        "SSH端口",
+        "SSH用户名",
+        "SSH密码",
+        "描述",
+        "Redis 版本",
+        "Redis 端口",
+        "Redis 密码",
+        "留空则不设密码",
+        "最大内存(MB)",
+        "淘汰策略",
+        "持久化",
+        "数据目录",
+        "部署模式",
+        "角色",
+        "主节点地址",
+        "主节点端口",
+        "主节点密码",
+        "Sentinel Master Name",
+        "Quorum"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/redis/deploy.vue"
+      ],
+      "url": "/#/CLM/redis/deploy",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "CLM",
+      "path": "/CLM/redis/list",
+      "name": "RedisList",
+      "title": "Redis 部署",
+      "hidden": false,
+      "component": "#/views/CLM/redis/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/CLM.ts",
+      "operations": [
+        "fetchList",
+        "goDeploy",
+        "handleCheckStatus(record as RedisInstance)",
+        "handleStart(record as RedisInstance)",
+        "handleStop(record as RedisInstance)",
+        "handleRestart(record as RedisInstance)",
+        "handleShowLog(record as RedisInstance)",
+        "handleDelete(record as RedisInstance)"
+      ],
+      "fieldsAndPanels": [
+        "Redis 部署",
+        "实例总数",
+        "运行中",
+        "已停止",
+        "失败",
+        "Redis 实例管理",
+        "搜索实例名 / 主机",
+        "状态筛选",
+        "刷新状态",
+        "部署日志"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/redisInstance.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/CLM/redis/list.vue"
+      ],
+      "url": "/#/CLM/redis/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "dashboard",
+      "path": "/dashboard/overview",
+      "name": "DashboardOverview",
+      "title": "集群3D视图",
+      "hidden": false,
+      "component": "#/views/dashboard/overview.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/dashboard.ts",
+      "operations": [
+        "handleClusterChange",
+        "changeView('overview')",
+        "changeView('top')",
+        "togglePatrol",
+        "refreshData",
+        "handleClick",
+        "selectedNode = null",
+        "router.push(`/HOM/host/detail/${selectedNode.id}`)",
+        "selectDashboardNode(node)"
+      ],
+      "fieldsAndPanels": [
+        "集群3D视图",
+        "集群核心指标",
+        "集群三维机房",
+        "选择集群",
+        "视角切换",
+        "全景视角",
+        "俯视视角",
+        "自动巡航",
+        "刷新数据",
+        "关闭"
+      ],
+      "apiFiles": [],
+      "sourceFiles": [
+        "apps/web-antd/src/views/dashboard/overview.vue",
+        "apps/web-antd/src/views/dashboard/3d/ClusterScene.vue"
+      ],
+      "url": "/#/dashboard/overview",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "HOM",
+      "path": "/HOM/host/add",
+      "name": "HostAdd",
+      "title": "添加主机",
+      "hidden": true,
+      "component": "#/views/HOM/host/add.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/HOM.ts",
+      "operations": [
+        "handleTestConnection",
+        "handleSubmit",
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "添加主机",
+        "所属集群",
+        "请选择集群",
+        "IP地址",
+        "192.168.1.100",
+        "主机名",
+        "主机名（可通过SSH测试自动获取）",
+        "SSH端口",
+        "SSH用户",
+        "root",
+        "密码",
+        "SSH密码",
+        "操作系统",
+        "CPU架构",
+        "CPU核数",
+        "内存(GB)",
+        "磁盘(GB)",
+        "机架",
+        "如: /rack1",
+        "节点标签",
+        "如: worker"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/HOM/api/host.ts",
+        "apps/web-antd/src/views/CLM/api/cluster.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/HOM/host/add.vue"
+      ],
+      "url": "/#/HOM/host/add",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "HOM",
+      "path": "/HOM/host/detail/:id",
+      "name": "HostDetail",
+      "title": "主机详情",
+      "hidden": true,
+      "component": "#/views/HOM/host/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/HOM.ts",
+      "operations": [
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "主机详情",
+        "主机名",
+        "IP地址",
+        "SSH端口",
+        "SSH用户",
+        "操作系统",
+        "CPU架构",
+        "CPU核数",
+        "CPU使用率",
+        "内存",
+        "磁盘",
+        "机架",
+        "节点标签",
+        "状态",
+        "Agent状态",
+        "最后心跳",
+        "创建时间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/HOM/api/host.ts",
+        "apps/web-antd/src/views/HOM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/HOM/host/detail.vue"
+      ],
+      "url": "/#/HOM/host/detail/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "HOM",
+      "path": "/HOM/host/list",
+      "name": "HostList",
+      "title": "主机列表",
+      "hidden": false,
+      "component": "#/views/HOM/host/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/HOM.ts",
+      "operations": [
+        "goAdd",
+        "goDetail(record as Host)",
+        "handleDelete(record as Host)"
+      ],
+      "fieldsAndPanels": [
+        "主机列表"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/HOM/api/host.ts",
+        "apps/web-antd/src/views/HOM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/HOM/host/list.vue"
+      ],
+      "url": "/#/HOM/host/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "HOM",
+      "path": "/HOM/rack/list",
+      "name": "RackList",
+      "title": "机架管理",
+      "hidden": false,
+      "component": "#/views/HOM/rack/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/HOM.ts",
+      "operations": [
+        "handleClusterChange",
+        "showModal = true",
+        "handleDelete(record as Rack)"
+      ],
+      "fieldsAndPanels": [
+        "机架管理",
+        "选择集群",
+        "新增机架",
+        "机架名称",
+        "如: /rack1",
+        "描述",
+        "机架描述"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/HOM/api/host.ts",
+        "apps/web-antd/src/views/CLM/api/cluster.ts",
+        "apps/web-antd/src/views/HOM/api/types.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/HOM/rack/list.vue"
+      ],
+      "url": "/#/HOM/rack/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/alert/history",
+      "name": "K8sAlertHistory",
+      "title": "告警历史",
+      "hidden": true,
+      "component": "#/views/K8S/alert/history.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchData();\n                }\n              ",
+        "fetchData"
+      ],
+      "fieldsAndPanels": [
+        "告警历史"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/monitoring.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/alert/history.vue"
+      ],
+      "url": "/#/K8S/alert/history",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/alert/rules",
+      "name": "K8sAlertRules",
+      "title": "告警规则",
+      "hidden": false,
+      "component": "#/views/K8S/alert/rules.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchData();\n                }\n              ",
+        "fetchData",
+        "openCreate",
+        "(v) => handleToggle(record, v === true)",
+        "openEdit(record)",
+        "handleDelete(record)"
+      ],
+      "fieldsAndPanels": [
+        "告警规则",
+        "editingRule ? '编辑告警规则' : '创建告警规则'",
+        "规则名称",
+        "如: 节点CPU使用率过高",
+        "描述",
+        "描述此告警规则",
+        "告警级别",
+        "资源类型",
+        "指标名称",
+        "如: node_cpu_usage, pod_restart_count",
+        "条件",
+        "阈值",
+        "持续时间",
+        "如: 5m, 10m"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/monitoring.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/alert/rules.vue"
+      ],
+      "url": "/#/K8S/alert/rules",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/appstore/detail",
+      "name": "K8sAppDetail",
+      "title": "应用详情",
+      "hidden": true,
+      "component": "#/views/K8S/appstore/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "fetchData",
+        "goInstall()",
+        "goInstall(record.version)"
+      ],
+      "fieldsAndPanels": [
+        "应用详情",
+        "应用信息",
+        "Chart名称",
+        "最新版本",
+        "应用版本",
+        "版本数",
+        "主页",
+        "版本列表"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/helm.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/appstore/detail.vue"
+      ],
+      "url": "/#/K8S/appstore/detail",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/appstore/index",
+      "name": "K8sAppStore",
+      "title": "应用商店",
+      "hidden": false,
+      "component": "#/views/K8S/appstore/index.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "router.push('/K8S/appstore/releases')",
+        "router.push('/K8S/appstore/repos')",
+        "onModeChange",
+        "goTemplateInstall(ft)",
+        "selectCategory(cat)",
+        "goTemplateInstall(tpl)",
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchRepos();\n                }\n              ",
+        "fetchApps",
+        "goDetail(app)"
+      ],
+      "fieldsAndPanels": [
+        "应用商店",
+        "全部仓库",
+        "搜索应用..."
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/helm.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/appstore/index.vue"
+      ],
+      "url": "/#/K8S/appstore/index",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/appstore/install",
+      "name": "K8sAppInstall",
+      "title": "部署应用",
+      "hidden": true,
+      "component": "#/views/K8S/appstore/install.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "fetchNamespaces",
+        "handleInstall"
+      ],
+      "fieldsAndPanels": [
+        "部署应用",
+        "chartName ? '部署应用 — ' + chartName : '选择部署来源'",
+        "Chart",
+        "Chart 版本",
+        "Chart版本",
+        "Release 名称",
+        "Release名称（唯一标识）",
+        "命名空间",
+        "自定义Values (YAML)",
+        "# 可选: 在此输入自定义values.yaml配置覆盖默认值"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/helm.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/appstore/install.vue"
+      ],
+      "url": "/#/K8S/appstore/install",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/appstore/releases",
+      "name": "K8sHelmReleases",
+      "title": "已安装应用",
+      "hidden": true,
+      "component": "#/views/K8S/appstore/releases.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchData();\n                }\n              ",
+        "fetchData",
+        "openUpgrade(record)",
+        "openRollback(record)",
+        "handleUninstall(record)"
+      ],
+      "fieldsAndPanels": [
+        "已安装应用",
+        "升级Release",
+        "e.g. 1.2.0",
+        "回滚Release"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/helm.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/appstore/releases.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/appstore/releases",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/appstore/repos",
+      "name": "K8sHelmRepos",
+      "title": "Helm仓库",
+      "hidden": true,
+      "component": "#/views/K8S/appstore/repos.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchData();\n                }\n              ",
+        "fetchData",
+        "openAdd",
+        "handleSync(record)",
+        "handleDelete(record)"
+      ],
+      "fieldsAndPanels": [
+        "Helm仓库",
+        "Helm 仓库管理",
+        "添加 Helm 仓库",
+        "名称",
+        "如: bitnami",
+        "仓库URL",
+        "如: https://charts.bitnami.com/bitnami",
+        "描述",
+        "仓库描述（可选）",
+        "认证方式",
+        "用户名",
+        "密码"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/helm.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/appstore/repos.vue"
+      ],
+      "url": "/#/K8S/appstore/repos",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/appstore/template-install",
+      "name": "K8sTemplateInstall",
+      "title": "模板部署",
+      "hidden": true,
+      "component": "#/views/K8S/appstore/template-install.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "fetchTemplate",
+        "fetchClusters",
+        "fetchNamespaces",
+        "value => formData.clusterId = typeof value === 'number' ? value : null",
+        "handleInstall"
+      ],
+      "fieldsAndPanels": [
+        "模板部署",
+        "Chart",
+        "推荐版本",
+        "文档",
+        "目标集群",
+        "选择集群",
+        "命名空间",
+        "选择命名空间",
+        "Release 名称",
+        "Release名称（在命名空间内唯一）",
+        "Values 配置 (YAML)",
+        "# 自定义 values.yaml 配置"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/helm.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/appstore/template-install.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/appstore/template-install",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/cluster/create",
+      "name": "K8sClusterCreate",
+      "title": "添加集群",
+      "hidden": true,
+      "component": "#/views/K8S/cluster/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "handleTest",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "添加集群",
+        "添加Kubernetes集群",
+        "集群名称",
+        "请输入集群名称",
+        "集群描述",
+        "请输入集群描述",
+        "提供商",
+        "Kubeconfig",
+        "请粘贴kubeconfig文件内容（YAML格式）",
+        "SSH 主机地址",
+        "集群Master节点IP或域名，如 192.168.1.100",
+        "SSH 端口",
+        "SSH 用户名",
+        "SSH登录用户名，如 root",
+        "SSH 密码",
+        "SSH登录密码（与密钥二选一）",
+        "SSH 私钥",
+        "SSH私钥内容（与密码二选一，粘贴PEM格式私钥）",
+        "Kubernetes版本",
+        "节点数量",
+        "平台",
+        "API Server"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/cluster/create.vue"
+      ],
+      "url": "/#/K8S/cluster/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/cluster/detail/:id",
+      "name": "K8sClusterDetail",
+      "title": "集群详情",
+      "hidden": true,
+      "component": "#/views/K8S/cluster/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "openSshModal",
+        "fetchData",
+        "goBack",
+        "navigate(tile.path)",
+        "navigate('/K8S/node/list')",
+        "changeRankingSort",
+        "\n                      navigate(`/K8S/node/detail/${clusterId}/${record.name}`)\n                    "
+      ],
+      "fieldsAndPanels": [
+        "集群详情",
+        "节点状态",
+        "资源使用",
+        "集群信息",
+        "集群名称",
+        "K8s版本",
+        "API Server",
+        "提供商",
+        "网络插件",
+        "容器运行时",
+        "创建时间",
+        "Deployment",
+        "StatefulSet / DaemonSet",
+        "集群事件",
+        "配置 SSH 连接",
+        "SSH 主机地址",
+        "集群Master节点IP，如 192.168.1.100",
+        "SSH 端口",
+        "SSH 用户名",
+        "如 root",
+        "SSH 密码",
+        "与私钥二选一",
+        "SSH 私钥",
+        "PEM格式私钥（与密码二选一）"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/cluster/detail.vue"
+      ],
+      "url": "/#/K8S/cluster/detail/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/cluster/list",
+      "name": "K8sClusterList",
+      "title": "集群管理",
+      "hidden": false,
+      "component": "#/views/K8S/cluster/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchClusters",
+        "goCreate",
+        "goDetail(cluster)",
+        "goDetail(record as K8sCluster)",
+        "handleDelete(record as K8sCluster)"
+      ],
+      "fieldsAndPanels": [
+        "集群管理",
+        "搜索集群名称 / 提供商"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/cluster/list.vue"
+      ],
+      "url": "/#/K8S/cluster/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/config/configmap-detail/:clusterId/:namespace/:name",
+      "name": "K8sConfigMapDetail",
+      "title": "ConfigMap详情",
+      "hidden": true,
+      "component": "#/views/K8S/config/configmap-detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "ConfigMap详情",
+        "名称",
+        "命名空间",
+        "创建时间",
+        "标签"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/config.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/config/configmap-detail.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/config/configmap-detail/1/default/fixture-workload",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/config/configmap-list",
+      "name": "K8sConfigMapList",
+      "title": "配置字典",
+      "hidden": false,
+      "component": "#/views/K8S/config/configmap-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "openCreate",
+        "goDetail(record)",
+        "handleDelete(record)",
+        "removeDataEntry(idx)",
+        "addDataEntry",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "配置字典",
+        "配置字典 (ConfigMap)",
+        "创建ConfigMap",
+        "configmap名称",
+        "Key",
+        "Value",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/config.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/config/configmap-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/config/configmap-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/config/secret-detail/:clusterId/:namespace/:name",
+      "name": "K8sSecretDetail",
+      "title": "Secret详情",
+      "hidden": true,
+      "component": "#/views/K8S/config/secret-detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "Secret详情",
+        "名称",
+        "命名空间",
+        "类型",
+        "创建时间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/config.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/config/secret-detail.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/config/secret-detail/1/default/fixture-workload",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/config/secret-list",
+      "name": "K8sSecretList",
+      "title": "保密字典",
+      "hidden": true,
+      "component": "#/views/K8S/config/secret-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "openCreate",
+        "goDetail(record)",
+        "handleDelete(record)",
+        "removeDataEntry(idx)",
+        "addDataEntry",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "保密字典",
+        "保密字典 (Secret)",
+        "创建Secret",
+        "请输入Secret名称",
+        "Key",
+        "Value",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/config.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/config/secret-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/config/secret-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/crd/instances",
+      "name": "K8sCrdInstances",
+      "title": "CRD实例",
+      "hidden": true,
+      "component": "#/views/K8S/crd/instances.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'string') return;\n                  selectedNamespace = v;\n                  fetchData();\n                }\n              ",
+        "fetchData",
+        "goBack",
+        "fetchNamespaces",
+        "handleDelete(record)"
+      ],
+      "fieldsAndPanels": [
+        "CRD实例"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/crd.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/crd/instances.vue"
+      ],
+      "url": "/#/K8S/crd/instances",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/crd/list",
+      "name": "K8sCrdList",
+      "title": "自定义资源",
+      "hidden": false,
+      "component": "#/views/K8S/crd/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchData();\n                }\n              ",
+        "fetchData",
+        "goInstances(record)"
+      ],
+      "fieldsAndPanels": [
+        "自定义资源",
+        "自定义资源 (CRD)"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/crd.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/crd/list.vue"
+      ],
+      "url": "/#/K8S/crd/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/deploy/add-node/:planId",
+      "name": "K8sDeployAddNode",
+      "title": "扩容节点",
+      "hidden": true,
+      "component": "#/views/K8S/deploy/add-node.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "handleAdd"
+      ],
+      "fieldsAndPanels": [
+        "扩容节点",
+        "当前节点",
+        "节点IP",
+        "192.168.1.x",
+        "SSH端口",
+        "SSH用户",
+        "SSH密码",
+        "角色",
+        "主机名（可选）"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/deploy.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/deploy/add-node.vue"
+      ],
+      "url": "/#/K8S/deploy/add-node/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/deploy/create",
+      "name": "K8sDeployCreate",
+      "title": "创建部署计划",
+      "hidden": true,
+      "component": "#/views/K8S/deploy/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "addNode",
+        "removeNode(index)",
+        "() => router.push('/K8S/deploy/list')",
+        "prevStep",
+        "nextStep",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "创建部署计划",
+        "部署步骤",
+        "基本信息",
+        "节点配置",
+        "组件配置",
+        "确认部署",
+        "集群名称",
+        "如: production-cluster",
+        "Kubernetes 版本",
+        "部署模式",
+        "192.168.1.x",
+        "可选",
+        "网络插件 (CNI)",
+        "容器运行时 (CRI)",
+        "Pod CIDR",
+        "Service CIDR",
+        "存储插件",
+        "私有镜像仓库",
+        "如 10.0.0.1:80，留空使用公共镜像源",
+        "可选组件"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/deploy.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/deploy/create.vue"
+      ],
+      "url": "/#/K8S/deploy/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/deploy/detail/:id",
+      "name": "K8sDeployDetail",
+      "title": "部署详情",
+      "hidden": true,
+      "component": "#/views/K8S/deploy/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "handleValidate",
+        "router.push(`/K8S/deploy/add-node/${planId}`)",
+        "handleExecute",
+        "fetchData",
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "部署详情",
+        "部署进度",
+        "计划信息",
+        "K8s版本",
+        "部署模式",
+        "网络插件",
+        "容器运行时",
+        "Pod CIDR",
+        "Service CIDR",
+        "节点列表",
+        "部署日志"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/deploy.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/deploy/detail.vue"
+      ],
+      "url": "/#/K8S/deploy/detail/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/deploy/list",
+      "name": "K8sDeployList",
+      "title": "集群部署",
+      "hidden": false,
+      "component": "#/views/K8S/deploy/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "goCreate",
+        "goDetail(record)",
+        "handleDelete(record)"
+      ],
+      "fieldsAndPanels": [
+        "集群部署"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/deploy.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/deploy/list.vue"
+      ],
+      "url": "/#/K8S/deploy/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/devops/projects",
+      "name": "K8sDevOps",
+      "title": "DevOps流水线",
+      "hidden": false,
+      "component": "#/views/K8S/devops/projects.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchProjects",
+        "openCreate",
+        "goDetail(project)"
+      ],
+      "fieldsAndPanels": [
+        "DevOps流水线",
+        "搜索工程名称/描述",
+        "创建 DevOps 工程",
+        "请输入工程名称",
+        "请输入工程描述（可选）",
+        "例如: http://192.168.1.100:8080",
+        "请输入 Jenkins 用户名",
+        "请输入 Jenkins API Token",
+        "关联 K8s 集群 ID（可选）"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/devops.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/devops/projects.vue"
+      ],
+      "url": "/#/K8S/devops/projects",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/devops/projects/:projectId",
+      "name": "K8sDevOpsProjectDetail",
+      "title": "工程详情",
+      "hidden": true,
+      "component": "#/views/K8S/devops/project-detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchProject",
+        "goBack",
+        "handleTabChange",
+        "goCreatePipeline",
+        "goPipelineDetail(record)",
+        "handleRunPipeline(record)",
+        "handleDeletePipeline(record)",
+        "openCredentialModal",
+        "handleDeleteCredential(record)",
+        "enterEditMode",
+        "handleTestConnection",
+        "handleSaveSettings",
+        "cancelEditMode",
+        "handleDeleteProject",
+        "handleClick(stage)"
+      ],
+      "fieldsAndPanels": [
+        "工程详情",
+        "确定要删除该流水线吗？",
+        "确定要删除该凭证吗？",
+        "创建凭证",
+        "名称",
+        "请输入凭证名称",
+        "类型",
+        "描述",
+        "请输入描述",
+        "用户名",
+        "请输入用户名",
+        "密码",
+        "请输入密码",
+        "私钥",
+        "请粘贴 SSH 私钥",
+        "密码短语",
+        "请输入密码短语（可选）",
+        "令牌",
+        "请输入访问令牌",
+        "Kubeconfig",
+        "请粘贴 Kubeconfig 内容",
+        "工程名称",
+        "Jenkins URL",
+        "Jenkins 用户",
+        "Jenkins Token",
+        "创建时间",
+        "请输入工程名称",
+        "例如: http://jenkins.example.com",
+        "请输入 Jenkins 用户名",
+        "请输入 Jenkins API Token",
+        "`${stage.displayName || stage.name} | ${getStageStatus(stage)} | ${formatDuration(stage.durationInMillis)}`"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/devops.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/devops/project-detail.vue",
+        "apps/web-antd/src/views/K8S/components/StagePipeline.vue"
+      ],
+      "url": "/#/K8S/devops/projects/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/devops/projects/:projectId/pipeline/create",
+      "name": "K8sDevOpsPipelineCreate",
+      "title": "创建流水线",
+      "hidden": true,
+      "component": "#/views/K8S/devops/pipeline-create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "advancedVisible = !advancedVisible",
+        "handleSubmit",
+        "switchMode('visual')",
+        "switchMode('code')",
+        "applyFullstackTemplate",
+        "applyTemplate(tpl)",
+        "selectedStageId = stage.id",
+        "addStage",
+        "moveStage(selectedStage.id, 'up')",
+        "moveStage(selectedStage.id, 'down')",
+        "removeStep(idx)",
+        "addStep"
+      ],
+      "fieldsAndPanels": [
+        "创建流水线",
+        "pageTitle",
+        "名称",
+        "请输入流水线名称",
+        "描述",
+        "请输入流水线描述",
+        "类型",
+        "代码来源",
+        "仓库地址",
+        "https://github.com/your-org/your-repo.git",
+        "分支",
+        "main",
+        "凭证",
+        "请选择凭证（可选）",
+        "Jenkinsfile",
+        "禁止并发构建",
+        "定时触发",
+        "H/15 * * * *",
+        "删除阶段",
+        "上移",
+        "下移",
+        "如: Build",
+        "step.type === 'sh' ? '如: npm install' : step.type === 'echo' ? '输出内容' : '命令'",
+        "删除步骤"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/devops.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/devops/pipeline-create.vue",
+        "apps/web-antd/src/views/K8S/components/PipelineEditor.vue",
+        "apps/web-antd/src/views/K8S/components/JenkinsfileEditor.vue"
+      ],
+      "url": "/#/K8S/devops/projects/1/pipeline/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/devops/projects/:projectId/pipelines/:pipelineId",
+      "name": "K8sDevOpsPipelineDetail",
+      "title": "流水线详情",
+      "hidden": true,
+      "component": "#/views/K8S/devops/pipeline-detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "handleTriggerRun",
+        "handleEdit",
+        "handleDelete",
+        "handleViewRun(latestRun.id)",
+        "handleViewRun(record.id)",
+        "handleStopRun(record.id)",
+        "handleClick(stage)"
+      ],
+      "fieldsAndPanels": [
+        "流水线详情",
+        "查看详情",
+        "停止运行",
+        "名称",
+        "类型",
+        "代码源类型",
+        "代码仓库地址",
+        "分支",
+        "禁止并发运行",
+        "定时触发",
+        "Jenkins Job",
+        "状态",
+        "创建时间",
+        "`${stage.displayName || stage.name} | ${getStageStatus(stage)} | ${formatDuration(stage.durationInMillis)}`"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/devops.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/devops/pipeline-detail.vue",
+        "apps/web-antd/src/views/K8S/components/StagePipeline.vue",
+        "apps/web-antd/src/views/K8S/components/JenkinsfileEditor.vue"
+      ],
+      "url": "/#/K8S/devops/projects/1/pipelines/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/devops/projects/:projectId/pipelines/:pipelineId/runs/:runId",
+      "name": "K8sDevOpsRunDetail",
+      "title": "运行详情",
+      "hidden": true,
+      "component": "#/views/K8S/devops/run-detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "router.back()",
+        "handleStop",
+        "handleReplay",
+        "fetchAll",
+        "downloadLog",
+        "switchLogTab('full')",
+        "switchLogTab(String(stage.id))",
+        "handleClick(stage)"
+      ],
+      "fieldsAndPanels": [
+        "运行详情",
+        "运行信息",
+        "状态",
+        "触发方式",
+        "触发人",
+        "开始时间",
+        "结束时间",
+        "持续时间",
+        "阶段可视化",
+        "搜索日志...",
+        "`${stage.displayName || stage.name} | ${getStageStatus(stage)} | ${formatDuration(stage.durationInMillis)}`"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/devops.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/devops/run-detail.vue",
+        "apps/web-antd/src/views/K8S/components/StagePipeline.vue"
+      ],
+      "url": "/#/K8S/devops/projects/1/pipelines/1/runs/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/hpa/list",
+      "name": "K8sHpaList",
+      "title": "弹性伸缩",
+      "hidden": false,
+      "component": "#/views/K8S/hpa/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "openCreate",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "弹性伸缩",
+        "弹性伸缩 (HPA)",
+        "创建弹性伸缩策略",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/hpa.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/hpa/list.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/hpa/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/ingress/create",
+      "name": "K8sIngressCreate",
+      "title": "创建路由",
+      "hidden": true,
+      "component": "#/views/K8S/ingress/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "创建路由",
+        "创建 Ingress",
+        "YAML定义"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/ingress.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/ingress/create.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/ingress/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/ingress/list",
+      "name": "K8sIngressList",
+      "title": "路由",
+      "hidden": false,
+      "component": "#/views/K8S/ingress/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "goCreate",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "路由",
+        "路由 (Ingress)",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/ingress.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/ingress/list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/ingress/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/job/detail/:clusterId/:namespace/:type/:name",
+      "name": "K8sJobDetail",
+      "title": "任务详情",
+      "hidden": true,
+      "component": "#/views/K8S/job/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "handleRerun",
+        "handleTrigger",
+        "fetchData",
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "任务详情",
+        "Job属性",
+        "名称",
+        "命名空间",
+        "状态",
+        "活跃",
+        "成功",
+        "失败",
+        "退避限制",
+        "完成数",
+        "并行度",
+        "开始时间",
+        "完成时间",
+        "创建时间",
+        "CronJob属性",
+        "调度表达式",
+        "暂停",
+        "并发策略",
+        "成功保留数",
+        "失败保留数",
+        "上次调度",
+        "上次成功",
+        "活跃Job数",
+        "容器",
+        "容器名",
+        "镜像",
+        "命令",
+        "关联Pod",
+        "Pod名称",
+        "最近执行的Job",
+        "Job名称"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/job.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/job/detail.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/job/detail/1/default/deployment/fixture-workload",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/job/list",
+      "name": "K8sJobList",
+      "title": "任务",
+      "hidden": false,
+      "component": "#/views/K8S/job/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchJobs",
+        "openCreate",
+        "goDetail(record, 'Job')",
+        "handleRerun(record)",
+        "handleDeleteJob(record)",
+        "goDetail(record, 'CronJob')",
+        "handleTrigger(record)",
+        "handleDeleteCronJob(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "任务",
+        "任务管理",
+        "创建任务",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/job.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/job/list.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/job/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/monitoring/api-server",
+      "name": "K8sApiServerMonitoring",
+      "title": "API Server监控",
+      "hidden": true,
+      "component": "#/views/K8S/monitoring/api-server.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchData();\n                }\n              ",
+        "fetchData"
+      ],
+      "fieldsAndPanels": [
+        "API Server监控",
+        "API Server 监控"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/monitoring.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/monitoring/api-server.vue"
+      ],
+      "url": "/#/K8S/monitoring/api-server",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/monitoring/app-resources",
+      "name": "K8sAppResources",
+      "title": "应用资源",
+      "hidden": true,
+      "component": "#/views/K8S/monitoring/app-resources.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "应用资源",
+        "应用资源监控",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/monitoring.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/monitoring/app-resources.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/monitoring/app-resources",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/monitoring/cluster-status",
+      "name": "K8sClusterStatus",
+      "title": "集群状态",
+      "hidden": false,
+      "component": "#/views/K8S/monitoring/cluster-status.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchData();\n                }\n              ",
+        "fetchData",
+        "router.push('/K8S/monitoring/prometheus-config')"
+      ],
+      "fieldsAndPanels": [
+        "集群状态",
+        "节点",
+        "Pod",
+        "内存使用",
+        "磁盘使用",
+        "CPU使用率",
+        "内存使用率",
+        "磁盘使用率",
+        "Pod使用率",
+        "节点使用排名 Top 5"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/monitoring.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/monitoring/cluster-status.vue"
+      ],
+      "url": "/#/K8S/monitoring/cluster-status",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/monitoring/etcd",
+      "name": "K8sEtcdMonitoring",
+      "title": "ETCD监控",
+      "hidden": true,
+      "component": "#/views/K8S/monitoring/etcd.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchData();\n                }\n              ",
+        "fetchData"
+      ],
+      "fieldsAndPanels": [
+        "ETCD监控",
+        "ETCD 监控"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/monitoring.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/monitoring/etcd.vue"
+      ],
+      "url": "/#/K8S/monitoring/etcd",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/monitoring/node-detail/:clusterId/:nodeName",
+      "name": "K8sMonitoringNodeDetail",
+      "title": "节点监控",
+      "hidden": true,
+      "component": "#/views/K8S/monitoring/node-detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                (v) => {\n                  if (typeof v !== 'number') return;\n                  selectedClusterId = v;\n                  fetchNodeList();\n                }\n              ",
+        "fetchData",
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "节点监控",
+        "集群",
+        "节点"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/node.ts",
+        "apps/web-antd/src/views/K8S/api/monitoring.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/monitoring/node-detail.vue"
+      ],
+      "url": "/#/K8S/monitoring/node-detail/1/fixture-node",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/monitoring/prometheus-config",
+      "name": "K8sPrometheusConfig",
+      "title": "Prometheus配置",
+      "hidden": true,
+      "component": "#/views/K8S/monitoring/prometheus-config.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "onClusterChange",
+        "handleSave",
+        "handleTest"
+      ],
+      "fieldsAndPanels": [
+        "Prometheus配置",
+        "Prometheus 监控配置",
+        "选择集群",
+        "Prometheus地址",
+        "http://prometheus.example.com:9090",
+        "用户名（可选）",
+        "Basic Auth用户名",
+        "密码（可选）",
+        "Basic Auth密码"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/monitoring.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/monitoring/prometheus-config.vue"
+      ],
+      "url": "/#/K8S/monitoring/prometheus-config",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/namespace/create",
+      "name": "K8sNamespaceCreate",
+      "title": "创建命名空间",
+      "hidden": true,
+      "component": "#/views/K8S/namespace/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "创建命名空间",
+        "命名空间名称",
+        "请输入命名空间名称（小写字母、数字、连字符）"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/namespace.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/namespace/create.vue"
+      ],
+      "url": "/#/K8S/namespace/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/namespace/detail/:clusterId/:namespace",
+      "name": "K8sNamespaceDetail",
+      "title": "命名空间详情",
+      "hidden": true,
+      "component": "#/views/K8S/namespace/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "goBack",
+        "navigate(tile.path)",
+        "\n                    navigate(\n                      `/K8S/workload/list?clusterId=${clusterId}&namespace=${namespaceName}`,\n                    )\n                  ",
+        "\n                    navigate(\n                      `/K8S/pod/list?clusterId=${clusterId}&namespace=${namespaceName}`,\n                    )\n                  ",
+        "\n                    navigate(\n                      `/K8S/service/list?clusterId=${clusterId}&namespace=${namespaceName}`,\n                    )\n                  ",
+        "\n                    navigate(\n                      `/K8S/config/configmap-list?clusterId=${clusterId}&namespace=${namespaceName}`,\n                    )\n                  "
+      ],
+      "fieldsAndPanels": [
+        "命名空间详情",
+        "资源配额使用",
+        "快捷操作",
+        "标签 (Labels)",
+        "注解 (Annotations)"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/namespace.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/namespace/detail.vue"
+      ],
+      "url": "/#/K8S/namespace/detail/1/default",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/namespace/list",
+      "name": "K8sNamespaceList",
+      "title": "命名空间",
+      "hidden": false,
+      "component": "#/views/K8S/namespace/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "handleClusterChange",
+        "fetchNamespaces",
+        "goCreate",
+        "goDetail(record)",
+        "handleDelete(record)"
+      ],
+      "fieldsAndPanels": [
+        "命名空间",
+        "命名空间管理",
+        "选择集群"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/namespace/list.vue"
+      ],
+      "url": "/#/K8S/namespace/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/network/policy-list",
+      "name": "K8sNetworkPolicyList",
+      "title": "网络策略",
+      "hidden": false,
+      "component": "#/views/K8S/network/policy-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "openCreate",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "网络策略",
+        "网络策略 (NetworkPolicy)",
+        "创建网络策略",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/network.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/network/policy-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/network/policy-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/node/detail/:clusterId/:nodeName",
+      "name": "K8sNodeDetail",
+      "title": "节点详情",
+      "hidden": true,
+      "component": "#/views/K8S/node/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goMonitoring",
+        "fetchData",
+        "goBack",
+        "goPodDetail(record)"
+      ],
+      "fieldsAndPanels": [
+        "节点详情",
+        "节点属性",
+        "节点名称",
+        "内部IP",
+        "主机名",
+        "操作系统",
+        "内核版本",
+        "容器运行时",
+        "Kubelet版本",
+        "架构",
+        "CPU容量",
+        "内存容量",
+        "Pod容量",
+        "创建时间",
+        "节点状况",
+        "类型",
+        "状态",
+        "原因",
+        "消息",
+        "污点 (Taints)",
+        "标签 (Labels)"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/node.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/node/detail.vue"
+      ],
+      "url": "/#/K8S/node/detail/1/fixture-node",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/node/list",
+      "name": "K8sNodeList",
+      "title": "节点管理",
+      "hidden": false,
+      "component": "#/views/K8S/node/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "handleClusterChange",
+        "fetchNodes",
+        "goDetail(record as K8sNode)",
+        "handleCordon(record as K8sNode)"
+      ],
+      "fieldsAndPanels": [
+        "节点管理",
+        "选择集群"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/node.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/node/list.vue"
+      ],
+      "url": "/#/K8S/node/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/pod/detail/:clusterId/:namespace/:podName",
+      "name": "K8sPodDetail",
+      "title": "Pod详情",
+      "hidden": true,
+      "component": "#/views/K8S/pod/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\r\n                  router.push(\r\n                    `/K8S/terminal/index?clusterId=${clusterId}&namespace=${namespace}&podName=${podName}`,\r\n                  )\r\n                ",
+        "fetchData",
+        "goBack",
+        "handleTabChange",
+        "refreshPod",
+        "\r\n                        router.push(\r\n                          `/K8S/node/detail/${clusterId}/${podInfo.nodeName}`,\r\n                        )\r\n                      ",
+        "\r\n                    router.push(\r\n                      `/K8S/workload/detail/${clusterId}/${namespace}/${owner.kind}/${owner.name}`,\r\n                    )\r\n                  ",
+        "refreshContainers",
+        "handleContainerChange",
+        "fetchLogs",
+        "refreshEvents"
+      ],
+      "fieldsAndPanels": [
+        "Pod详情",
+        "Pod属性",
+        "名称",
+        "命名空间",
+        "状态",
+        "就绪",
+        "重启次数",
+        "Pod IP",
+        "Host IP",
+        "节点",
+        "服务账户",
+        "重启策略",
+        "DNS策略",
+        "创建时间",
+        "所属工作负载",
+        "条件",
+        "类型",
+        "原因",
+        "时间",
+        "日志容器",
+        "详情"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/types.ts",
+        "apps/web-antd/src/views/K8S/api/pod.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/pod/detail.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/pod/detail/1/default/fixture-pod",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/pod/list",
+      "name": "K8sPodList",
+      "title": "容器组",
+      "hidden": false,
+      "component": "#/views/K8S/pod/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchPods",
+        "goDetail(record)",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "容器组",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/pod.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/pod/list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/pod/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/rbac/clusterrole-list",
+      "name": "K8sClusterRoleList",
+      "title": "集群角色",
+      "hidden": false,
+      "component": "#/views/K8S/rbac/clusterrole-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "handleDeleteCR(record)",
+        "handleDeleteCRB(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "集群角色",
+        "集群角色 (ClusterRole)",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/rbac.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/rbac/clusterrole-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/rbac/clusterrole-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/rbac/role-list",
+      "name": "K8sRoleList",
+      "title": "角色",
+      "hidden": true,
+      "component": "#/views/K8S/rbac/role-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "handleDeleteRole(record)",
+        "handleDeleteRB(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "角色",
+        "角色 (Role)",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/rbac.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/rbac/role-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/rbac/role-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/rbac/serviceaccount-list",
+      "name": "K8sServiceAccountList",
+      "title": "服务账户",
+      "hidden": true,
+      "component": "#/views/K8S/rbac/serviceaccount-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "服务账户",
+        "服务账户 (ServiceAccount)",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/rbac.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/rbac/serviceaccount-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/rbac/serviceaccount-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/service/create",
+      "name": "K8sServiceCreate",
+      "title": "创建服务",
+      "hidden": true,
+      "component": "#/views/K8S/service/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "创建服务",
+        "创建 Service",
+        "YAML定义"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/service.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/service/create.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/service/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/service/detail/:clusterId/:namespace/:name",
+      "name": "K8sServiceDetail",
+      "title": "服务详情",
+      "hidden": true,
+      "component": "#/views/K8S/service/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "goBack"
+      ],
+      "fieldsAndPanels": [
+        "服务详情",
+        "服务属性",
+        "名称",
+        "命名空间",
+        "类型",
+        "Cluster IP",
+        "创建时间",
+        "端口",
+        "目标端口",
+        "NodePort",
+        "协议",
+        "选择器",
+        "IP",
+        "Pod",
+        "节点",
+        "就绪"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/service.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/service/detail.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/service/detail/1/default/fixture-workload",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/service/list",
+      "name": "K8sServiceList",
+      "title": "服务",
+      "hidden": false,
+      "component": "#/views/K8S/service/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "goCreate",
+        "goDetail(record)",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "服务",
+        "服务 (Service)",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/service.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/service/list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/service/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/storage/pv-list",
+      "name": "K8sPvList",
+      "title": "持久卷",
+      "hidden": true,
+      "component": "#/views/K8S/storage/pv-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "持久卷",
+        "持久卷 (PV)",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/storage.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/storage/pv-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/storage/pv-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/storage/pvc-create",
+      "name": "K8sPvcCreate",
+      "title": "创建存储卷",
+      "hidden": true,
+      "component": "#/views/K8S/storage/pvc-create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "创建存储卷",
+        "创建 PVC",
+        "YAML定义"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/storage.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/storage/pvc-create.vue"
+      ],
+      "url": "/#/K8S/storage/pvc-create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/storage/pvc-list",
+      "name": "K8sPvcList",
+      "title": "存储卷",
+      "hidden": false,
+      "component": "#/views/K8S/storage/pvc-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "goCreate",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "存储卷",
+        "存储卷声明 (PVC)",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/storage.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/storage/pvc-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/storage/pvc-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/storage/sc-list",
+      "name": "K8sScList",
+      "title": "存储类",
+      "hidden": true,
+      "component": "#/views/K8S/storage/sc-list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchData",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "存储类",
+        "存储类 (StorageClass)",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/storage.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/storage/sc-list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/storage/sc-list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/terminal/index",
+      "name": "K8sTerminal",
+      "title": "终端",
+      "hidden": false,
+      "component": "#/views/K8S/terminal/index.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\r\n                (v) => {\r\n                  selectedClusterId = typeof v === 'number' ? v : null;\r\n                  fetchNamespaces();\r\n                }\r\n              ",
+        "\r\n                (v) => {\r\n                  selectedNamespace = typeof v === 'string' ? v : '';\r\n                  fetchPods();\r\n                }\r\n              ",
+        "\r\n                (v) => {\r\n                  selectedPod = typeof v === 'string' ? v : '';\r\n                  updateContainers();\r\n                }\r\n              ",
+        "\r\n                (v) => {\r\n                  disconnectTerminal();\r\n                  selectedContainer = typeof v === 'string' ? v : '';\r\n                }\r\n              ",
+        "connectTerminal",
+        "disconnectTerminal",
+        "clearTerminal"
+      ],
+      "fieldsAndPanels": [
+        "终端",
+        "终端 (Terminal)",
+        "集群",
+        "命名空间",
+        "Pod",
+        "容器"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/pod.ts",
+        "apps/web-antd/src/views/K8S/api/terminal.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/terminal/index.vue"
+      ],
+      "url": "/#/K8S/terminal/index",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/workload/create",
+      "name": "K8sWorkloadCreate",
+      "title": "创建工作负载",
+      "hidden": true,
+      "component": "#/views/K8S/workload/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "goBack",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "创建工作负载",
+        "`创建 ${kindLabel[kind] || 'Deployment'}`",
+        "YAML定义"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/workload.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/workload/create.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/workload/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/workload/detail/:clusterId/:namespace/:kind/:name",
+      "name": "K8sWorkloadDetail",
+      "title": "工作负载详情",
+      "hidden": true,
+      "component": "#/views/K8S/workload/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "\n                    router.push(\n                      `/K8S/namespace/detail/${clusterId}/${namespace}`,\n                    )\n                  ",
+        "handleScale",
+        "handleRestart",
+        "fetchData",
+        "goBack",
+        "handleRollback(record.revision)",
+        "goPodDetail(record)"
+      ],
+      "fieldsAndPanels": [
+        "工作负载详情",
+        "属性",
+        "名称",
+        "命名空间",
+        "类型",
+        "状态",
+        "副本数",
+        "策略",
+        "创建时间",
+        "容器",
+        "标签 (Labels)"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/workload.ts",
+        "apps/web-antd/src/views/K8S/api/pod.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/workload/detail.vue",
+        "apps/web-antd/src/views/K8S/components/YamlEditor.vue"
+      ],
+      "url": "/#/K8S/workload/detail/1/default/deployment/fixture-workload",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "K8S",
+      "path": "/K8S/workload/list",
+      "name": "K8sWorkloadList",
+      "title": "工作负载",
+      "hidden": false,
+      "component": "#/views/K8S/workload/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/K8S.ts",
+      "operations": [
+        "fetchWorkloads",
+        "goCreate",
+        "goDetail(record)",
+        "handleScale(record)",
+        "handleRestart(record)",
+        "handleDelete(record)",
+        "onClusterChange",
+        "onNamespaceChange"
+      ],
+      "fieldsAndPanels": [
+        "工作负载",
+        "选择集群",
+        "选择命名空间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/K8S/api/workload.ts",
+        "apps/web-antd/src/views/K8S/api/cluster.ts",
+        "apps/web-antd/src/views/K8S/api/namespace.ts",
+        "apps/web-antd/src/views/K8S/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/K8S/workload/list.vue",
+        "apps/web-antd/src/views/K8S/components/K8sSelector.vue"
+      ],
+      "url": "/#/K8S/workload/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "MON",
+      "path": "/MON/alert/list",
+      "name": "AlertList",
+      "title": "告警历史",
+      "hidden": false,
+      "component": "#/views/MON/alert/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/MON.ts",
+      "operations": [
+        "onStatusChange",
+        "showDetail(_record as AlertHistory)",
+        "handleAcknowledge(_record as AlertHistory)",
+        "handleResolve(_record as AlertHistory)"
+      ],
+      "fieldsAndPanels": [
+        "告警历史",
+        "状态筛选"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/MON/api/alert.ts",
+        "apps/web-antd/src/views/MON/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/MON/alert/list.vue"
+      ],
+      "url": "/#/MON/alert/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "MON",
+      "path": "/MON/alert/rules",
+      "name": "AlertRules",
+      "title": "告警规则",
+      "hidden": false,
+      "component": "#/views/MON/alert/rules.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/MON.ts",
+      "operations": [
+        "showCreate",
+        "handleToggle(_record as AlertRule)",
+        "showEdit(_record as AlertRule)",
+        "handleDelete(_record as AlertRule)"
+      ],
+      "fieldsAndPanels": [
+        "告警规则",
+        "modalTitle",
+        "规则名称",
+        "如: CPU使用率过高",
+        "关联服务",
+        "如: HDFS",
+        "PromQL 表达式",
+        "如: node_cpu_usage_percent",
+        "比较方式",
+        "阈值",
+        "持续时间(秒)",
+        "告警级别",
+        "描述"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/MON/api/alert.ts",
+        "apps/web-antd/src/views/MON/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/MON/alert/rules.vue"
+      ],
+      "url": "/#/MON/alert/rules",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "MON",
+      "path": "/MON/dashboard",
+      "name": "MonDashboard",
+      "title": "监控面板",
+      "hidden": false,
+      "component": "#/views/MON/dashboard.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/MON.ts",
+      "operations": [],
+      "fieldsAndPanels": [
+        "监控面板",
+        "告警总数",
+        "未处理告警",
+        "严重告警",
+        "告警规则数",
+        "最近告警"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/MON/api/alert.ts",
+        "apps/web-antd/src/views/MON/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/MON/dashboard.vue"
+      ],
+      "url": "/#/MON/dashboard",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "REG",
+      "path": "/REG/deploy/logs",
+      "name": "DeployLogs",
+      "title": "部署日志",
+      "hidden": false,
+      "component": "#/views/REG/deploy/logs.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/REG.ts",
+      "operations": [
+        "handleRegistryChange"
+      ],
+      "fieldsAndPanels": [
+        "部署日志",
+        "选择仓库"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/REG/api/types.ts",
+        "apps/web-antd/src/views/REG/api/registry.ts",
+        "apps/web-antd/src/views/REG/api/deploy.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/REG/deploy/logs.vue"
+      ],
+      "url": "/#/REG/deploy/logs",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "REG",
+      "path": "/REG/registry/create",
+      "name": "RegistryCreate",
+      "title": "创建仓库",
+      "hidden": true,
+      "component": "#/views/REG/registry/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/REG.ts",
+      "operations": [
+        "router.push('/REG/registry/list')",
+        "value => formData.servicePort = typeof value === 'number' ? value : null",
+        "handleCheckPort",
+        "value => formData.clusterId = typeof value === 'number' ? value : null",
+        "prevStep",
+        "nextStep",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "创建仓库",
+        "s.title",
+        "仓库名称",
+        "请输入仓库名称",
+        "仓库类型",
+        "版本",
+        "留空则使用最新版本",
+        "描述",
+        "请输入描述",
+        "部署方式",
+        "主机地址",
+        "IP 地址或主机名",
+        "SSH 端口",
+        "SSH 用户",
+        "root",
+        "SSH 密码",
+        "请输入密码",
+        "服务端口",
+        "String(getDefaultPort())",
+        "安装路径",
+        "getDefaultInstallPath()",
+        "集群 ID",
+        "K8s 集群 ID",
+        "命名空间",
+        "default",
+        "Release 名称",
+        "自动生成",
+        "Helm Values (YAML)",
+        "自定义 Helm values.yaml 内容",
+        "管理员用户名",
+        "管理员密码",
+        "请输入管理员密码",
+        "启用 SSL",
+        "访问地址",
+        "http://host:port (可选，自动生成)"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/REG/api/registry.ts",
+        "apps/web-antd/src/views/REG/api/deploy.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/REG/registry/create.vue"
+      ],
+      "url": "/#/REG/registry/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "REG",
+      "path": "/REG/registry/detail/:id",
+      "name": "RegistryDetail",
+      "title": "仓库详情",
+      "hidden": true,
+      "component": "#/views/REG/registry/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/REG.ts",
+      "operations": [
+        "router.push('/REG/registry/list')",
+        "handleTabChange",
+        "handleCreateProject",
+        "\n                        handleDeleteProject(record.project_id || record.id)\n                      ",
+        "handleProjectFilter('')",
+        "handleProjectFilter(p.name || p.project_name)",
+        "fetchArtifacts(record.name)",
+        "\n                      selectedRepo = '';\n                      artifacts = [];\n                    ",
+        "handleDeleteTag(selectedRepo, t)",
+        "handleDeleteUser(record.user_id || record.id)",
+        "syncMethod = 'harbor_replication'",
+        "syncMethod = 'skopeo'",
+        "handleSync",
+        "batchMode = 'list'",
+        "batchMode = 'yaml'",
+        "fillPresetImages",
+        "handleExtractImages",
+        "batchSyncMethod = 'harbor_replication'",
+        "batchSyncMethod = 'skopeo'",
+        "handleBatchSync",
+        "handleRefreshSync",
+        "handleRetrySyncTask(record.id)",
+        "handleDeleteSyncTask(record.id)",
+        "showEndpointForm = !showEndpointForm",
+        "handleCreateEndpoint",
+        "handlePingEndpoint(record)",
+        "handleDeleteEndpoint(record.id)",
+        "showPolicyForm = !showPolicyForm",
+        "value => policyForm.endpointId = typeof value === 'number' ? value : null",
+        "handleCreatePolicy",
+        "handleTriggerPolicy(record.id)",
+        "fetchExecutions(record.id)",
+        "handleDeletePolicy(record.id)",
+        "\n                      selectedPolicyId = null;\n                      executions = [];\n                      execTasks = [];\n                    ",
+        "fetchExecTasks(record.id)",
+        "handleUpgrade"
+      ],
+      "fieldsAndPanels": [
+        "仓库详情",
+        "仓库名称",
+        "仓库类型",
+        "版本",
+        "部署方式",
+        "访问地址",
+        "管理员用户",
+        "SSL",
+        "目标主机",
+        "安装路径",
+        "集群 ID",
+        "命名空间",
+        "描述",
+        "创建时间",
+        "更新时间",
+        "项目名称",
+        "record.digest",
+        "源镜像地址，如 nginx:1.25 或 gcr.io/google-samples/hello-app:1.0",
+        "目标项目 (默认 library)",
+        "library",
+        "record.statusDetail",
+        "名称",
+        "如 Docker Hub",
+        "URL",
+        "https://hub.docker.com",
+        "类型",
+        "不安全",
+        "策略名称",
+        "如 sync-nginx-from-hub",
+        "源仓库",
+        "选择源仓库",
+        "镜像名称过滤",
+        "如 library/nginx (留空匹配全部)",
+        "标签过滤",
+        "如 latest 或 1.* (留空匹配全部)",
+        "目标项目",
+        "如 library (留空保持原路径)",
+        "定时触发 (Cron)",
+        "如 0 0 * * * (留空为手动触发)",
+        "record.src_registry.url || ''",
+        "Helm Values"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/REG/api/types.ts",
+        "apps/web-antd/src/views/REG/api/registry.ts",
+        "apps/web-antd/src/views/REG/api/deploy.ts",
+        "apps/web-antd/src/views/REG/api/project.ts",
+        "apps/web-antd/src/views/REG/api/repository.ts",
+        "apps/web-antd/src/views/REG/api/sync.ts",
+        "apps/web-antd/src/views/REG/api/replication.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/REG/registry/detail.vue"
+      ],
+      "url": "/#/REG/registry/detail/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "REG",
+      "path": "/REG/registry/list",
+      "name": "RegistryList",
+      "title": "仓库总览",
+      "hidden": false,
+      "component": "#/views/REG/registry/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/REG.ts",
+      "operations": [
+        "goCreate",
+        "goDetail(record.id)",
+        "handleCancelDeploy(record as Registry)",
+        "handleDeploy(record as Registry)",
+        "handleAction(record as Registry, 'stop', '停止')",
+        "handleAction(record as Registry, 'restart', '重启')",
+        "handleAction(record as Registry, 'start', '启动')",
+        "handleAction(record as Registry, 'undeploy', '卸载')",
+        "handleDelete(record as Registry)"
+      ],
+      "fieldsAndPanels": [
+        "仓库总览",
+        "仓库管理"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/REG/api/types.ts",
+        "apps/web-antd/src/views/REG/api/registry.ts",
+        "apps/web-antd/src/views/REG/api/deploy.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/REG/registry/list.vue"
+      ],
+      "url": "/#/REG/registry/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "SVM",
+      "path": "/SVM/command/list",
+      "name": "CommandList",
+      "title": "指令中心",
+      "hidden": false,
+      "component": "#/views/SVM/command/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/SVM.ts",
+      "operations": [
+        "onClusterChange",
+        "fetchCommands",
+        "showDetail(_record as Command)",
+        "handleCancel(_record as Command)"
+      ],
+      "fieldsAndPanels": [
+        "指令中心",
+        "选择集群",
+        "detailTitle"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/SVM/api/command.ts",
+        "apps/web-antd/src/views/CLM/api/cluster.ts",
+        "apps/web-antd/src/views/SVM/api/types.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/SVM/command/list.vue"
+      ],
+      "url": "/#/SVM/command/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "SVM",
+      "path": "/SVM/framework/list",
+      "name": "FrameworkList",
+      "title": "框架管理",
+      "hidden": false,
+      "component": "#/views/SVM/framework/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/SVM.ts",
+      "operations": [
+        "fetchFrameworks",
+        "showCreate",
+        "showServiceDefs(_record as Framework)",
+        "showEdit(_record as Framework)",
+        "handleDelete(_record as Framework)",
+        "showCreateService",
+        "showRoleDefs(_record as ServiceDef)",
+        "showEditService(_record as ServiceDef)",
+        "handleDeleteService(_record as ServiceDef)",
+        "showCreateRole",
+        "showEditRole(_record as RoleDef)",
+        "handleDeleteRole(_record as RoleDef)"
+      ],
+      "fieldsAndPanels": [
+        "框架管理",
+        "modalTitle",
+        "框架名称",
+        "如: Hadoop",
+        "框架编码",
+        "如: HADOOP",
+        "版本",
+        "如: 3.3.6",
+        "描述",
+        "serviceModalTitle",
+        "serviceFormTitle",
+        "服务名称",
+        "如: HDFS",
+        "服务标签",
+        "如: Hadoop分布式文件系统",
+        "包名",
+        "如: hadoop-3.3.6.tar.gz",
+        "排序",
+        "roleModalTitle",
+        "roleFormTitle",
+        "角色名称",
+        "如: NameNode",
+        "角色类型",
+        "如: MASTER / SLAVE / CLIENT",
+        "基数",
+        "如: 1 或 1+",
+        "JMX端口",
+        "日志文件",
+        "如: /var/log/hadoop/namenode.log"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/SVM/api/framework.ts",
+        "apps/web-antd/src/views/SVM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/SVM/framework/list.vue"
+      ],
+      "url": "/#/SVM/framework/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "SVM",
+      "path": "/SVM/service/create",
+      "name": "ServiceCreate",
+      "title": "创建服务",
+      "hidden": true,
+      "component": "#/views/SVM/service/create.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/SVM.ts",
+      "operations": [
+        "goBack",
+        "onFrameworkChange",
+        "onServiceDefChange",
+        "prevStep",
+        "nextStep",
+        "handleSubmit"
+      ],
+      "fieldsAndPanels": [
+        "创建服务",
+        "选择服务",
+        "分配角色",
+        "确认创建",
+        "选择集群",
+        "请选择集群",
+        "选择框架",
+        "请选择框架",
+        "请先选择框架",
+        "选择主机",
+        "服务信息",
+        "角色分配"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/CLM/api/cluster.ts",
+        "apps/web-antd/src/views/SVM/api/framework.ts",
+        "apps/web-antd/src/views/HOM/api/host.ts",
+        "apps/web-antd/src/views/SVM/api/service.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts",
+        "apps/web-antd/src/views/SVM/api/types.ts",
+        "apps/web-antd/src/views/HOM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/SVM/service/create.vue"
+      ],
+      "url": "/#/SVM/service/create",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "SVM",
+      "path": "/SVM/service/detail/:id",
+      "name": "ServiceDetail",
+      "title": "服务详情",
+      "hidden": true,
+      "component": "#/views/SVM/service/detail.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/SVM.ts",
+      "operations": [
+        "goBack",
+        "fetchDetail",
+        "handleAction('install')",
+        "handleAction('start')",
+        "handleAction('stop')",
+        "handleAction('restart')",
+        "handleAction('config')",
+        "handleDeleteRole(_record as RoleInstance)"
+      ],
+      "fieldsAndPanels": [
+        "服务详情",
+        "服务名称",
+        "状态",
+        "服务ID",
+        "UID",
+        "集群ID",
+        "服务定义ID",
+        "配置版本",
+        "需要重启",
+        "创建时间",
+        "更新时间"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/SVM/api/service.ts",
+        "apps/web-antd/src/views/SVM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/SVM/service/detail.vue"
+      ],
+      "url": "/#/SVM/service/detail/1",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "SVM",
+      "path": "/SVM/service/list",
+      "name": "ServiceList",
+      "title": "服务总览",
+      "hidden": false,
+      "component": "#/views/SVM/service/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/SVM.ts",
+      "operations": [
+        "onClusterChange",
+        "fetchServices",
+        "goCreate",
+        "goDetail(_record as ServiceInstance)",
+        "showRoles(_record as ServiceInstance)",
+        "handleAction(_record as ServiceInstance, 'install')",
+        "handleAction(_record as ServiceInstance, 'start')",
+        "handleAction(_record as ServiceInstance, 'stop')",
+        "handleAction(_record as ServiceInstance, 'restart')",
+        "handleDelete(_record as ServiceInstance)"
+      ],
+      "fieldsAndPanels": [
+        "服务总览",
+        "选择集群",
+        "roleModalTitle"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/SVM/api/service.ts",
+        "apps/web-antd/src/views/CLM/api/cluster.ts",
+        "apps/web-antd/src/views/SVM/api/types.ts",
+        "apps/web-antd/src/views/CLM/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/SVM/service/list.vue"
+      ],
+      "url": "/#/SVM/service/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "USR",
+      "path": "/USR/role/list",
+      "name": "RoleList",
+      "title": "角色管理",
+      "hidden": false,
+      "component": "#/views/USR/role/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/USR.ts",
+      "operations": [
+        "showCreate",
+        "showUsers(_record as Role)",
+        "showEdit(_record as Role)",
+        "handleDelete(_record as Role)"
+      ],
+      "fieldsAndPanels": [
+        "角色管理",
+        "modalTitle",
+        "角色名称",
+        "如: 管理员",
+        "角色编码",
+        "如: ADMIN",
+        "描述",
+        "usersModalTitle"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/USR/api/role.ts",
+        "apps/web-antd/src/views/USR/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/USR/role/list.vue"
+      ],
+      "url": "/#/USR/role/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    },
+    {
+      "group": "USR",
+      "path": "/USR/user/list",
+      "name": "UserList",
+      "title": "用户管理",
+      "hidden": false,
+      "component": "#/views/USR/user/list.vue",
+      "sourceFile": "apps/web-antd/src/router/routes/modules/USR.ts",
+      "operations": [
+        "showCreate",
+        "showRoles(_record as User)",
+        "showEdit(_record as User)",
+        "showChangePwd(_record as User)",
+        "handleDelete(_record as User)"
+      ],
+      "fieldsAndPanels": [
+        "用户管理",
+        "modalTitle",
+        "用户名",
+        "密码",
+        "邮箱",
+        "手机",
+        "手机号",
+        "用户类型",
+        "状态",
+        "修改密码",
+        "旧密码",
+        "新密码",
+        "roleModalTitle"
+      ],
+      "apiFiles": [
+        "apps/web-antd/src/views/USR/api/user.ts",
+        "apps/web-antd/src/views/USR/api/types.ts"
+      ],
+      "sourceFiles": [
+        "apps/web-antd/src/views/USR/user/list.vue"
+      ],
+      "url": "/#/USR/user/list",
+      "verification": "静态路由、组件、操作和类型检查已核对；动态结果另见 smoke-results.json。"
+    }
+  ]
+}

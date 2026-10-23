@@ -60,8 +60,7 @@ const isRunning = computed(() => {
 });
 
 const runStatus = computed(() => {
-  const result =
-    runDetail.value?.result || runDetail.value?.state || 'UNKNOWN';
+  const result = runDetail.value?.result || runDetail.value?.state || 'UNKNOWN';
   return result.toUpperCase();
 });
 
@@ -109,17 +108,27 @@ function formatDateTime(ts: string | number | null): string {
 function getStageStatus(stage: any): string {
   const result = stage.result || stage.state || 'unknown';
   const map: Record<string, string> = {
-    SUCCESS: 'success', FAILURE: 'failed', RUNNING: 'running',
-    NOT_BUILT: 'not_built', ABORTED: 'aborted', QUEUED: 'queued',
-    PAUSED_PENDING_INPUT: 'paused', IN_PROGRESS: 'running',
+    SUCCESS: 'success',
+    FAILURE: 'failed',
+    RUNNING: 'running',
+    NOT_BUILT: 'not_built',
+    ABORTED: 'aborted',
+    QUEUED: 'queued',
+    PAUSED_PENDING_INPUT: 'paused',
+    IN_PROGRESS: 'running',
   };
   return map[result.toUpperCase()] || result.toLowerCase();
 }
 
 function getStageStatusDotColor(status: string): string {
   const colors: Record<string, string> = {
-    success: '#52c41a', failed: '#f5222d', running: '#1890ff',
-    not_built: '#d9d9d9', aborted: '#fa8c16', queued: '#1890ff', paused: '#fa8c16',
+    success: '#52c41a',
+    failed: '#f5222d',
+    running: '#1890ff',
+    not_built: '#d9d9d9',
+    aborted: '#fa8c16',
+    queued: '#1890ff',
+    paused: '#fa8c16',
   };
   return colors[status] || '#d9d9d9';
 }
@@ -337,175 +346,182 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Spin :spinning="loading">
-      <!-- ==================== Page Header ==================== -->
-      <Card class="mb-4">
-        <div class="run-header">
-          <div class="run-header-left">
-            <Button
-              type="text"
-              @click="router.back()"
-              style="margin-right: 8px; padding: 4px 8px"
-            >
-              <span style="font-size: 18px">&larr;</span>
-            </Button>
-            <h2 class="run-title">运行 #{{ runNumber }}</h2>
-            <Tag
-              v-if="runDetail"
-              :color="statusConfig[runStatus]?.color || 'default'"
-              style="margin-left: 12px; font-size: 13px; padding: 2px 10px"
-            >
-              {{ statusConfig[runStatus]?.label || runStatus }}
-            </Tag>
-          </div>
-          <Space>
-            <Button v-if="isRunning" danger @click="handleStop">
-              停止
-            </Button>
-            <Button type="primary" @click="handleReplay"> 重放 </Button>
-            <Button @click="fetchAll">刷新</Button>
-          </Space>
-        </div>
-      </Card>
-
-      <!-- ==================== Section 1: Run Info ==================== -->
-      <Card size="small" title="运行信息" class="mb-4">
-        <Descriptions bordered :column="3" size="small">
-          <DescriptionsItem label="状态">
-            <Tag :color="statusConfig[runStatus]?.color || 'default'">
-              {{ statusConfig[runStatus]?.label || runStatus }}
-            </Tag>
-          </DescriptionsItem>
-          <DescriptionsItem label="触发方式">
-            {{ getTriggerLabel(runDetail?.trigger || runDetail?.triggerType) }}
-          </DescriptionsItem>
-          <DescriptionsItem label="触发人">
-            {{
-              runDetail?.triggerUser ||
-              runDetail?.causes?.[0]?.userName ||
-              '-'
-            }}
-          </DescriptionsItem>
-          <DescriptionsItem label="开始时间">
-            {{
-              formatDateTime(
-                runDetail?.startTime || runDetail?.startTimeMillis,
-              )
-            }}
-          </DescriptionsItem>
-          <DescriptionsItem label="结束时间">
-            {{
-              formatDateTime(runDetail?.endTime || runDetail?.endTimeMillis)
-            }}
-          </DescriptionsItem>
-          <DescriptionsItem label="持续时间">
-            {{
-              formatDuration(
-                runDetail?.durationInMillis || runDetail?.duration,
-              )
-            }}
-          </DescriptionsItem>
-        </Descriptions>
-      </Card>
-
-      <!-- ==================== Section 2: Stage Visualization ==================== -->
-      <Card size="small" title="阶段可视化" class="mb-4">
-        <StagePipeline
-          ref="stagePipelineRef"
-          :stages="stages"
-          :selected-stage-id="selectedStageId"
-          clickable
-          @stage-click="selectStage"
-        />
-      </Card>
-
-      <!-- ==================== Section 3: Build Log ==================== -->
-      <Card size="small" class="mb-4">
-        <template #title>
-          <div class="log-header">
-            <span class="log-header-title">构建日志</span>
-            <Space style="margin-left: auto">
-              <label class="follow-toggle">
-                <input
-                  type="checkbox"
-                  v-model="followLog"
-                  style="margin-right: 4px"
-                />
-                跟随日志
-              </label>
-              <Input
-                v-model:value="logSearchText"
-                placeholder="搜索日志..."
-                allow-clear
-                style="width: 200px"
-                size="small"
-              />
-              <Button size="small" @click="downloadLog">下载日志</Button>
+  <BusinessPage
+    title="运行详情"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/K8S/devops/projects/:projectId/pipelines/:pipelineId/runs/:runId"
+  >
+    <div class="p-4">
+      <Spin :spinning="loading">
+        <!-- ==================== Page Header ==================== -->
+        <Card class="mb-4">
+          <div class="run-header">
+            <div class="run-header-left">
+              <Button
+                type="text"
+                @click="router.back()"
+                style="margin-right: 8px; padding: 4px 8px"
+              >
+                <span style="font-size: 18px">&larr;</span>
+              </Button>
+              <h2 class="run-title">运行 #{{ runNumber }}</h2>
+              <Tag
+                v-if="runDetail"
+                :color="statusConfig[runStatus]?.color || 'default'"
+                style="margin-left: 12px; font-size: 13px; padding: 2px 10px"
+              >
+                {{ statusConfig[runStatus]?.label || runStatus }}
+              </Tag>
+            </div>
+            <Space>
+              <Button v-if="isRunning" danger @click="handleStop">
+                停止
+              </Button>
+              <Button type="primary" @click="handleReplay"> 重放 </Button>
+              <Button @click="fetchAll">刷新</Button>
             </Space>
           </div>
-        </template>
+        </Card>
 
-        <!-- Log Tabs: Full log + per-stage tabs -->
-        <div class="log-tabs">
-          <div
-            class="log-tab"
-            :class="{ 'log-tab-active': activeLogTab === 'full' }"
-            @click="switchLogTab('full')"
-          >
-            全量日志
-          </div>
-          <div
-            v-for="stage in stages"
-            :key="'tab-' + stage.id"
-            class="log-tab"
-            :class="{
-              'log-tab-active': activeLogTab === String(stage.id),
-            }"
-            @click="switchLogTab(String(stage.id))"
-          >
-            <span
-              class="log-tab-dot"
-              :style="{
-                background: getStageStatusDotColor(
-                  getStageStatus(stage),
-                ),
+        <!-- ==================== Section 1: Run Info ==================== -->
+        <Card size="small" title="运行信息" class="mb-4">
+          <Descriptions bordered :column="3" size="small">
+            <DescriptionsItem label="状态">
+              <Tag :color="statusConfig[runStatus]?.color || 'default'">
+                {{ statusConfig[runStatus]?.label || runStatus }}
+              </Tag>
+            </DescriptionsItem>
+            <DescriptionsItem label="触发方式">
+              {{
+                getTriggerLabel(runDetail?.trigger || runDetail?.triggerType)
+              }}
+            </DescriptionsItem>
+            <DescriptionsItem label="触发人">
+              {{
+                runDetail?.triggerUser ||
+                runDetail?.causes?.[0]?.userName ||
+                '-'
+              }}
+            </DescriptionsItem>
+            <DescriptionsItem label="开始时间">
+              {{
+                formatDateTime(
+                  runDetail?.startTime || runDetail?.startTimeMillis,
+                )
+              }}
+            </DescriptionsItem>
+            <DescriptionsItem label="结束时间">
+              {{
+                formatDateTime(runDetail?.endTime || runDetail?.endTimeMillis)
+              }}
+            </DescriptionsItem>
+            <DescriptionsItem label="持续时间">
+              {{
+                formatDuration(
+                  runDetail?.durationInMillis || runDetail?.duration,
+                )
+              }}
+            </DescriptionsItem>
+          </Descriptions>
+        </Card>
+
+        <!-- ==================== Section 2: Stage Visualization ==================== -->
+        <Card size="small" title="阶段可视化" class="mb-4">
+          <StagePipeline
+            ref="stagePipelineRef"
+            :stages="stages"
+            :selected-stage-id="selectedStageId"
+            clickable
+            @stage-click="selectStage"
+          />
+        </Card>
+
+        <!-- ==================== Section 3: Build Log ==================== -->
+        <Card size="small" class="mb-4">
+          <template #title>
+            <div class="log-header">
+              <span class="log-header-title">构建日志</span>
+              <Space style="margin-left: auto">
+                <label class="follow-toggle">
+                  <input
+                    type="checkbox"
+                    v-model="followLog"
+                    style="margin-right: 4px"
+                  />
+                  跟随日志
+                </label>
+                <Input
+                  v-model:value="logSearchText"
+                  placeholder="搜索日志..."
+                  allow-clear
+                  style="width: 200px"
+                  size="small"
+                />
+                <Button size="small" @click="downloadLog">下载日志</Button>
+              </Space>
+            </div>
+          </template>
+
+          <!-- Log Tabs: Full log + per-stage tabs -->
+          <div class="log-tabs">
+            <div
+              class="log-tab"
+              :class="{ 'log-tab-active': activeLogTab === 'full' }"
+              @click="switchLogTab('full')"
+            >
+              全量日志
+            </div>
+            <div
+              v-for="stage in stages"
+              :key="'tab-' + stage.id"
+              class="log-tab"
+              :class="{
+                'log-tab-active': activeLogTab === String(stage.id),
               }"
-            />
-            {{ stage.displayName || stage.name }}
-          </div>
-        </div>
-
-        <Divider style="margin: 0 0 12px 0" />
-
-        <!-- Log Content Viewer -->
-        <Spin :spinning="logLoading">
-          <div ref="logViewerRef" class="log-viewer">
-            <template v-if="filteredLogLines.length > 0">
-              <div
-                v-for="(line, idx) in filteredLogLines"
-                :key="idx"
-                class="log-line"
-                :class="{
-                  'log-line-error': isErrorLine(line),
-                  'log-line-warn': isWarnLine(line),
+              @click="switchLogTab(String(stage.id))"
+            >
+              <span
+                class="log-tab-dot"
+                :style="{
+                  background: getStageStatusDotColor(getStageStatus(stage)),
                 }"
-              >
-                <span class="log-line-number">{{ idx + 1 }}</span>
-                <span
-                  class="log-line-text"
-                  v-html="highlightSearch(line)"
-                ></span>
-              </div>
-            </template>
-            <div v-else class="log-empty">
-              {{ logContent ? '没有匹配的日志行' : '暂无日志' }}
+              />
+              {{ stage.displayName || stage.name }}
             </div>
           </div>
-        </Spin>
-      </Card>
-    </Spin>
-  </div>
+
+          <Divider style="margin: 0 0 12px 0" />
+
+          <!-- Log Content Viewer -->
+          <Spin :spinning="logLoading">
+            <div ref="logViewerRef" class="log-viewer">
+              <template v-if="filteredLogLines.length > 0">
+                <div
+                  v-for="(line, idx) in filteredLogLines"
+                  :key="idx"
+                  class="log-line"
+                  :class="{
+                    'log-line-error': isErrorLine(line),
+                    'log-line-warn': isWarnLine(line),
+                  }"
+                >
+                  <span class="log-line-number">{{ idx + 1 }}</span>
+                  <span
+                    class="log-line-text"
+                    v-html="highlightSearch(line)"
+                  ></span>
+                </div>
+              </template>
+              <div v-else class="log-empty">
+                {{ logContent ? '没有匹配的日志行' : '暂无日志' }}
+              </div>
+            </div>
+          </Spin>
+        </Card>
+      </Spin>
+    </div>
+  </BusinessPage>
 </template>
 
 <style scoped>

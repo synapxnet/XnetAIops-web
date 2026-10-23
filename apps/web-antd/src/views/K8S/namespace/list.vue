@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {
   Card,
@@ -14,24 +14,30 @@ import {
 } from 'ant-design-vue';
 import { getClusters } from '../api/cluster';
 import { getNamespaces, deleteNamespace } from '../api/namespace';
-import type { K8sCluster, K8sNamespace } from '../api/types';
-import { demoK8sNamespaces, isDemoK8sCluster } from '../demo-data';
+import type { K8sCluster } from '../api/types';
 
 const router = useRouter();
 const loading = ref(false);
 const clusters = ref<K8sCluster[]>([]);
 const selectedClusterId = ref<number | null>(null);
-const namespaces = ref<K8sNamespace[]>([]);
-const isDemoSelection = computed(() =>
-  isDemoK8sCluster(clusters.value, selectedClusterId.value),
-);
+const namespaces = ref<any[]>([]);
 
 const columns = [
   { title: '名称', dataIndex: 'name', key: 'name' },
   { title: '状态', dataIndex: 'status', key: 'status', width: 100 },
   { title: 'Pod数', dataIndex: 'podCount', key: 'podCount', width: 80 },
-  { title: 'Deployments', dataIndex: 'deploymentCount', key: 'deploymentCount', width: 120 },
-  { title: 'Services', dataIndex: 'serviceCount', key: 'serviceCount', width: 100 },
+  {
+    title: 'Deployments',
+    dataIndex: 'deploymentCount',
+    key: 'deploymentCount',
+    width: 120,
+  },
+  {
+    title: 'Services',
+    dataIndex: 'serviceCount',
+    key: 'serviceCount',
+    width: 100,
+  },
   { title: '创建时间', dataIndex: 'createdAt', key: 'createdAt', width: 180 },
   { title: '操作', key: 'action', width: 200, fixed: 'right' as const },
 ];
@@ -53,17 +59,9 @@ async function fetchClusters() {
 async function fetchNamespaces() {
   if (!selectedClusterId.value) return;
   loading.value = true;
-  if (isDemoSelection.value) {
-    namespaces.value = demoK8sNamespaces;
-    loading.value = false;
-    return;
-  }
   try {
     const res = await getNamespaces(selectedClusterId.value);
-    const namespaceList = Array.isArray(res) ? res : [];
-    namespaces.value = namespaceList.length === 0 && isDemoSelection.value
-      ? demoK8sNamespaces
-      : namespaceList;
+    namespaces.value = Array.isArray(res) ? res : [];
   } catch (e: any) {
     message.error('获取命名空间列表失败: ' + e.message);
   } finally {
@@ -71,33 +69,29 @@ async function fetchNamespaces() {
   }
 }
 
-function handleClusterChange(value: number) {
+/** 仅接收有效集群选择，避免把复合值带入API。 Accept scalar cluster IDs before calling the API. */
+function handleClusterChange(value: unknown) {
+  if (typeof value !== 'number') return;
   selectedClusterId.value = value;
   fetchNamespaces();
 }
 
 function goCreate() {
-  if (isDemoSelection.value) {
-    message.info('演示集群资源为只读展示');
-    return;
-  }
   router.push(`/K8S/namespace/create?clusterId=${selectedClusterId.value}`);
 }
 
 function goDetail(record: any) {
-  if (isDemoSelection.value) {
-    message.info('演示集群资源为只读展示');
-    return;
-  }
-  router.push(`/K8S/namespace/detail/${selectedClusterId.value}/${record.name}`);
+  router.push(
+    `/K8S/namespace/detail/${selectedClusterId.value}/${record.name}`,
+  );
 }
 
 function handleDelete(record: any) {
-  if (isDemoSelection.value) {
-    message.info('演示集群资源为只读展示');
-    return;
-  }
-  if (['default', 'kube-system', 'kube-public', 'kube-node-lease'].includes(record.name)) {
+  if (
+    ['default', 'kube-system', 'kube-public', 'kube-node-lease'].includes(
+      record.name,
+    )
+  ) {
     message.warning('系统命名空间不可删除');
     return;
   }
@@ -121,51 +115,72 @@ onMounted(fetchClusters);
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="命名空间管理">
-      <template #extra>
-        <Space>
-          <span style="color: #8c8c8c;">选择集群:</span>
-          <Select
-            :value="selectedClusterId"
-            style="width: 200px;"
-            placeholder="选择集群"
-            @change="handleClusterChange"
-          >
-            <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
-              {{ c.name }}
-              <Tag v-if="c.status === 'active'" color="green" size="small" class="ml-1">运行中</Tag>
-            </SelectOption>
-          </Select>
-          <Button @click="fetchNamespaces">刷新</Button>
-          <Button type="primary" @click="goCreate">创建命名空间</Button>
-        </Space>
-      </template>
-
-      <Table
-        :columns="columns"
-        :data-source="namespaces"
-        :loading="loading"
-        row-key="name"
-        :scroll="{ x: 900 }"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'name'">
-            <a @click="goDetail(record)">{{ record.name }}</a>
-          </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="record.status === 'Active' ? 'green' : 'red'">
-              {{ record.status }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="goDetail(record)">详情</Button>
-              <Button type="link" size="small" danger @click="handleDelete(record)">删除</Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="命名空间"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/K8S/namespace/list"
+  >
+    <div class="p-4">
+      <Card title="命名空间管理">
+        <template #extra>
+          <Space>
+            <span style="color: #8c8c8c">选择集群:</span>
+            <Select
+              :value="selectedClusterId ?? undefined"
+              style="width: 200px"
+              placeholder="选择集群"
+              @change="handleClusterChange"
+            >
+              <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
+                {{ c.name }}
+                <Tag
+                  v-if="c.status === 'active'"
+                  color="green"
+                  size="small"
+                  class="ml-1"
+                  >运行中</Tag
+                >
+              </SelectOption>
+            </Select>
+            <Button @click="fetchNamespaces">刷新</Button>
+            <Button type="primary" @click="goCreate">创建命名空间</Button>
+          </Space>
         </template>
-      </Table>
-    </Card>
-  </div>
+
+        <Table
+          :columns="columns"
+          :data-source="namespaces"
+          :loading="loading"
+          row-key="name"
+          :scroll="{ x: 900 }"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'name'">
+              <a @click="goDetail(record)">{{ record.name }}</a>
+            </template>
+            <template v-if="column.key === 'status'">
+              <Tag :color="record.status === 'Active' ? 'green' : 'red'">
+                {{ record.status }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button type="link" size="small" @click="goDetail(record)"
+                  >详情</Button
+                >
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(record)"
+                  >删除</Button
+                >
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
+    </div>
+  </BusinessPage>
 </template>

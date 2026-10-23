@@ -2,11 +2,24 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {
-  Card, Table, Button, Tag, Space, Modal, message, Select, SelectOption,
+  Card,
+  Table,
+  Button,
+  Tag,
+  Space,
+  Modal,
+  message,
+  Select,
+  SelectOption,
 } from 'ant-design-vue';
 import {
-  getServiceInstances, deleteServiceInstance, getRoleInstances,
-  installService, startService, stopService, restartService,
+  getServiceInstances,
+  deleteServiceInstance,
+  getRoleInstances,
+  installService,
+  startService,
+  stopService,
+  restartService,
 } from '../api/service';
 import { getClusters } from '../../CLM/api/cluster';
 import type { ServiceInstance, RoleInstance } from '../api/types';
@@ -22,20 +35,36 @@ let refreshTimer: ReturnType<typeof setInterval> | null = null;
 const columns = [
   { title: '服务名称', dataIndex: 'serviceName', key: 'serviceName' },
   { title: '状态', dataIndex: 'status', key: 'status', width: 120 },
-  { title: '配置版本', dataIndex: 'configVersion', key: 'configVersion', width: 100 },
-  { title: '需要重启', dataIndex: 'needRestart', key: 'needRestart', width: 100 },
+  {
+    title: '配置版本',
+    dataIndex: 'configVersion',
+    key: 'configVersion',
+    width: 100,
+  },
+  {
+    title: '需要重启',
+    dataIndex: 'needRestart',
+    key: 'needRestart',
+    width: 100,
+  },
   { title: '创建时间', dataIndex: 'createdAt', key: 'createdAt', width: 180 },
   { title: '操作', key: 'action', width: 340, fixed: 'right' as const },
 ];
 
 const statusColorMap: Record<string, string> = {
-  running: 'green', stopped: 'orange', not_installed: 'default',
-  installing: 'blue', error: 'red',
+  running: 'green',
+  stopped: 'orange',
+  not_installed: 'default',
+  installing: 'blue',
+  error: 'red',
 };
 
 const statusLabelMap: Record<string, string> = {
-  running: '运行中', stopped: '已停止', not_installed: '未安装',
-  installing: '安装中', error: '异常',
+  running: '运行中',
+  stopped: '已停止',
+  not_installed: '未安装',
+  installing: '安装中',
+  error: '异常',
 };
 
 // Role instances modal
@@ -55,7 +84,9 @@ async function fetchClusters() {
   try {
     const res = await getClusters();
     clusters.value = Array.isArray(res) ? res : [];
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 async function fetchServices() {
@@ -85,7 +116,10 @@ function goCreate() {
 
 // --- Lifecycle actions ---
 async function handleAction(record: ServiceInstance, action: string) {
-  const actionMap: Record<string, { fn: (id: number) => Promise<any>; label: string }> = {
+  const actionMap: Record<
+    string,
+    { fn: (id: number) => Promise<any>; label: string }
+  > = {
     install: { fn: installService, label: '安装' },
     start: { fn: startService, label: '启动' },
     stop: { fn: stopService, label: '停止' },
@@ -146,7 +180,7 @@ async function showRoles(record: ServiceInstance) {
 function startAutoRefresh() {
   if (refreshTimer) return;
   refreshTimer = setInterval(() => {
-    const hasActive = services.value.some(s => s.status === 'installing');
+    const hasActive = services.value.some((s) => s.status === 'installing');
     if (hasActive) {
       fetchServices();
     } else {
@@ -173,102 +207,142 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="服务总览">
-      <template #extra>
-        <Space>
-          <Select
-            v-model:value="selectedClusterId"
-            placeholder="选择集群"
-            style="width: 200px"
-            allow-clear
-            @change="onClusterChange"
-          >
-            <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
-              {{ c.clusterName }}
-            </SelectOption>
-          </Select>
-          <Button @click="fetchServices">刷新</Button>
-          <Button type="primary" @click="goCreate">创建服务</Button>
-        </Space>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="services"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 1100 }"
-        size="small"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'serviceName'">
-            <a @click="goDetail(_record as ServiceInstance)">{{ (_record as any).serviceName }}</a>
-          </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[(_record as any).status] || 'default'">
-              {{ statusLabelMap[(_record as any).status] || (_record as any).status }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'needRestart'">
-            <Tag v-if="(_record as any).needRestart" color="orange">需要重启</Tag>
-            <Tag v-else color="green">正常</Tag>
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showRoles(_record as ServiceInstance)">角色</Button>
-              <Button
-                v-if="(_record as any).status === 'not_installed'"
-                type="link" size="small"
-                @click="handleAction(_record as ServiceInstance, 'install')"
-              >安装</Button>
-              <Button
-                v-if="(_record as any).status === 'stopped'"
-                type="link" size="small"
-                @click="handleAction(_record as ServiceInstance, 'start')"
-              >启动</Button>
-              <Button
-                v-if="(_record as any).status === 'running'"
-                type="link" size="small"
-                @click="handleAction(_record as ServiceInstance, 'stop')"
-              >停止</Button>
-              <Button
-                v-if="(_record as any).status === 'running' || (_record as any).status === 'error'"
-                type="link" size="small"
-                @click="handleAction(_record as ServiceInstance, 'restart')"
-              >重启</Button>
-              <Button
-                v-if="(_record as any).status !== 'installing'"
-                type="link" size="small" danger
-                @click="handleDelete(_record as ServiceInstance)"
-              >删除</Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="服务总览"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/SVM/service/list"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Space>
+            <Select
+              v-model:value="selectedClusterId"
+              placeholder="选择集群"
+              style="width: 200px"
+              allow-clear
+              @change="onClusterChange"
+            >
+              <SelectOption v-for="c in clusters" :key="c.id" :value="c.id">
+                {{ c.clusterName }}
+              </SelectOption>
+            </Select>
+            <Button @click="fetchServices">刷新</Button>
+            <Button type="primary" @click="goCreate">创建服务</Button>
+          </Space>
         </template>
-      </Table>
-    </Card>
+        <Table
+          :columns="columns"
+          :data-source="services"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 1100 }"
+          size="small"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'serviceName'">
+              <a @click="goDetail(_record as ServiceInstance)">{{
+                (_record as any).serviceName
+              }}</a>
+            </template>
+            <template v-if="column.key === 'status'">
+              <Tag
+                :color="statusColorMap[(_record as any).status] || 'default'"
+              >
+                {{
+                  statusLabelMap[(_record as any).status] ||
+                  (_record as any).status
+                }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'needRestart'">
+              <Tag v-if="(_record as any).needRestart" color="orange"
+                >需要重启</Tag
+              >
+              <Tag v-else color="green">正常</Tag>
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showRoles(_record as ServiceInstance)"
+                  >角色</Button
+                >
+                <Button
+                  v-if="(_record as any).status === 'not_installed'"
+                  type="link"
+                  size="small"
+                  @click="handleAction(_record as ServiceInstance, 'install')"
+                  >安装</Button
+                >
+                <Button
+                  v-if="(_record as any).status === 'stopped'"
+                  type="link"
+                  size="small"
+                  @click="handleAction(_record as ServiceInstance, 'start')"
+                  >启动</Button
+                >
+                <Button
+                  v-if="(_record as any).status === 'running'"
+                  type="link"
+                  size="small"
+                  @click="handleAction(_record as ServiceInstance, 'stop')"
+                  >停止</Button
+                >
+                <Button
+                  v-if="
+                    (_record as any).status === 'running' ||
+                    (_record as any).status === 'error'
+                  "
+                  type="link"
+                  size="small"
+                  @click="handleAction(_record as ServiceInstance, 'restart')"
+                  >重启</Button
+                >
+                <Button
+                  v-if="(_record as any).status !== 'installing'"
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(_record as ServiceInstance)"
+                  >删除</Button
+                >
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
 
-    <!-- Role Instances Modal -->
-    <Modal
-      v-model:open="roleModalVisible"
-      :title="roleModalTitle"
-      :footer="null"
-      width="700px"
-    >
-      <Table
-        :columns="roleColumns"
-        :data-source="roleInstances"
-        :loading="roleLoading"
-        row-key="id"
-        size="small"
+      <!-- Role Instances Modal -->
+      <Modal
+        v-model:open="roleModalVisible"
+        :title="roleModalTitle"
+        :footer="null"
+        width="700px"
       >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'status'">
-            <Tag :color="statusColorMap[(_record as any).status] || 'default'">
-              {{ statusLabelMap[(_record as any).status] || (_record as any).status }}
-            </Tag>
+        <Table
+          :columns="roleColumns"
+          :data-source="roleInstances"
+          :loading="roleLoading"
+          row-key="id"
+          size="small"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'status'">
+              <Tag
+                :color="statusColorMap[(_record as any).status] || 'default'"
+              >
+                {{
+                  statusLabelMap[(_record as any).status] ||
+                  (_record as any).status
+                }}
+              </Tag>
+            </template>
           </template>
-        </template>
-      </Table>
-    </Modal>
-  </div>
+        </Table>
+      </Modal>
+    </div>
+  </BusinessPage>
 </template>

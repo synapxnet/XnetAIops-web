@@ -1,111 +1,44 @@
-<div align="center">
+<!-- Copyright (C) 2026 Synapxnet. All rights reserved.
+Synapxnet Proprietary and Confidential. No copying, distribution or use without authorization.
+Author: maoyo | Department: 研发部 | Date: 2026-10-23 | Version: 1.3.0 | Security Level: INTERNAL -->
+# XnetAIOps Web
 
-[简体中文](./README.md) | [English](./README.en-US.md) | **日本語**
+[简体中文](README.md) · [English](README.en-US.md)
 
-# XnetAIops Web
+Vue 3、TypeScript、Vite、Ant Design Vue による XnetAIOps 運用画面です。3D 概要、クラスター、ホスト、サービス、アラート、Kubernetes、レジストリ、組織権限に加え、常駐 Agent の会話・タスク・モデル設定、知識と Skill、運用管理、プラットフォーム横断の実行証拠を提供します。
 
-**XnetAIops インテリジェント運用プラットフォームの Web コンソール**
+開発の主ブランチは `main` です。過去のリリースブランチとタグも保持します。
 
-[![GOAI release](https://img.shields.io/badge/GOAI%20release-1.3.0-1677ff.svg)](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) [![Vue](https://img.shields.io/badge/Vue-3-42b883.svg)](https://vuejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/) [![License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](./LICENSE)
+## 開発
 
-[オンラインデモ](https://goai.xnetaiops.synapxnet.online) · [バックエンド: XnetAIops](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) · [OpenXnet](https://openxnet.synapxnet.com) · [ライセンス](./LICENSE)
-
-</div>
-
-## GOAI 決勝版 · v1.3.0
-
-[リリース・チェックサム](https://github.com/synapxnet/XnetAIops-web/releases/tag/v1.3.0) · [ソース ZIP](https://github.com/synapxnet/XnetAIops-web/releases/download/v1.3.0/XnetAIops-web-v1.3.0-source.zip) · [v1.3.0 ソース](https://github.com/synapxnet/XnetAIops-web/tree/v1.3.0) · [対応する XnetAIops](https://github.com/synapxnet/XnetAIops/releases/tag/v1.3.0) · [OpenXnet デスクトップ](https://github.com/synapxnet/OpenXnet/releases/tag/v1.3.0)
-
-> 既定の `display` ブランチには過去のコードが残っています。バッジは GOAI リリースを示します。v1.3.0 の利用にはタグまたはリリース添付ファイルを選択してください。
-
-統一ログイン画面、スキン、常駐 Agent のチャット・設定、運用確認、制御された端末操作を提供します。複数プラットフォームの協調と承認は OpenXnet と AgentTeams を通じて管理し、画面操作だけで実行権限は付与されません。
-
-依存関係、検証結果、制限は[プログラム検証基準・構築・配布の説明](https://github.com/synapxnet/XnetAIops-web/blob/a5e9c2c057ba29d94ee90d7e3acd645e89475f1c/docs/GOAI-FINALS-V1.3.0-SOURCE-DELIVERY.md)を参照してください。この公開はオンライン環境の再デプロイを意味しません。 本番ビルドは成功しましたが、全体の型チェックには 135 件の問題が残っています。
-
-> 以下は旧版の画面例です。v1.3.0 の UI 検証画像ではありません。
-
-![XnetAIops 3D クラスター概要](./docs/images/xnetaiops-overview-2026.png)
-
-## 画面プレビュー
-
-| デモログイン | プロジェクト情報 |
-| --- | --- |
-| ![デモログイン](./docs/images/xnetaiops-login.png) | ![XnetAIops について](./docs/images/xnetaiops-about.png) |
-| クラスター管理 | ホスト登録 |
-| ![クラスター管理](./docs/images/xnetaiops-clusters.png) | ![ホスト登録](./docs/images/xnetaiops-host-add.png) |
-| Kubernetes | サービス編成 |
-| ![Kubernetes](./docs/images/xnetaiops-kubernetes.png) | ![サービス編成](./docs/images/xnetaiops-service.png) |
-| 監視とアラート | イメージレジストリ |
-| ![監視](./docs/images/xnetaiops-monitor-2026.png) | ![レジストリ](./docs/images/xnetaiops-registry.png) |
-| マルチテナントユーザー | Kubernetes ノード |
-| ![ユーザー](./docs/images/xnetaiops-users.png) | ![Kubernetes ノード](./docs/images/xnetaiops-k8s-nodes.png) |
-| Kubernetes 名前空間 | Kubernetes ワークロード |
-| ![Kubernetes 名前空間](./docs/images/xnetaiops-k8s-namespaces.png) | ![Kubernetes ワークロード](./docs/images/xnetaiops-workloads-2026.png) |
-
-## 概要
-
-XnetAIops Web は **SynapXnet チーム**が公開する運用管理コンソールです。ホスト、インフラクラスター、サービス、監視、Kubernetes、イメージレジストリ、アクセス制御を統合します。
-
-[XnetAIops バックエンド](https://github.com/synapxnet/XnetAIops/tree/v1.3.0) と組み合わせることで、企業向けマルチテナント、フロントエンド・バックエンド分離システムを構成します。Vue 3、TypeScript、Vite、Ant Design Vue、および [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) を採用しています。
-
-## 特長
-
-- ロールとリソース境界を備えた企業向けマルチテナント。
-- インフラ、サービス、Kubernetes、監視、レジストリを一つの画面で管理。
-- フロントエンドを独立配備し、既存ゲートウェイへ柔軟に統合。
-- モジュール化されたルートと API クライアント。
-- SynapXnet チームによる継続的な更新。
-
-## モジュール
-
-| モジュール | 主な機能                                       |
-| ---------- | ---------------------------------------------- |
-| 3D 概要    | クラスター、ラック、ホスト、トポロジーの可視化 |
-| CLM        | クラスター、MySQL、Redis、Hadoop、Jenkins      |
-| HOM        | ホスト台帳、ラック、SSH、容量管理              |
-| SVM        | サービス定義、コマンド、ロール、ライフサイクル |
-| MON        | メトリクス、アラートルール、履歴、状態概要     |
-| K8S        | リソース、Helm、監視、アプリカタログ、CI/CD    |
-| REG        | レジストリ、プロジェクト、タグ、同期           |
-| USR        | ユーザー、ロール、アクセス制御                 |
-
-## v1.3.0 の取得とビルド
-
-**Node.js 20.10.0 以上**、**pnpm 9.15.7** を使用します。Vue 3、TypeScript 5、Vite、Ant Design Vue、Vben ワークスペースに基づいています。
+Node.js 22 と、リポジトリ指定の pnpm 9.15.7 を使用します。
 
 ```bash
-git clone --branch v1.3.0 --depth 1 https://github.com/synapxnet/XnetAIops-web.git
-cd XnetAIops-web
-corepack enable
-corepack prepare pnpm@9.15.7 --activate
 pnpm install --frozen-lockfile
-pnpm exec turbo build --filter=@vben/web-antd --env-mode=loose
+pnpm dev:antd
+pnpm test:unit
+pnpm --filter @vben/web-antd typecheck
+pnpm build:antd
 ```
 
-出力は `apps/web-antd/dist` です。対応 Nginx または HTTPS ゲートウェイで公開します。静的フロントエンドだけではバックエンドや常駐 Agent は起動しません。
+アプリケーションは `apps/web-antd`、成果物は `apps/web-antd/dist` に配置されます。開発 API は `vite.config.mts` の `AIOPS_*_DEV_URL` で指定し、既定ではローカルの対応するサービスポートへ接続します。
 
-### ローカル開発と API
+## サービスと認証
 
-`pnpm dev:antd` の既定ポートは `5777` です。先に `apps/web-antd/vite.config.mts` の旧 LAN プロキシを自分のバックエンドへ変更し、`/usr`、`/clm`、`/hom`、`/svm`、`/mon`、`/k8s`、`/reg` を設定してください。K8s は `AIOPS_K8S_DEV_URL` を使えます。サーバー自動検出や完全な常駐サービス設定は行いません。
+本番 API は同一オリジンのゲートウェイ経由で [XnetAIOps バックエンド](https://github.com/synapxnet/XnetAIops) に接続します。常駐 Agent の `/api/resident/v1/` には別途ゲートウェイと権限の設定が必要です。
 
-本番 `.env.production` は同一オリジンの `/api/usr`、`/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg` を使用します。独立 Node 常駐サービスへの `/api/resident/v1/` 転送はゲートウェイで別途設定します。モデル API キーはブラウザーに置かず、バックエンド・常駐・モデル・認証を個別に設定してください。
+管理者が登録したアカウントと SMS のワンタイムコードでログインします。大会用アカウントや共通コードは初期入力されません。SMS 送信、本人確認、権限はバックエンドが管理します。リソースがない場合は空の状態を表示し、成功記録や監視値を生成しません。
 
-本番ビルドと 45 件の回帰テストは成功しました。全体の型チェックには 135 件の既知問題が残っています。詳細は配布説明を参照してください。
+ログイン画面の任意のリンクは `VITE_XNET_AIOPS_URL`、`VITE_XNET_DATAOPS_URL`、`VITE_XNET_MLOPS_URL` に完全な HTTP(S) URL を設定します。未設定のリンクは非表示です。`VITE_XNET_REHEARSAL_ENABLED` は既定で無効とし、隔離された演習環境でのみ有効にします。
 
-## デモへのアクセス
+## 機能と証拠
 
-- 現在の GOAI 入口: <https://goai.xnetaiops.synapxnet.online/#/auth/login>。
-- デモ電話番号: `17870171303`。確認コード: `000000`（6 桁、このデモ環境専用）。
-- 電話番号と確認コードでログインします。OpenXnet デスクトップのパスワードではありません。この画面は SMS を送信せず、コードはプロジェクトから提供されます。
-- 2026-09-18 の確認結果: `goai_operator` / `OPERATOR` でログイン成功。ページ名は `XnetAIops`、常駐 Agent は `platform=aiops`、`agentVersion=1.3.0`、`ONLINE`。
-- このコードはログイン専用です。AgentTeams デモアクセスコード、Live 実行承認、モデル API キーとは別であり、後者は公開しません。
+常駐 Agent、組織権限、再利用可能な Skill、知識管理、スキン、3D 機能を保持します。本番と演習の証拠を分け、未取得の測定値を補いません。ツールの成功だけでは業務復旧と判定しません。
 
-API ゲートウェイは同一オリジンの `https://goai.xnetaiops.synapxnet.online` です。ログインは `POST /api/usr/login`、身元確認は `GET /api/usr/user/info`、常駐状態は `GET /api/resident/v1/status`。後二者にはプラットフォームの Bearer トークンが必要です。業務の接頭辞は `/api/clm`、`/api/hom`、`/api/svm`、`/api/mon`、`/api/k8s`、`/api/reg` です。
+CI は手動起動のみで、リポジトリ権限は読み取り専用です。検査とビルドを行い、デプロイ、公開、成果物アップロードは行いません。
 
-今回確認したのはログインと読み取り専用の身元・常駐状態です。業務変更やモデル呼び出しは行っていません。`modelConfigured=true` は設定の存在を示し、推論の検証結果ではありません。公開デモの認証を本番環境で使用しないでください。
+[移行情報](docs/MAINLINE-TRANSITION.md) · [OpenXnet](https://openxnet.synapxnet.com)
 
-## ライセンスと上流プロジェクト
+## ライセンス
 
-[MIT License](./LICENSE) の下で公開されています。フロントエンドは [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) を採用し、上流プロジェクトの MIT 著作権・ライセンス表示を保持しています。
-
-XnetAIops は [OpenXnet](https://openxnet.synapxnet.com) の一部です。Copyright © 2026 SynapXnet.
+[LICENSE](LICENSE) と各ファイルの表記を参照してください。

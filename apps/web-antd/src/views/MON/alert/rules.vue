@@ -34,7 +34,12 @@ const columns = [
   { title: '服务', dataIndex: 'serviceName', key: 'serviceName', width: 120 },
   { title: '级别', dataIndex: 'alertLevel', key: 'alertLevel', width: 100 },
   { title: '比较方式', key: 'compare', width: 160 },
-  { title: '持续时间(秒)', dataIndex: 'durationSeconds', key: 'durationSeconds', width: 120 },
+  {
+    title: '持续时间(秒)',
+    dataIndex: 'durationSeconds',
+    key: 'durationSeconds',
+    width: 120,
+  },
   { title: '启用', key: 'enabled', width: 80 },
   { title: '操作', key: 'action', width: 200, fixed: 'right' as const },
 ];
@@ -152,104 +157,134 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <Card title="告警规则">
-      <template #extra>
-        <Button type="primary" @click="showCreate">创建规则</Button>
-      </template>
-      <Table
-        :columns="columns"
-        :data-source="rules"
-        :loading="loading"
-        row-key="id"
-        :scroll="{ x: 1000 }"
-      >
-        <template #bodyCell="{ column, record: _record }">
-          <template v-if="column.key === 'alertLevel'">
-            <Tag :color="levelColorMap[(_record as any).alertLevel] || 'default'">
-              {{ (_record as any).alertLevel }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'compare'">
-            {{ (_record as any).compareMethod }} {{ (_record as any).thresholdValue }}
-          </template>
-          <template v-if="column.key === 'enabled'">
-            <Switch
-              :checked="(_record as any).enabled"
-              size="small"
-              @change="handleToggle(_record as AlertRule)"
-            />
-          </template>
-          <template v-if="column.key === 'action'">
-            <Space>
-              <Button type="link" size="small" @click="showEdit(_record as AlertRule)">
-                编辑
-              </Button>
-              <Button
-                type="link"
-                size="small"
-                danger
-                @click="handleDelete(_record as AlertRule)"
-              >
-                删除
-              </Button>
-            </Space>
-          </template>
+  <BusinessPage
+    title="告警规则"
+    description="筛选当前范围内的资源，查看详情并继续管理。"
+    family="列表"
+    route-key="/MON/alert/rules"
+  >
+    <div class="p-4">
+      <Card>
+        <template #extra>
+          <Button type="primary" @click="showCreate">创建规则</Button>
         </template>
-      </Table>
-    </Card>
+        <Table
+          :columns="columns"
+          :data-source="rules"
+          :loading="loading"
+          row-key="id"
+          :scroll="{ x: 1000 }"
+        >
+          <template #bodyCell="{ column, record: _record }">
+            <template v-if="column.key === 'alertLevel'">
+              <Tag
+                :color="levelColorMap[(_record as any).alertLevel] || 'default'"
+              >
+                {{ (_record as any).alertLevel }}
+              </Tag>
+            </template>
+            <template v-if="column.key === 'compare'">
+              {{ (_record as any).compareMethod }}
+              {{ (_record as any).thresholdValue }}
+            </template>
+            <template v-if="column.key === 'enabled'">
+              <Switch
+                :checked="(_record as any).enabled"
+                size="small"
+                @change="handleToggle(_record as AlertRule)"
+              />
+            </template>
+            <template v-if="column.key === 'action'">
+              <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  @click="showEdit(_record as AlertRule)"
+                >
+                  编辑
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  @click="handleDelete(_record as AlertRule)"
+                >
+                  删除
+                </Button>
+              </Space>
+            </template>
+          </template>
+        </Table>
+      </Card>
 
-    <!-- Create/Edit Modal -->
-    <Modal
-      v-model:open="modalVisible"
-      :title="modalTitle"
-      @ok="handleSubmit"
-      :destroy-on-close="true"
-      width="600px"
-    >
-      <Form layout="vertical">
-        <FormItem label="规则名称" required>
-          <Input v-model:value="formState.ruleName" placeholder="如: CPU使用率过高" />
-        </FormItem>
-        <FormItem label="关联服务">
-          <Input v-model:value="formState.serviceName" placeholder="如: HDFS" />
-        </FormItem>
-        <FormItem label="PromQL 表达式" required>
-          <Textarea
-            v-model:value="formState.expression"
-            :rows="2"
-            placeholder="如: node_cpu_usage_percent"
-          />
-        </FormItem>
-        <Space>
-          <FormItem label="比较方式">
-            <Select v-model:value="formState.compareMethod" style="width: 100px">
-              <SelectOption value=">">&gt;</SelectOption>
-              <SelectOption value=">=">&gt;=</SelectOption>
-              <SelectOption value="<">&lt;</SelectOption>
-              <SelectOption value="<=">&lt;=</SelectOption>
-              <SelectOption value="==">=</SelectOption>
-              <SelectOption value="!=">!=</SelectOption>
+      <!-- Create/Edit Modal -->
+      <Modal
+        v-model:open="modalVisible"
+        :title="modalTitle"
+        @ok="handleSubmit"
+        :destroy-on-close="true"
+        width="600px"
+      >
+        <Form layout="vertical">
+          <FormItem label="规则名称" required>
+            <Input
+              v-model:value="formState.ruleName"
+              placeholder="如: CPU使用率过高"
+            />
+          </FormItem>
+          <FormItem label="关联服务">
+            <Input
+              v-model:value="formState.serviceName"
+              placeholder="如: HDFS"
+            />
+          </FormItem>
+          <FormItem label="PromQL 表达式" required>
+            <Textarea
+              v-model:value="formState.expression"
+              :rows="2"
+              placeholder="如: node_cpu_usage_percent"
+            />
+          </FormItem>
+          <Space>
+            <FormItem label="比较方式">
+              <Select
+                v-model:value="formState.compareMethod"
+                style="width: 100px"
+              >
+                <SelectOption value=">">&gt;</SelectOption>
+                <SelectOption value=">=">&gt;=</SelectOption>
+                <SelectOption value="<">&lt;</SelectOption>
+                <SelectOption value="<=">&lt;=</SelectOption>
+                <SelectOption value="==">=</SelectOption>
+                <SelectOption value="!=">!=</SelectOption>
+              </Select>
+            </FormItem>
+            <FormItem label="阈值">
+              <InputNumber
+                v-model:value="formState.thresholdValue"
+                style="width: 120px"
+              />
+            </FormItem>
+            <FormItem label="持续时间(秒)">
+              <InputNumber
+                v-model:value="formState.durationSeconds"
+                :min="0"
+                style="width: 120px"
+              />
+            </FormItem>
+          </Space>
+          <FormItem label="告警级别">
+            <Select v-model:value="formState.alertLevel" style="width: 150px">
+              <SelectOption value="info">Info</SelectOption>
+              <SelectOption value="warning">Warning</SelectOption>
+              <SelectOption value="critical">Critical</SelectOption>
             </Select>
           </FormItem>
-          <FormItem label="阈值">
-            <InputNumber v-model:value="formState.thresholdValue" style="width: 120px" />
+          <FormItem label="描述">
+            <Textarea v-model:value="formState.description" :rows="2" />
           </FormItem>
-          <FormItem label="持续时间(秒)">
-            <InputNumber v-model:value="formState.durationSeconds" :min="0" style="width: 120px" />
-          </FormItem>
-        </Space>
-        <FormItem label="告警级别">
-          <Select v-model:value="formState.alertLevel" style="width: 150px">
-            <SelectOption value="info">Info</SelectOption>
-            <SelectOption value="warning">Warning</SelectOption>
-            <SelectOption value="critical">Critical</SelectOption>
-          </Select>
-        </FormItem>
-        <FormItem label="描述">
-          <Textarea v-model:value="formState.description" :rows="2" />
-        </FormItem>
-      </Form>
-    </Modal>
-  </div>
+        </Form>
+      </Modal>
+    </div>
+  </BusinessPage>
 </template>
